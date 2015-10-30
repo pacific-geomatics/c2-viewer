@@ -1,2 +1,4 @@
-# c2-viewer
-Pacgeo's Command &amp; Control Viewer
+C&#178; Viewer
+=============
+
+Pacgeo's Command &amp; Control Viewer.
