@@ -5,6 +5,7 @@ Pacgeo's Command &amp; Control Viewer.
 
 Web accessible browser map will be able to run standalone laptop or sever behind CNL firewall
 
+# 1 rule on this project is KISS! (Keep It Simple Stupid)
 
 ## Milestones
 
