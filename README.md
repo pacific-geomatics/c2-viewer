@@ -78,3 +78,32 @@ Gather feedback for addition scope for the next phase if required. Anything cool
 - [Leaflet](http://leafletjs.com/) + [Mapbox.js](https://github.com/mapbox/mapbox.js)
 - HTML5 & CSS3
 - [Mabox WebGL](https://github.com/mapbox/mapbox-gl-js)
+
+### Tile Mapping Service
+
+**Brockville Airport**
+
+JOSM
+```bash
+tms[22]:http://{switch:a,b,c}.tile.addxy.com/brockville/{zoom}/{x}/{y}.png?api_key=123
+```
+
+iD Editor
+```bash
+http://{switch:a,b,c}.tile.addxy.com/brockville/{zoom}/{x}/{y}.png?api_key=123
+```
+
+Good tile:
+```
+http://tile.addxy.com/brockville/18/75910/94669.png?api_key=123
+```
+
+Bad credentials:
+```
+http://tile.addxy.com/brockville/18/75910/94669.png?api_key=321`
+```
+
+Missing tile:
+```
+http://a.tile.addxy.com/brockville/24/0/0.png?api_key=123
+```
