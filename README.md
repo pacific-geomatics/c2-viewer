@@ -7,6 +7,8 @@ Web accessible browser map will be able to run standalone laptop or sever behind
 
 1st rule on this project is KISS! (Keep It Simple Stupid)
 
+Edit from john.
+
 ## Milestones
 
 ### 1st Milestone
