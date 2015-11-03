@@ -75,6 +75,14 @@ Gather feedback for addition scope for the next phase if required. Anything cool
 
 - NodeJS
 
+### Javascript Libraries
+
+- Turf
+- Mapbox Web GL
+- Leaflet
+- jQuery
+- Bootstrap
+
 ### Web Mapping Applications
 
 - [Leaflet](http://leafletjs.com/) + [Mapbox.js](https://github.com/mapbox/mapbox.js)
