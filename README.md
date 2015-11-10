@@ -113,3 +113,25 @@ Gather feedback for addition scope for the next phase if required. Anything cool
 **Missing tile**
 
 - http://a.tile.addxy.com/brockville/24/0/0.png?api_key=123
+
+### Layers
+ 
+- Old imagery DRAPE (we could drop if required)
+
+- 30 cm WV-3 imagery May 15 (now that we have the ground control we should have the final version in a few days.)
+
+- 2 cm imagery 31 Oct (still waiting for it)
+
+- Buildings (from the data CNL gave us)
+
+ 
+There may be other layers but have to see what data CNL gave us. I know Reticle / CNL wants some type of view shed with the 2 cm DEMs. Not sure how/what that would that would look like. Any ideas????
+ 
+ 
+### CNL FTP info
+
+Please note: The user shall observe the following expectations and requirements: The DRAPE imagery we have is licensed to us by the province of Ontario through the Ministry of Natural Resources.  So when the DRAPE imagery is used, by the contractor, in any product it needs to give copyright credit to the province of Ontario.  I have placed a simple text file 'QUEENS_PRINTER.txt' that provides the wording to be used in a label that needs to be part of any product (e.g. hardcopy, softcopy map such as a PDF) that uses the
+ 
+- Imagery.server:  https://sftp.cnl.ca/thinclient/Login.aspx
+- Username: Reticle
+- Password: reticle_dec6
