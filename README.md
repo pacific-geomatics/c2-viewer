@@ -91,6 +91,14 @@ Gather feedback for addition scope for the next phase if required. Anything cool
 
 ### Tile Mapping Service
 
+#### Chalk River
+
+**JOSM**
+
+- tms[20]:http://{switch:a,b,c}.tile.addxy.com/chalkriver/{zoom}/{x}/{y}.png?api_key=123
+- tms[20]:http://{switch:a,b,c}.tile.addxy.com/chalkriver-drape2014/{zoom}/{x}/{y}.png?api_key=123
+ 
+
 #### Brockville Airport
 
 **JOSM**
