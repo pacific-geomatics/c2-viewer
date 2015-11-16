@@ -97,6 +97,30 @@ Gather feedback for addition scope for the next phase if required. Anything cool
 
 - tms[20]:http://{switch:a,b,c}.tile.addxy.com/chalkriver/{zoom}/{x}/{y}.png?api_key=123
 - tms[20]:http://{switch:a,b,c}.tile.addxy.com/chalkriver-drape2014/{zoom}/{x}/{y}.png?api_key=123
+
+**Leaflet (Javascript)**
+
+- http://{s}.tile.addxy.com/chalkriver/{z}/{x}/{y}.png?api_key=123
+- http://{s}.tile.addxy.com/chalkriver-drape2014/{z}/{x}/{y}.png?api_key=123
+
+**OpenStreetMap iD**
+
+- http://tile.addxy.com/chalkriver/{zoom}/{x}/{y}.png?api_key=123
+- http://tile.addxy.com/chalkriver-drape2014/{zoom}/{x}/{y}.png?api_key=123
+
+**Example**
+
+Pacgeo
+![PacGeo](http://tile.addxy.com/chalkriver/19/149474/186416.png?api_key=123)
+
+Drape 2014
+![Drape](http://tile.addxy.com/chalkriver-drape2014/19/149474/186416.png?api_key=123)
+
+
+**JOSM**
+
+- tms[20]:http://{switch:a,b,c}.tile.addxy.com/chalkriver/{zoom}/{x}/{y}.png?api_key=123
+- tms[20]:http://{switch:a,b,c}.tile.addxy.com/chalkriver-drape2014/{zoom}/{x}/{y}.png?api_key=123
  
 
 #### Brockville Airport
