@@ -111,9 +111,11 @@ Gather feedback for addition scope for the next phase if required. Anything cool
 **Example**
 
 Pacgeo
+
 ![PacGeo](http://tile.addxy.com/chalkriver/19/149474/186416.png?api_key=123)
 
 Drape 2014
+
 ![Drape](http://tile.addxy.com/chalkriver-drape2014/19/149474/186416.png?api_key=123)
 
 
