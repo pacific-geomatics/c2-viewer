@@ -16,7 +16,7 @@ var mapboxDark = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.p
     id: 'mapbox.dark'
 });
 
-var brockville2cm = L.tileLayer('http://{s}.tile.addxy.com/brockville/{z}/{x}/{y}.png?api_key=123', {
+var brockville2cm = L.tileLayer('https://tile.addxy.com/brockville/{z}/{x}/{y}.png?api_key=123', {
     maxZoom: 22,
     id: 'brocvkille.2cm'
 });
