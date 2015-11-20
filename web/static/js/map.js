@@ -62,7 +62,7 @@ var overLays = {
 
 var map = L.map('map', {
     fullscreenControl: true,
-    layers: [imagery, vectors]
+    layers: [pacgeoImagery, vectors]
 }).setView([46.052700, -77.364673], 17);
 
 L.control.layers(baseLayers, overLays).addTo(map);
