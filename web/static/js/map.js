@@ -16,9 +16,15 @@ var mapboxDark = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.p
     id: 'mapbox.dark'
 });
 
-var brockville2cm = L.tileLayer('https://tile.addxy.com/brockville/{z}/{x}/{y}.png?api_key=123', {
-    maxZoom: 22,
-    id: 'brocvkille.2cm'
+
+var imagery = L.tileLayer('https://tile.addxy.com/chalkriver/{z}/{x}/{y}.png?api_key=123', {
+    maxZoom: 20,
+    id: 'imagery.2015'
+});
+
+var imageryDrape = L.tileLayer('https://tile.addxy.com/chalkriver-drape/{z}/{x}/{y}.png?api_key=123', {
+    maxZoom: 20,
+    id: 'imagery.drape.2014'
 });
 
 var baseLayers = {
@@ -54,7 +60,7 @@ var highwayOverlay = L.geoJson([highwaysGeoJson], {
 });
 
 var overLays = {
-    "2cm Imagery": brockville2cm,
+    "Imagery": imagery,
     "Buildings": vectors,
     "Power Lines": powerlinesOverlay,
     "Roads": highwayOverlay
@@ -62,7 +68,7 @@ var overLays = {
 
 var map = L.map('map', {
     fullscreenControl: true,
-    layers: [mapboxDark, brockville2cm, vectors]
-}).setView([44.63495584392522, -75.75195550918579], 17);
+    layers: [mapboxDark, imagery, vectors]
+}).setView([46.052700, -77.364673], 17);
 
 L.control.layers(baseLayers, overLays).addTo(map);
