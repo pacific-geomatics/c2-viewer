@@ -16,15 +16,9 @@ var mapboxDark = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.p
     id: 'mapbox.dark'
 });
 
-
-var imagery = L.tileLayer('https://tile.addxy.com/chalkriver/{z}/{x}/{y}.png?api_key=123', {
-    maxZoom: 20,
-    id: 'imagery.2015'
-});
-
-var imageryDrape = L.tileLayer('https://tile.addxy.com/chalkriver-drape/{z}/{x}/{y}.png?api_key=123', {
-    maxZoom: 20,
-    id: 'imagery.drape.2014'
+var imagery = L.tileLayer('https://{s}.tiles.mapbox.com/v4/pacgeo.neiemcnb/{z}/{x}/{y}.jpg?access_token=' + access_token, {
+    maxZoom: 19,
+    id: 'imagery.mapbox'
 });
 
 var baseLayers = {
@@ -63,7 +57,7 @@ var overLays = {
     "Imagery": imagery,
     "Buildings": vectors,
     "Power Lines": powerlinesOverlay,
-    "Roads": highwayOverlay
+    "Roads": highwayOverlay,
 };
 
 var map = L.map('map', {
