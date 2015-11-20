@@ -3,11 +3,18 @@
 import os
 from flask import render_template, send_file, jsonify, request
 from web import app
+from flask_oauthlib.client import OAuth
+oauth = OAuth()
 
 
 @app.route('/')
 def index():
     return render_template('map.html')
+
+
+@app.route('/googlec7417869a8a99a4e.html')
+def google_oauth():
+    return render_template('googlec7417869a8a99a4e.html')
 
 
 @app.route("/<basemap>/<int:zoom>/<int:x>/<int:y><ext>", methods=['GET', 'POST'])
