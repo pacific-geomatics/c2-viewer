@@ -16,15 +16,10 @@ var mapboxDark = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.p
     id: 'mapbox.dark'
 });
 
-var imagery = L.tileLayer('https://{s}.tiles.mapbox.com/v4/pacgeo.neiemcnb/{z}/{x}/{y}.jpg?access_token=' + access_token, {
+var pacgeoImagery = L.tileLayer('https://{s}.tiles.mapbox.com/v4/pacgeo.neiemcnb/{z}/{x}/{y}.jpg?access_token=' + access_token, {
     maxZoom: 19,
-    id: 'imagery.mapbox'
+    id: 'pacgeo.imagery'
 });
-
-var baseLayers = {
-    "Mapbox Light": mapboxLight,
-    "Mapbox Dark": mapboxDark
-};
 
 var vectors = L.geoJson([buildingsGeoJson, aerowayGeoJson], {
     style: function(feature) {
@@ -53,8 +48,13 @@ var highwayOverlay = L.geoJson([highwaysGeoJson], {
     }
 });
 
+var baseLayers = {
+    "PacGeo Imagery": pacgeoImagery,
+    "Mapbox Light": mapboxLight,
+    "Mapbox Dark": mapboxDark
+};
+
 var overLays = {
-    "Imagery": imagery,
     "Buildings": vectors,
     "Power Lines": powerlinesOverlay,
     "Roads": highwayOverlay,
@@ -62,7 +62,7 @@ var overLays = {
 
 var map = L.map('map', {
     fullscreenControl: true,
-    layers: [mapboxDark, imagery, vectors]
+    layers: [imagery, vectors]
 }).setView([46.052700, -77.364673], 17);
 
 L.control.layers(baseLayers, overLays).addTo(map);
