@@ -20,9 +20,9 @@ def state():
 
 @app.route('/')
 def index():
-    if re.search(r'^http://localhost', request.url):
-        return render_template('map.html')
-    elif session.get('email', '') in app.config['VALID_EMAILS']:
+    if re.search(r'^http://localhost', request.url) or \
+       re.search(r'^http://127.0.0.1', request.url) or \
+       session.get('email', '') in app.config['VALID_EMAILS']:
         return render_template('map.html')
     return redirect('/login')
 
