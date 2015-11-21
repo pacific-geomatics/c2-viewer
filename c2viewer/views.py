@@ -77,8 +77,23 @@ def oauth2callback():
     }
     # Get Google Token
     r = requests.post('https://www.googleapis.com/oauth2/v3/token', data=payload)
+    if not r.ok:
+        return jsonify({'message': 'Error getting Google Token'}), 404
 
-    return jsonify(r.json())
+    # Get Google Account
+    params = {'id_token': r.json().get('id_token')}
+    r = requests.get('https://www.googleapis.com/oauth2/v1/tokeninfo', params=params)
+
+    if not r.ok:
+        return jsonify({'message': 'Error getting Google Account'}), 404
+
+    # User Details
+    email = r.json().get('email')
+    email_verified = r.json().get('email_verified')
+    user_id = r.json().get('user_id')
+
+    if r.json().get('email_verified'):
+        return redirect('/')
 
 
 @app.route("/<basemap>/<int:zoom>/<int:x>/<int:y><ext>", methods=['GET', 'POST'])
