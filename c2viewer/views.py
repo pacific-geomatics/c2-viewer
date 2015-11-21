@@ -12,9 +12,9 @@ from c2viewer import app
 def state():
     state = hashlib.sha256(os.urandom(1024)).hexdigest()
     session['state'] = state
-    return jsonify({'CLIENT_ID': 'carriere.denis@gmail.com',
+    return jsonify({'CLIENT_ID': app.config['CLIENT_ID'],
                     'STATE': state,
-                    'APPLICATION_NAME': 'c2-viewer'})
+                    'APPLICATION_NAME': app.config['APPLICATION_NAME']})
 
 
 @app.route('/check')
@@ -48,7 +48,7 @@ def user():
 def login():
     state()
     params = {
-        'client_id': '318442113295-5glonlcmqp4qhf7ut8bvobpkhnsj578m.apps.googleusercontent.com',
+        'client_id': app.config['CLIENT_ID'],
         'response_type': 'code',
         'scope': 'openid email',
         'redirect_uri': 'https://addxy.com/oauth2callback',
@@ -61,16 +61,22 @@ def login():
 
 @app.route('/oauth2callback')
 def oauth2callback():
+    """
+    GET Response from Google
+    - authuser
+    - code
+    - prompt
+    - session_state
+    - state
+    """
     if request.args.get('state', '') != session['state']:
         return jsonify({'message': 'Invalid state parameter.'}), 401
-
-    return jsonify(request.args)
 
     url = 'https://www.googleapis.com/oauth2/v3/token'
     payload = {
         'code': request.args.get('code', ''),
-        'client_id': '318442113295-5glonlcmqp4qhf7ut8bvobpkhnsj578m.apps.googleusercontent.com',
-        'client_secret': '4hLAJ6ZM9I4fL3lTu-PNNgMI',
+        'client_id': app.config['CLIENT_ID'],
+        'client_secret': app.config['SECRET_KEY'],
         'redirect_uri': 'https://addxy.com/oauth2callback',
         'grant_type': 'authorization_code'
     }
