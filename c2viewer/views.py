@@ -23,12 +23,6 @@ def state():
 def index():
     if session.get('validated') and \
        session.get('email') in app.config['VALID_EMAILS']:
-            return render_template('map.html')
-
-    if re.search(r'^http://localhost', request.url) or \
-       re.search(r'^http://127.0.0.1', request.url):
-        session['validated'] = False
-        session['email'] = None
         return render_template('map.html')
     return redirect('/login')
 
