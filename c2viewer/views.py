@@ -29,11 +29,12 @@ def index():
     app.logger.info(session)
     app.logger.info(app.config['VALID_EMAILS'])
     if session.get('email', '') in app.config['VALID_EMAILS']:
+        session['email'] = None
         return render_template('map.html')
     return redirect('/login')
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     state()
     params = {
@@ -79,7 +80,6 @@ def oauth2callback():
     # User Details
     email = r.json().get('email')
     email_verified = r.json().get('email_verified')
-    user_id = r.json().get('user_id')
 
     if email_verified:
         if email in app.config['VALID_EMAILS']:
