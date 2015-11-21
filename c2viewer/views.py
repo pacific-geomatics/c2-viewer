@@ -23,6 +23,12 @@ def state():
 def index():
     if session.get('validated') and \
        session.get('email') in app.config['VALID_EMAILS']:
+        session['validated'] = False
+        session['email'] = None
+        return render_template('map.html')
+
+    if re.search(r'^http://localhost', request.url) or \
+       re.search(r'^http://127.0.0.1', request.url):
         return render_template('map.html')
     return redirect('/login')
 
@@ -122,3 +128,5 @@ def hooks():
         if app.config['SECRET_KEY'] == request.form['hook']['config']['secret']:
             app.logger('Pushing new Github Build')
             subprocess.call(['git pull'])
+            return jsonify({'message': 'Hook push from Github'})
+    return jsonify({'message': '[Error] Hook from Github'})
