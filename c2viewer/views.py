@@ -93,7 +93,7 @@ def oauth2callback():
     user_id = r.json().get('user_id')
 
     if email_verified:
-        if email not in app.config['VALID_EMAILS']:
+        if email in app.config['VALID_EMAILS']:
             return redirect('/')
     return jsonify({'message': 'Not Authorized'}), 401
 
