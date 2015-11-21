@@ -46,18 +46,17 @@ def user():
 
 @app.route('/login')
 def login():
+    state()
     params = {
         'client_id': '318442113295-5glonlcmqp4qhf7ut8bvobpkhnsj578m.apps.googleusercontent.com',
         'response_type': 'code',
         'scope': 'openid email',
         'redirect_uri': 'https://addxy.com/oauth2callback',
-        'state': '123',
+        'state': session['state'],
         'openid.realm': 'https://addxy.com',
         'hd': 'https://addxy.com',
     }
-    url = 'https://accounts.google.com/o/oauth2/auth?' + urlencode(params)
-
-    return redirect(url)
+    return redirect('https://accounts.google.com/o/oauth2/auth?' + urlencode(params))
 
 
 @app.route('/oauth2callback')
@@ -67,10 +66,10 @@ def oauth2callback():
 
     url = 'https://www.googleapis.com/oauth2/v3/token'
     payload = {
-        'code': request.args['code'],
-        'client_id': request.args['client_id'],
+        'code': request.args.get('code', ''),
+        'client_id': request.args.get('client_id', ''),
         'client_secret': '4hLAJ6ZM9I4fL3lTu-PNNgMI',
-        'redirect_uri': request.args['redirect_uri'],
+        'redirect_uri': request.args.get('redirect_uri', ''),
         'grant_type': 'authorization_code'
     }
     r = requests.post(url, data=payload)
