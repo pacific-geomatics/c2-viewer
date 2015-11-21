@@ -44,9 +44,7 @@ def login():
 
 @app.route('/oauth2callback')
 def oauth2callback():
-    """
-    https://developers.google.com/identity/protocols/OpenIDConnect
-    """
+    # https://developers.google.com/identity/protocols/OpenIDConnect
 
     if request.args.get('state', '') != session['state']:
         return jsonify({'message': 'Invalid state parameter.'}), 401
