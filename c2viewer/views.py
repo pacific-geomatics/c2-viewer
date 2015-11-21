@@ -20,13 +20,13 @@ def state():
 
 @app.route('/')
 def index():
-    login()
     app.logger.info(session)
     app.logger.info(app.config['VALID_EMAILS'])
+    email = session.get('email', '')
 
-    if session.get('email', '') in app.config['VALID_EMAILS']:
+    if email in app.config['VALID_EMAILS']:
         return render_template('map.html')
-    return jsonify({'message': 'Not Authorized'}), 401
+    return redirect('/login')
 
 
 @app.route('/login', methods=['GET', 'POST'])
