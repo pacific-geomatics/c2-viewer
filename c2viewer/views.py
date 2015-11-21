@@ -78,9 +78,6 @@ def oauth2callback():
     # Get Google Token
     r = requests.post('https://www.googleapis.com/oauth2/v3/token', data=payload)
 
-    # Get Google Account
-    r = requests.get('https://accounts.google.com', params=r.json())
-
     return jsonify(r.json())
 
 
