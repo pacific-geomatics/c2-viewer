@@ -18,19 +18,15 @@ def state():
                     'APPLICATION_NAME': app.config['APPLICATION_NAME']})
 
 
-@app.route('/check')
-def check():
-    app.logger.info(session)
-    return jsonify({'STATE': session['state']})
-
-
 @app.route('/')
 def index():
+    login()
     app.logger.info(session)
     app.logger.info(app.config['VALID_EMAILS'])
+
     if session.get('email', '') in app.config['VALID_EMAILS']:
         return render_template('map.html')
-    return redirect('/login')
+    return jsonify({'message': 'Not Authorized'}), 401
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -83,7 +79,6 @@ def oauth2callback():
     if email_verified:
         if email in app.config['VALID_EMAILS']:
             session['email'] = email
-            return redirect('/')
     return jsonify({'message': 'Not Authorized'}), 401
 
 
