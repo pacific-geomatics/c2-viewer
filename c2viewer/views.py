@@ -2,6 +2,7 @@
 
 import os
 import hashlib
+import subprocess
 import requests
 import re
 from urllib import urlencode
@@ -112,3 +113,11 @@ def tms(basemap, zoom, x, y, ext):
     # Success
     else:
         return send_file(tile, mimetype='image/png')
+
+
+@app.route("/hooks/github")
+def hooks():
+    if 'hook' in request.form:
+        if app.config['SECRET_KEY'] == request.form['hook']['config']['secret']:
+            app.logger('Pushing new Github Build')
+            subprocess.call(['git pull'])
