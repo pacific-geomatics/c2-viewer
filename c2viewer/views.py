@@ -23,11 +23,10 @@ def state():
 def index():
     # Web Access
     if session.get('email', '') in app.config['VALID_EMAILS']:
-        app.logger.info('Email is valid: {}'.format(session['email']))
-
         if request.args.get('state', '') == session.get('state'):
-            app.logger.info('Accessing C2-Viewer: Web Access\n'
-                            'Using State: {}'.format(session['state']))
+            app.logger.info('Accessing C2-Viewer: Web Access \n'
+                            'Email is valid: {0} \n'
+                            'Using State: {1}'.format(session['email'], session['state']))
             return render_template('map.html')
 
     # Offline Access
