@@ -74,7 +74,7 @@ def oauth2callback():
     if email_verified:
         if email in app.config['VALID_EMAILS']:
             session['email'] = email
-            return redirect('/' + urlencode({'state': session['state']}))
+            return redirect('/?' + urlencode({'state': session['state']}))
         else:
             session['email'] = None
             return jsonify({'message': 'Not Authorized'}), 401
