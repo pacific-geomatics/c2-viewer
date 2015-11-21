@@ -20,7 +20,7 @@ def state():
 
 @app.route('/')
 def index():
-    if request.args.get('state') != session['state'] and \
+    if request.args.get('state', '') != session['state'] and \
        session.get('email') in app.config['VALID_EMAILS']:
         return render_template('map.html')
     return redirect('/login')
