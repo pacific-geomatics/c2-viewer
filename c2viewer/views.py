@@ -20,8 +20,14 @@ def state():
 
 @app.route('/')
 def index():
+    # Web Access
     if request.args.get('state', '') == session['state'] and \
        session.get('email') in app.config['VALID_EMAILS']:
+        return render_template('map.html')
+
+    # Offline Access
+    if re.search(r'^http://localhost', request.url) or \
+       re.search(r'^http://127.0.0.1', request.url):
         return render_template('map.html')
     return redirect('/login')
 
