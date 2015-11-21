@@ -24,7 +24,7 @@ def check():
 
 @app.route('/')
 def index():
-    if session['email'] not in app.config['VALID_EMAILS']:
+    if session.get('email', '') not in app.config['VALID_EMAILS']:
         redirect('/login')
     return render_template('map.html')
 
