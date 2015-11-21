@@ -4,6 +4,7 @@ import os
 import hashlib
 import subprocess
 import requests
+import re
 from urllib import urlencode
 from flask import render_template, send_file, jsonify, request, session, redirect
 from c2viewer import app
