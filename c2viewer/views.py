@@ -10,6 +10,13 @@ from flask import render_template, send_file, jsonify, request, session, redirec
 from c2viewer import app
 
 
+def get_ip(request):
+    if len(request.access_route) > 1:
+        return request.access_route[-1]
+    else:
+        return request.access_route[0]
+
+
 @app.route('/state')
 def state():
     state = hashlib.sha256(os.urandom(1024)).hexdigest()
@@ -27,13 +34,13 @@ def index():
             app.logger.info('C2-Viewer: Web Access \n'
                             'Email: {} \n'
                             'IP Address: {} \n'
-                            'State: {}'.format(session['email'], request.remote_addr, session['state']))
+                            'State: {}'.format(session['email'], get_ip(request), session['state']))
             return render_template('map.html')
 
     # Offline Access
     if re.search(r'^http://localhost', request.url):
         app.logger.info('C2-Viewer: Localhost \n'
-                        'IP Address: {}'.format(request.remote_addr))
+                        'IP Address: {}'.format(get_ip(request)))
         return render_template('map.html')
     return redirect('/login')
 
@@ -91,7 +98,7 @@ def oauth2callback():
             app.logger.info('OAuth2: Not Authorized \n'
                             'Email: {} \n'
                             'IP Address: {} \n'
-                            'State: {}'.format(session['email'], request.remote_addr, session['state']))
+                            'State: {}'.format(session['email'], get_ip(request), session['state']))
             return jsonify({'message': 'Not Authorized'}), 401
     else:
         return jsonify({'message': 'Email not Verified'}), 401
