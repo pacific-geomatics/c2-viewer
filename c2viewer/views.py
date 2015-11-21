@@ -27,7 +27,7 @@ def index():
 
         if request.args.get('state', '') == session.get('state'):
             app.logger.info('Accessing C2-Viewer: Web Access\n'
-                            'Using State: {}'.fomrat(session['state']))
+                            'Using State: {}'.format(session['state']))
             return render_template('map.html')
 
     # Offline Access
