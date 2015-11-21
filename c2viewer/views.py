@@ -3,7 +3,7 @@
 import os
 import hashlib
 import requests
-import logging
+import re
 from urllib import urlencode
 from flask import render_template, send_file, jsonify, request, session, redirect
 from c2viewer import app
@@ -20,11 +20,9 @@ def state():
 
 @app.route('/')
 def index():
-    app.logger.info(session)
-    app.logger.info(app.config['VALID_EMAILS'])
-    email = session.get('email', '')
-
-    if email in app.config['VALID_EMAILS']:
+    if re.search(r'^http://localhost', request.url):
+        return render_template('map.html')
+    elif session.get('email', '') in app.config['VALID_EMAILS']:
         return render_template('map.html')
     return redirect('/login')
 

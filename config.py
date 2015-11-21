@@ -12,3 +12,4 @@ VALID_EMAILS = [
     'ambayee@gmail.com',
     'patrick.irwin@gmail.com'
 ]
+PREFERRED_URL_SCHEME = 'https'
