@@ -24,6 +24,8 @@ def check():
 
 @app.route('/')
 def index():
+    if session['email'] not in app.config['VALID_EMAILS']:
+        redirect('/login')
     return render_template('map.html')
 
 
@@ -94,6 +96,7 @@ def oauth2callback():
 
     if email_verified:
         if email in app.config['VALID_EMAILS']:
+            session['email'] = email
             return redirect('/')
     return jsonify({'message': 'Not Authorized'}), 401
 
