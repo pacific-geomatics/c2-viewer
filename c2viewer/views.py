@@ -3,6 +3,7 @@
 import os
 import hashlib
 import requests
+import logging
 from urllib import urlencode
 from flask import render_template, send_file, jsonify, request, session, redirect
 from c2viewer import app
@@ -19,31 +20,17 @@ def state():
 
 @app.route('/check')
 def check():
+    app.logger.info(session)
     return jsonify({'STATE': session['state']})
 
 
 @app.route('/')
 def index():
+    app.logger.info(session)
+    app.logger.info(app.config['VALID_EMAILS'])
     if session.get('email', '') in app.config['VALID_EMAILS']:
         return render_template('map.html')
     return redirect('/login')
-
-
-@app.route('/user')
-def user():
-    # Standard Claims
-    # http://openid.net/specs/openid-connect-basic-1_0.html#StandardClaims
-    return jsonify({'sub': 12345678,
-                    'name': 'Denis Carriere',
-                    'given_name': 'Denis',
-                    'family_name': 'Carriere',
-                    'nickname': 'DenisC',
-                    'email': 'carriere.denis@gmail.com',
-                    'email_verified': True,
-                    'gender': 'Male',
-                    'phone_number': '613-770-5338',
-                    'phone_number_verified': False,
-                    })
 
 
 @app.route('/login')
