@@ -27,7 +27,7 @@ def index():
             app.logger.info('C2-Viewer: Web Access \n'
                             'Email: {} \n'
                             'IP Address: {} \n'
-                            'State: {}'.format(session['email'], session['state']))
+                            'State: {}'.format(session['email'], request.remote_addr, session['state']))
             return render_template('map.html')
 
     # Offline Access
