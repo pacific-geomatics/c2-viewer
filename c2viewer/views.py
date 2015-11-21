@@ -22,12 +22,17 @@ def state():
 @app.route('/')
 def index():
     # Web Access
-    if request.args.get('state', '') == session['state'] and \
-       session.get('email') in app.config['VALID_EMAILS']:
-        return render_template('map.html')
+    if session.get('email', '') in app.config['VALID_EMAILS']:
+        app.logger.info('Email is valid: {}'.format(session['email']))
+
+        if request.args.get('state', '') == session.get('state'):
+            app.logger.info('Accessing C2-Viewer: Web Access\n'
+                            'Using State: {}'.fomrat(session['state']))
+            return render_template('map.html')
 
     # Offline Access
     if re.search(r'^http://localhost', request.url):
+        app.logger.info('Accessing C2-Viewer: localhost')
         return render_template('map.html')
     return redirect('/login')
 
@@ -121,6 +126,6 @@ def tms(basemap, zoom, x, y, ext):
 
 @app.route("/hooks/github")
 def hooks():
-    app.logger(request.form)
+    app.logger.info(request.form)
     subprocess.call(['git pull'])
     return jsonify({'message': 'Hook push from Github'})
