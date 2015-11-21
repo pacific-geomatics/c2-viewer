@@ -62,17 +62,12 @@ def login():
 @app.route('/oauth2callback')
 def oauth2callback():
     """
-    GET Response from Google
-    - authuser
-    - code
-    - prompt
-    - session_state
-    - state
+    https://developers.google.com/identity/protocols/OpenIDConnect#exchangecode
     """
+
     if request.args.get('state', '') != session['state']:
         return jsonify({'message': 'Invalid state parameter.'}), 401
 
-    url = 'https://www.googleapis.com/oauth2/v3/token'
     payload = {
         'code': request.args.get('code', ''),
         'client_id': app.config['CLIENT_ID'],
@@ -80,7 +75,12 @@ def oauth2callback():
         'redirect_uri': 'https://addxy.com/oauth2callback',
         'grant_type': 'authorization_code'
     }
-    r = requests.post(url, data=payload)
+    # Get Google Token
+    r = requests.post('https://www.googleapis.com/oauth2/v3/token', data=payload)
+
+    # Get Google Account
+    r = requests.get('accounts.google.com', params=r.json())
+
     return jsonify(r.json())
 
 
