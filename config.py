@@ -9,7 +9,6 @@ VALID_EMAILS = [
     'john@pacgeo.com',
     'rps333@gmail.com',
     'mike@korora.ca',
-    'ambayee@gmail.com',
-    'patrick.irwin@gmail.com'
+    'ambayee@gmail.com'
 ]
 PREFERRED_URL_SCHEME = 'https'
