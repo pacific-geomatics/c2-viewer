@@ -67,7 +67,7 @@ def oauth2callback():
     url = 'https://www.googleapis.com/oauth2/v3/token'
     payload = {
         'code': request.args.get('code', ''),
-        'client_id': request.args.get('client_id', ''),
+        'client_id': '318442113295-5glonlcmqp4qhf7ut8bvobpkhnsj578m.apps.googleusercontent.com',
         'client_secret': '4hLAJ6ZM9I4fL3lTu-PNNgMI',
         'redirect_uri': request.args.get('redirect_uri', ''),
         'grant_type': 'authorization_code'
