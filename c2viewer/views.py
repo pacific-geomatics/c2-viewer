@@ -24,14 +24,16 @@ def index():
     # Web Access
     if session.get('email', '') in app.config['VALID_EMAILS']:
         if request.args.get('state', '') == session.get('state'):
-            app.logger.info('Accessing C2-Viewer: Web Access \n'
-                            'Email is valid: {0} \n'
-                            'Using State: {1}'.format(session['email'], session['state']))
+            app.logger.info('C2-Viewer: Web Access \n'
+                            'Email: {} \n'
+                            'IP Address: {} \n'
+                            'State: {}'.format(session['email'], session['state']))
             return render_template('map.html')
 
     # Offline Access
     if re.search(r'^http://localhost', request.url):
-        app.logger.info('Accessing C2-Viewer: localhost')
+        app.logger.info('C2-Viewer: Localhost \n'
+                        'IP Address: {}'.format(request.remote_addr))
         return render_template('map.html')
     return redirect('/login')
 
@@ -86,7 +88,10 @@ def oauth2callback():
             session['email'] = email
             return redirect('/?' + urlencode({'state': session['state']}))
         else:
-            session['email'] = None
+            app.logger.info('OAuth2: Not Authorized \n'
+                            'Email: {} \n'
+                            'IP Address: {} \n'
+                            'State: {}'.format(session['email'], request.remote_addr, session['state']))
             return jsonify({'message': 'Not Authorized'}), 401
     else:
         return jsonify({'message': 'Email not Verified'}), 401
