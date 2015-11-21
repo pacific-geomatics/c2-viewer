@@ -92,10 +92,10 @@ def oauth2callback():
     email_verified = r.json().get('email_verified')
     user_id = r.json().get('user_id')
 
-    if r.json().get('email_verified'):
-        return redirect('/')
-    else:
-        return jsonify({'message': 'Not Authorized'}), 401
+    if email_verified:
+        if email not in app.config['VALID_EMAILS']:
+            return redirect('/')
+    return jsonify({'message': 'Not Authorized'}), 401
 
 
 @app.route("/<basemap>/<int:zoom>/<int:x>/<int:y><ext>", methods=['GET', 'POST'])
