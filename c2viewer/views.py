@@ -25,6 +25,10 @@ def index():
     if request.args.get('state', '') == session['state'] and \
        session.get('email') in app.config['VALID_EMAILS']:
         return render_template('map.html')
+
+    # Offline Access
+    if re.search(r'^http://localhost', request.url):
+        return render_template('map.html')
     return redirect('/login')
 
 
@@ -117,9 +121,6 @@ def tms(basemap, zoom, x, y, ext):
 
 @app.route("/hooks/github")
 def hooks():
-    if 'hook' in request.form:
-        if app.config['SECRET_KEY'] == request.form['hook']['config']['secret']:
-            app.logger('Pushing new Github Build')
-            subprocess.call(['git pull'])
-            return jsonify({'message': 'Hook push from Github'})
-    return jsonify({'message': '[Error] Hook from Github'})
+    app.logger(request.form)
+    subprocess.call(['git pull'])
+    return jsonify({'message': 'Hook push from Github'})
