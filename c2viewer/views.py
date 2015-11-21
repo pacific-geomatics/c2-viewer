@@ -98,7 +98,7 @@ def oauth2callback():
             app.logger.info('OAuth2: Not Authorized \n'
                             'Email: {} \n'
                             'IP Address: {} \n'
-                            'State: {}'.format(session['email'], get_ip(request), session['state']))
+                            'State: {}'.format(email, get_ip(request), session['state']))
             return jsonify({'message': 'Not Authorized'}), 401
     else:
         return jsonify({'message': 'Email not Verified'}), 401
