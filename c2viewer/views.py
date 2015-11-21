@@ -64,12 +64,14 @@ def oauth2callback():
     if request.args.get('state', '') != session['state']:
         return jsonify({'message': 'Invalid state parameter.'}), 401
 
+    return jsonify(request.args)
+
     url = 'https://www.googleapis.com/oauth2/v3/token'
     payload = {
         'code': request.args.get('code', ''),
         'client_id': '318442113295-5glonlcmqp4qhf7ut8bvobpkhnsj578m.apps.googleusercontent.com',
         'client_secret': '4hLAJ6ZM9I4fL3lTu-PNNgMI',
-        'redirect_uri': request.args.get('redirect_uri', ''),
+        'redirect_uri': 'https://addxy.com/oauth2callback',
         'grant_type': 'authorization_code'
     }
     r = requests.post(url, data=payload)
