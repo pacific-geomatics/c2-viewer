@@ -29,7 +29,6 @@ def index():
     app.logger.info(session)
     app.logger.info(app.config['VALID_EMAILS'])
     if session.get('email', '') in app.config['VALID_EMAILS']:
-        session['email'] = None
         return render_template('map.html')
     return redirect('/login')
 
@@ -52,7 +51,7 @@ def login():
 @app.route('/oauth2callback')
 def oauth2callback():
     """
-    https://developers.google.com/identity/protocols/OpenIDConnect#exchangecode
+    https://developers.google.com/identity/protocols/OpenIDConnect
     """
 
     if request.args.get('state', '') != session['state']:
