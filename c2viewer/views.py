@@ -137,6 +137,4 @@ def tms(basemap, zoom, x, y, ext):
 
 @app.route("/hooks/github")
 def hooks():
-    app.logger.info(request.form)
-    subprocess.call(['git pull'])
     return jsonify({'message': 'Hook push from Github'})
