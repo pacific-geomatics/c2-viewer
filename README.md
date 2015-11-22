@@ -169,3 +169,17 @@ Please note: The user shall observe the following expectations and requirements:
 - Imagery.server:  https://sftp.cnl.ca/thinclient/Login.aspx
 - Username: Reticle
 - Password: reticle_dec6
+
+### Lets Encrypt
+
+SSL Certified
+
+```bash
+$ ./letsencrypt-auto \
+  -d addxy.com 
+  -d www.addxy.com 
+  -d tile.addxy.com 
+  --agree-dev-preview 
+  --server https://acme-v01.api.letsencrypt.org/directory 
+  auth
+```
