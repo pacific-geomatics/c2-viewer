@@ -2,7 +2,6 @@
 
 import os
 import hashlib
-import subprocess
 import requests
 import re
 from urllib import urlencode
@@ -145,3 +144,11 @@ def tms(basemap, zoom, x, y, ext):
 @app.route("/hooks/github")
 def hooks():
     return jsonify({'message': 'Hook push from Github'})
+
+
+@app.route("/logs")
+def logs():
+    log_file = 'c2viewer.log'
+    if os.path.exists(log_file):
+        with open(log_file) as f:
+            return render_template('logs.html', logs=f.readlines())
