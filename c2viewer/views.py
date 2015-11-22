@@ -31,16 +31,17 @@ def index():
     # Web Access
     if session.get('email', '') in app.config['VALID_EMAILS']:
         if request.args.get('state', '') == session.get('state'):
-            app.logger.info('C2-Viewer: Web Access \n'
-                            'Email: {} \n'
-                            'IP Address: {} \n'
-                            'State: {}'.format(session['email'], get_ip(request), session['state']))
+            app.logger.info('route=Index, '
+                            'address={}, '
+                            'email={}, '
+                            'status=200'.format(get_ip(request), session['email']))
             return render_template('map.html')
 
     # Offline Access
     if re.search(r'^http://localhost', request.url):
-        app.logger.info('C2-Viewer: Localhost \n'
-                        'IP Address: {}'.format(get_ip(request)))
+        app.logger.info('route=Index, '
+                        'address={}, '
+                        'status=200'.format(get_ip(request)))
         return render_template('map.html')
     return redirect('/login')
 
@@ -95,12 +96,18 @@ def oauth2callback():
             session['email'] = email
             return redirect('/?' + urlencode({'state': session['state']}))
         else:
-            app.logger.info('OAuth2: Not Authorized \n'
-                            'Email: {} \n'
-                            'IP Address: {} \n'
-                            'State: {}'.format(email, get_ip(request), session['state']))
+            app.logger.info('route=OAuth2, '
+                            'address={}, '
+                            'email={}, '
+                            'status=401, '
+                            'message="Not Authorized"'.format(get_ip(request), email))
             return jsonify({'message': 'Not Authorized'}), 401
     else:
+        app.logger.info('route=OAuth2, '
+                        'address={}, '
+                        'email={}, '
+                        'status=401, '
+                        'message="Email not Verified"'.format(get_ip(request), email))
         return jsonify({'message': 'Email not Verified'}), 401
 
 
