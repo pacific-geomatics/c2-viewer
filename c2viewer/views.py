@@ -4,7 +4,7 @@ import os
 import hashlib
 import requests
 from urllib import urlencode
-from flask import render_template, send_file, jsonify, request, session, redirect
+from flask import render_template, send_file, jsonify, request, session, redirect, send_from_directory
 from flask.ext.login import login_user, login_required, logout_user, current_user
 from c2viewer import app
 from c2viewer.utils import get_ip, save_log
@@ -19,6 +19,18 @@ def index():
         return redirect('/map'), 301
     save_log('/', 301, 'Redirect to Login')
     return redirect('/login'), 301
+
+
+@app.route('/static/css/<path:path>')
+@login_required
+def send_css(path):
+    return send_from_directory('css', path)
+
+
+@app.route('/static/js/<path:path>')
+@login_required
+def send_js(path):
+    return send_from_directory('js', path)
 
 
 @app.route('/map')
