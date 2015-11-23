@@ -5,7 +5,7 @@ import hashlib
 import requests
 from urllib import urlencode
 from flask import render_template, send_file, jsonify, request, session, redirect
-from flask.ext.login import login_user, login_required, logout_user, current_user
+from flask.ext.login import login_user, login_required, logout_user, current_user, confirm_login
 from c2viewer import app, login_manager
 from c2viewer.utils import get_ip, save_log
 from c2viewer.login import request_loader, user_loader
@@ -30,6 +30,7 @@ def unauthorized():
 @app.route('/map')
 @login_required
 def map():
+    confirm_login()
     save_log({'status': 200, 'message': 'Render HTML Map'})
     return render_template('map.html')
 
