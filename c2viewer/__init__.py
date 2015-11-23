@@ -3,7 +3,7 @@
 import logging
 from flask import Flask
 from logging.handlers import RotatingFileHandler
-from flask.ext.login import LoginManager, UserMixin, login_required
+from flask.ext.login import LoginManager
 
 
 app = Flask(__name__)

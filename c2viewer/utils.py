@@ -17,7 +17,7 @@ def get_ip(request):
 def save_log(route, status_code, message=''):
     app.logger.info(json.dumps({
         'id': current_user.id,
-        'route': route,
+        'route': request.url_rule.rule,
         'address': get_ip(request),
         'status': status_code,
         'datetime': str(datetime.datetime.now()),

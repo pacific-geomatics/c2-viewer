@@ -4,9 +4,9 @@ import os
 import hashlib
 import requests
 from urllib import urlencode
-from flask import render_template, send_file, jsonify, request, session, redirect, send_from_directory
+from flask import render_template, send_file, jsonify, request, session, redirect
 from flask.ext.login import login_user, login_required, logout_user, current_user
-from c2viewer import app
+from c2viewer import app, login_manager
 from c2viewer.utils import get_ip, save_log
 from c2viewer.login import request_loader, user_loader
 from c2viewer.forms import MyForm
@@ -15,28 +15,22 @@ from c2viewer.forms import MyForm
 @app.route('/')
 def index():
     if current_user.is_authenticated:
-        save_log('/', 200, 'Redirect to Map')
+        save_log(200, 'Redirect to Map')
         return redirect('/map'), 301
-    save_log('/', 301, 'Redirect to Login')
+    save_log(301, 'Redirect to Login')
     return redirect('/login'), 301
 
 
-@app.route('/static/css/<path:path>')
-@login_required
-def send_css(path):
-    return send_from_directory('css', path)
-
-
-@app.route('/static/js/<path:path>')
-@login_required
-def send_js(path):
-    return send_from_directory('js', path)
+@login_manager.unauthorized_handler
+def unauthorized():
+    save_log(401, 'Render HTML Map')
+    return jsonify({'message': 'Unauthorized'}), 401
 
 
 @app.route('/map')
 @login_required
 def map():
-    save_log('/map', 200, 'Render HTML Map')
+    save_log(200, 'Render HTML Map')
     return render_template('map.html')
 
 
@@ -46,7 +40,7 @@ def user():
     form = MyForm()
     if form.validate_on_submit():
         user = request_loader(request)
-        save_log('/user', 200, 'Get JSON User Details')
+        save_log(200, 'Get JSON User Details')
         return jsonify({
             'user.id': user.get_id(),
             'user.is_authenticated': user.is_authenticated,
@@ -55,13 +49,13 @@ def user():
             'user.email': user.email,
             'user.name': user.name,
         })
-    save_log('/user', 200, 'Render HTML User Form')
+    save_log(200, 'Render HTML User Form')
     return render_template('user.html', form=form), 200
 
 
 @app.route('/current', methods=['GET'])
 def current():
-    save_log('/current', 200, 'Get JSON Current User Details')
+    save_log(200, 'Get JSON Current User Details')
     return jsonify({
         'current_user.id': current_user.id,
         'current_user.is_authenticated': current_user.is_authenticated,
@@ -75,7 +69,7 @@ def current():
 @app.route("/logout")
 @login_required
 def logout():
-    save_log('/logout', 200, 'Users Logout')
+    save_log(200, 'Users Logout')
     logout_user()
     return jsonify({'message': 'User Logout'})
 
@@ -83,7 +77,7 @@ def logout():
 @app.route("/settings")
 @login_required
 def settings():
-    save_log('/settings', 200, 'View Settings')
+    save_log(200, 'View Settings')
     return jsonify({'message': 'View Settings'})
 
 
@@ -91,7 +85,7 @@ def settings():
 def state():
     state = hashlib.sha256(os.urandom(1024)).hexdigest()
     session['state'] = state
-    save_log('/state', 200, 'Get JSON Current State')
+    save_log(200, 'Get JSON Current State')
     return jsonify({'CLIENT_ID': app.config['CLIENT_ID'],
                     'STATE': state,
                     'APPLICATION_NAME': app.config['APPLICATION_NAME']})
@@ -100,11 +94,11 @@ def state():
 @app.route("/hooks/github", methods=['POST', 'GET'])
 def hooks():
     if request.method == 'POST':
-        save_log('/hooks/github', 200, 'POST JSON Webhook from Github')
+        save_log(200, 'POST JSON Webhook from Github')
         return jsonify(request.form)
 
     elif request.method == 'GET':
-        save_log('/hooks/github', 200, 'GET JSON Webhook from Github')
+        save_log(200, 'GET JSON Webhook from Github')
         return jsonify({'message': 'Hook push from Github'})
 
 
@@ -113,7 +107,7 @@ def logs():
     log_file = app.config['LOG_FILE']
     if os.path.exists(log_file):
         with open(log_file) as f:
-            save_log('/logs', 200, 'GET HTML Logs')
+            save_log(200, 'GET HTML Logs')
             return render_template('logs.html', logs=f.readlines())
 
 
@@ -122,11 +116,11 @@ def login():
     if get_ip(request) == '127.0.0.1':
         user = user_loader('localhost')
         login_user(user)
-        save_log('/login', 301, 'Redirect to Index')
+        save_log(301, 'Redirect to Index')
         return redirect('/'), 301
     else:
         if current_user.is_authenticated:
-            save_log('/login', 301, 'Redirect to Index')
+            save_log(301, 'Redirect to Index')
             return redirect('/'), 301
         else:
             state()
@@ -139,7 +133,7 @@ def login():
                 'openid.realm': 'https://addxy.com',
                 'hd': 'https://addxy.com',
             }
-            save_log('/login', 301, 'Redirect to Google OAuth2')
+            save_log(301, 'Redirect to Google OAuth2')
             return redirect('https://accounts.google.com/o/oauth2/auth?' + urlencode(params)), 301
 
 
@@ -148,7 +142,7 @@ def oauth2callback():
     # https://developers.google.com/identity/protocols/OpenIDConnect
 
     if request.args.get('state', '') != session['state']:
-        save_log('/oauth2callback', 401, 'Invalid state parameter')
+        save_log(401, 'Invalid state parameter')
         return jsonify({'message': 'Invalid state parameter.'}), 401
 
     payload = {
@@ -161,7 +155,7 @@ def oauth2callback():
     # Get Google Token
     r = requests.post('https://www.googleapis.com/oauth2/v3/token', data=payload)
     if not r.ok:
-        save_log('/oauth2callback', 401, 'Error getting Google Token')
+        save_log(401, 'Error getting Google Token')
         return jsonify({'message': 'Error getting Google Token'}), 404
 
     # Get Google Account
@@ -169,7 +163,7 @@ def oauth2callback():
     r = requests.get('https://www.googleapis.com/oauth2/v1/tokeninfo', params=params)
 
     if not r.ok:
-        save_log('/oauth2callback', 401, 'Error getting Google Account')
+        save_log(401, 'Error getting Google Account')
         return jsonify({'message': 'Error getting Google Account'}), 404
 
     # User Details
@@ -182,10 +176,10 @@ def oauth2callback():
         if user.is_authenticated:
             return redirect('/')
         else:
-            save_log('/oauth2callback', 401, 'Not Authorized')
+            save_log(401, 'Not Authorized')
             return jsonify({'message': 'Not Authorized'}), 401
     else:
-        save_log('/oauth2callback', 401, 'Email not Verified')
+        save_log(401, 'Email not Verified')
         return jsonify({'message': 'Email not Verified'}), 401
 
 
