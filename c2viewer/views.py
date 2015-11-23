@@ -48,7 +48,6 @@ def user():
 
 
 @app.route('/current', methods=['GET'])
-@login_required
 def current():
     save_log('/current', 200, 'Get JSON Current User Details')
     return jsonify({
@@ -64,8 +63,8 @@ def current():
 @app.route("/logout")
 @login_required
 def logout():
-    logout_user()
     save_log('/logout', 200, 'Users Logout')
+    logout_user()
     return jsonify({'message': 'User Logout'})
 
 

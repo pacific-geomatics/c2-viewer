@@ -1,7 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from flask.ext.login import UserMixin
+from flask.ext.login import UserMixin, AnonymousUserMixin
 from c2viewer import login_manager, app
+
+
+class Anonymous(AnonymousUserMixin):
+    def __init__(self):
+        self.id = 'Guest'
+        self.email = 'guest@email.com'
+        self.name = self.id
 
 
 class User(UserMixin):
@@ -39,14 +46,13 @@ class User(UserMixin):
 def user_loader(user_id):
     if user_id:
         return User(user_id)
+    return Anonymous()
 
 
 @login_manager.request_loader
 def request_loader(request):
     if 'email' in request.form:
-        user_id = request.form.get('email')
+        return User(request.form.get('email'))
     elif 'email' in request.args:
-        user_id = request.args.get('email')
-    else:
-        user_id = ""
-    return User(user_id)
+        return User(request.args.get('email'))
+    return Anonymous()
