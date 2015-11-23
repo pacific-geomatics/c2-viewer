@@ -15,9 +15,9 @@ from c2viewer.forms import MyForm
 @app.route('/')
 def index():
     if current_user.is_authenticated:
-        save_log('/map', 200, 'Redirect to Map')
+        save_log('/', 200, 'Redirect to Map')
         return redirect('/map'), 301
-    save_log('/map', 301, 'Redirect to Login')
+    save_log('/', 301, 'Redirect to Login')
     return redirect('/login'), 301
 
 
@@ -114,18 +114,22 @@ def login():
         save_log('/login', 301, 'Redirect to Index')
         return redirect('/'), 301
     else:
-        state()
-        params = {
-            'client_id': app.config['CLIENT_ID'],
-            'response_type': 'code',
-            'scope': 'openid email',
-            'redirect_uri': 'https://addxy.com/oauth2callback',
-            'state': session['state'],
-            'openid.realm': 'https://addxy.com',
-            'hd': 'https://addxy.com',
-        }
-        save_log('/login', 301, 'Redirect to Google OAuth2')
-        return redirect('https://accounts.google.com/o/oauth2/auth?' + urlencode(params)), 301
+        if current_user.is_authenticated:
+            save_log('/login', 301, 'Redirect to Index')
+            return redirect('/'), 301
+        else:
+            state()
+            params = {
+                'client_id': app.config['CLIENT_ID'],
+                'response_type': 'code',
+                'scope': 'openid email',
+                'redirect_uri': 'https://addxy.com/oauth2callback',
+                'state': session['state'],
+                'openid.realm': 'https://addxy.com',
+                'hd': 'https://addxy.com',
+            }
+            save_log('/login', 301, 'Redirect to Google OAuth2')
+            return redirect('https://accounts.google.com/o/oauth2/auth?' + urlencode(params)), 301
 
 
 @app.route('/oauth2callback')
@@ -133,7 +137,7 @@ def oauth2callback():
     # https://developers.google.com/identity/protocols/OpenIDConnect
 
     if request.args.get('state', '') != session['state']:
-        save_log('/login', 401, 'Invalid state parameter')
+        save_log('/oauth2callback', 401, 'Invalid state parameter')
         return jsonify({'message': 'Invalid state parameter.'}), 401
 
     payload = {
@@ -146,7 +150,7 @@ def oauth2callback():
     # Get Google Token
     r = requests.post('https://www.googleapis.com/oauth2/v3/token', data=payload)
     if not r.ok:
-        save_log('/login', 401, 'Error getting Google Token')
+        save_log('/oauth2callback', 401, 'Error getting Google Token')
         return jsonify({'message': 'Error getting Google Token'}), 404
 
     # Get Google Account
@@ -154,7 +158,7 @@ def oauth2callback():
     r = requests.get('https://www.googleapis.com/oauth2/v1/tokeninfo', params=params)
 
     if not r.ok:
-        save_log('/login', 401, 'Error getting Google Account')
+        save_log('/oauth2callback', 401, 'Error getting Google Account')
         return jsonify({'message': 'Error getting Google Account'}), 404
 
     # User Details
@@ -167,10 +171,10 @@ def oauth2callback():
         if user.is_authenticated:
             return redirect('/')
         else:
-            save_log('/login', 401, 'Not Authorized')
+            save_log('/oauth2callback', 401, 'Not Authorized')
             return jsonify({'message': 'Not Authorized'}), 401
     else:
-        save_log('/login', 401, 'Email not Verified')
+        save_log('/oauth2callback', 401, 'Email not Verified')
         return jsonify({'message': 'Email not Verified'}), 401
 
 
