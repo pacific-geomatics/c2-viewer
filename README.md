@@ -11,6 +11,16 @@ Edit from john.
 
 ## Milestones
 
+### Friday 27th November
+
+- 30 cm imagery
+- Building outline, with names if possible (like you have now)
+- Control Zones (that are on now)
+- Future buildings. I have no data, we will just put a building in an open field
+- Fake camera location and LOS overlay. We can talk about this.
+- MapBox Topo map https://a.tiles.mapbox.com/v4/pacgeo.ngio6771/page.html?access_token=pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ#14/46.1000/-77.5043
+- Any other layers is a bonus but not required.
+
 ### 1st Milestone
 
 The imagery only on a WMS to allow the other security contractor to see the imagery/ basic analyst. (We could use PacGeo MapBox account if required)
