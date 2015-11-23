@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="POST" action="/user">
+    {{ form.hidden_tag() }}
+    {{ form.email.label }} {{ form.email(size=20) }}
+    <input type="submit" value="Go">
+</form>
+{% endblock %}
