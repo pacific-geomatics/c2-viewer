@@ -88,11 +88,11 @@ def state():
 
 @app.route("/hooks/github", methods=['POST', 'GET'])
 def hooks():
-    if request.method['POST']:
+    if request.method == 'POST':
         save_log('/hooks/github', 200, 'POST JSON Webhook from Github')
         return jsonify(request.form)
 
-    elif request.method['GET']:
+    elif request.method == 'GET':
         save_log('/hooks/github', 200, 'GET JSON Webhook from Github')
         return jsonify({'message': 'Hook push from Github'})
 
