@@ -1,0 +1,29 @@
+#login_container {
+  padding: 5vw;
+  height: 14em;
+  position: relative;
+}
+
+#login_form {
+  padding: 2em;
+  box-shadow: 3px 3px 3px 3px #ddd;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+#login_form input {
+  box-sizing: border-box;
+  border-radius: 0.3em;
+  border: 2px solid #eee;
+  margin: 0.1vw;
+  padding:0.2vw;
+  width: 80%;
+}
+
+input.submit {
+  background: #fff;
+}

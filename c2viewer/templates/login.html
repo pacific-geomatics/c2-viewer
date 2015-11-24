@@ -1,9 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-<form method="POST" action="/login">
+<div id="login_container">
+  <div id="login_form">
+  <img id="logo" src="static/images/pacgeo_logo.png">
+  <form method="POST" action="/login">
     {{ form.hidden_tag() }}
-    {{ form.email.label }} {{ form.email(size=20) }} <br />
-    {{ form.password.label }} {{ form.password(size=20) }} <br />
-    <input type="submit" value="Go">
-</form>
+    {{ form.email(size=20, placeholder="Your email") }} <br />
+    {{ form.password(size=20, placeholder="Your password") }} <br />
+    <input class="submit" type="submit" value="Log in">
+  </form>
+  </div>
+</div>
 {% endblock %}
