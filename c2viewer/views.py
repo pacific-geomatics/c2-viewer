@@ -156,7 +156,7 @@ def oauth2callback():
     r = requests.post('https://www.googleapis.com/oauth2/v3/token', data=payload)
     if not r.ok:
         save_log({'status': 401, 'message': 'Error getting Google Token'})
-        return jsonify({'message': 'Error getting Google Token'}), 404
+        return jsonify({'message': 'Error getting Google Token'}), 401
 
     # Get Google Account
     params = {'id_token': r.json().get('id_token')}
@@ -164,7 +164,7 @@ def oauth2callback():
 
     if not r.ok:
         save_log({'status': 401, 'message': 'Error getting Google Account'})
-        return jsonify({'message': 'Error getting Google Account'}), 404
+        return jsonify({'message': 'Error getting Google Account'}), 401
 
     # User Details
     email = r.json().get('email')
