@@ -7,14 +7,14 @@ from urllib import urlencode
 from flask import render_template, send_file, jsonify, request, session, redirect
 from flask.ext.login import login_user, login_required, logout_user, current_user, confirm_login
 from c2viewer import app, login_manager
-from c2viewer.utils import get_ip, save_log
+from c2viewer.utils import save_log
 from c2viewer.login import request_loader, user_loader
 from c2viewer.forms import MyForm
 
 
 @app.route('/')
 def index():
-    if current_user.is_authenticated:
+    if bool(current_user.is_authenticated):
         save_log({'status': 200, 'message': 'Redirect to Map'})
         return redirect('/map'), 301
     save_log({'status': 301, 'message': 'Redirect to Login'})
@@ -36,36 +36,21 @@ def map():
 
 
 @app.route('/user', methods=['GET', 'POST'])
-@login_required
 def user():
     form = MyForm()
     if form.validate_on_submit():
         user = request_loader(request)
-        save_log(200, 'Get JSON User Details')
-        return jsonify({
-            'user.id': user.get_id(),
-            'user.is_authenticated': user.is_authenticated,
-            'user.is_active': user.is_active,
-            'user.is_anonymous': user.is_anonymous,
-            'user.email': user.email,
-            'user.name': user.name,
-        })
+        save_log({'status': 200, 'message': 'Get JSON User Details'})
+        return jsonify(user.get(user.id))
+
     save_log({'status': 200, 'message': 'Render HTML User Form'})
     return render_template('user.html', form=form), 200
 
 
 @app.route('/current', methods=['GET'])
-@login_required
 def current():
     save_log({'status': 200, 'message': 'Get JSON Current User Details'})
-    return jsonify({
-        'current_user.id': current_user.id,
-        'current_user.is_authenticated': current_user.is_authenticated,
-        'current_user.is_active': current_user.is_active,
-        'current_user.is_anonymous': current_user.is_anonymous,
-        'current_user.email': current_user.email,
-        'current_user.name': current_user.name
-    })
+    return jsonify(current_user.get(current_user.id))
 
 
 @app.route("/logout")
@@ -116,28 +101,38 @@ def logs():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if get_ip(request) == '127.0.0.1':
-        user = user_loader('localhost')
-        login_user(user)
-        save_log({'status': 301, 'message': 'Redirect to Index'})
-        return redirect('/'), 301
-    else:
-        if current_user.is_authenticated:
+    form = MyForm()
+    if form.validate_on_submit():
+        user = request_loader(request)
+
+        if user.submited_password == user.password:
+            login_user(user)
             save_log({'status': 301, 'message': 'Redirect to Index'})
             return redirect('/'), 301
-        else:
-            state()
-            params = {
-                'client_id': app.config['CLIENT_ID'],
-                'response_type': 'code',
-                'scope': 'openid email',
-                'redirect_uri': 'https://addxy.com/oauth2callback',
-                'state': session['state'],
-                'openid.realm': 'https://addxy.com',
-                'hd': 'https://addxy.com',
-            }
-            save_log({'status': 301, 'message': 'Redirect to Google OAuth2'})
-            return redirect('https://accounts.google.com/o/oauth2/auth?' + urlencode(params)), 301
+
+    save_log({'status': 301, 'message': 'Redirect to Login'})
+    return render_template('login.html', form=form), 200
+
+
+@app.route('/oauth2', methods=['GET', 'POST'])
+def oauth2():
+    form = MyForm()
+    if form.validate_on_submit():
+        user = request_loader(request)
+        state()
+        params = {
+            'client_id': app.config['CLIENT_ID'],
+            'response_type': 'code',
+            'scope': 'openid email',
+            'redirect_uri': 'https://addxy.com/oauth2callback',
+            'state': session['state'],
+            'openid.realm': 'https://addxy.com',
+            'hd': 'https://addxy.com',
+            'login_hint': user.email
+        }
+        save_log({'status': 301, 'message': 'Redirect to Google OAuth2'})
+        return redirect('https://accounts.google.com/o/oauth2/auth?' + urlencode(params)), 301
+    return render_template('oauth2.html', form=form), 200
 
 
 @app.route('/oauth2callback')
@@ -175,8 +170,9 @@ def oauth2callback():
 
     if email_verified:
         user = user_loader(email)
-        login_user(user)
         if user.is_authenticated:
+            login_user(user)
+            save_log({'status': 301, 'message': 'Redirect to Index'})
             return redirect('/')
         else:
             save_log({'status': 401, 'message': 'Not Authorized'})
