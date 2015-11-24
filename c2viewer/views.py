@@ -36,6 +36,7 @@ def map():
 
 
 @app.route('/user', methods=['GET', 'POST'])
+@login_required
 def user():
     form = MyForm()
     if form.validate_on_submit():
@@ -48,6 +49,7 @@ def user():
 
 
 @app.route('/current', methods=['GET'])
+@login_required
 def current():
     save_log({'status': 200, 'message': 'Get JSON Current User Details'})
     return jsonify(current_user.get(current_user.id))
