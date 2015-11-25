@@ -143,7 +143,7 @@ def oauth2callback():
 
     if request.args.get('state', '') != session['state']:
         save_log({'status': 401, 'message': 'Invalid state parameter'})
-        return jsonify({'message': 'Invalid state parameter.'}), 401
+        abort(401)
 
     payload = {
         'code': request.args.get('code', ''),
@@ -156,7 +156,7 @@ def oauth2callback():
     r = requests.post('https://www.googleapis.com/oauth2/v3/token', data=payload)
     if not r.ok:
         save_log({'status': 401, 'message': 'Error getting Google Token'})
-        return jsonify({'message': 'Error getting Google Token'}), 401
+        abort(401)
 
     # Get Google Account
     params = {'id_token': r.json().get('id_token')}
@@ -164,7 +164,7 @@ def oauth2callback():
 
     if not r.ok:
         save_log({'status': 401, 'message': 'Error getting Google Account'})
-        return jsonify({'message': 'Error getting Google Account'}), 401
+        abort(401)
 
     # User Details
     email = r.json().get('email')
@@ -178,10 +178,10 @@ def oauth2callback():
             return redirect('/')
         else:
             save_log({'status': 401, 'message': 'Not Authorized'})
-            return jsonify({'message': 'Not Authorized'}), 401
+            abort(401)
     else:
         save_log({'status': 401, 'message': 'Email not Verified'})
-        return jsonify({'message': 'Email not Verified'}), 401
+        abort(401)
 
 
 @app.route("/<basemap>/<int:zoom>/<int:x>/<int:y><ext>", methods=['GET', 'POST'])
@@ -204,7 +204,7 @@ def tms(basemap, zoom, x, y, ext):
     # Validate User
     key = request.args.get('api_key')
     if key not in ['123']:
-        return jsonify({'message': 'Not Authorized - Invalid Token'}), 401
+        abort(401)
 
     # Check if Tile Exists
     if not os.path.exists(tile):
