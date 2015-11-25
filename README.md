@@ -193,3 +193,26 @@ $ ./letsencrypt-auto \
   --server https://acme-v01.api.letsencrypt.org/directory 
   auth
 ```
+
+### PacGeo Content
+
+Images from [WeTransfer](https://pacgeo.wetransfer.com/).
+
+
+### Server Deployments
+
+Connect to the server by SSH, your Public key must be added to the server first for this to work.
+
+```bash
+$ ssh ubuntu@addxy.com
+```
+
+To update remotely the web application on the server, here are the following commands.
+
+```bash
+$ cd c2-viewer
+$ git pull
+$ sudo pkill gunicorn
+$ sudo gunicorn -w 4 c2viewer:app &
+```
+
