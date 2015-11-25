@@ -4,7 +4,7 @@ import os
 import hashlib
 import requests
 from urllib import urlencode
-from flask import render_template, send_file, jsonify, request, session, redirect
+from flask import render_template, send_file, jsonify, request, session, redirect, abort
 from flask.ext.login import login_user, login_required, logout_user, current_user, confirm_login
 from c2viewer import app, login_manager
 from c2viewer.utils import save_log
@@ -24,7 +24,7 @@ def index():
 @login_manager.unauthorized_handler
 def unauthorized():
     save_log({'status': 401, 'message': 'Unauthorized'})
-    return jsonify({'message': 'Unauthorized'}), 401
+    abort(401)
 
 
 @app.route('/map')
@@ -213,3 +213,15 @@ def tms(basemap, zoom, x, y, ext):
     # Success
     else:
         return send_file(tile, mimetype='image/png')
+
+
+
+# Error handling:
+
+@app.errorhandler(404)
+def page_not_found(e):
+        return render_template('errors/404.html'), 404
+
+@app.errorhandler(401)
+def page_not_found(e):
+        return render_template('errors/401.html'), 404
