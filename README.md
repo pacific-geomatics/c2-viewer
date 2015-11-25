@@ -207,12 +207,70 @@ Connect to the server by SSH, your Public key must be added to the server first 
 $ ssh ubuntu@addxy.com
 ```
 
-To update remotely the web application on the server, here are the following commands.
+#### Gunicorn
+
+Gunicorn is a pre-forking application server (it uses fork to create a bunch of
+worker processes at startup) that uses [unix
+signals](http://docs.gunicorn.org/en/latest/signals.html#master-process) to do
+its thing.
+
+##### Starting Gunicorn
 
 ```bash
-$ cd c2-viewer
-$ git pull
-$ sudo pkill gunicorn
-$ sudo gunicorn -w 4 c2viewer:app &
+> cd c2viewer
+> gunicorn --pid run/gunicorn/pid -w 4 c2viewer:app &
+[2015-11-25 21:22:37 +0000] [23977] [INFO] Starting gunicorn 19.3.0
+[2015-11-25 21:22:37 +0000] [23977] [INFO] Listening at: http://127.0.0.1:8000 (23977)
+[2015-11-25 21:22:37 +0000] [23977] [INFO] Using worker: sync
+[2015-11-25 21:22:37 +0000] [23982] [INFO] Booting worker with pid: 23982
+[2015-11-25 21:22:38 +0000] [23985] [INFO] Booting worker with pid: 23985
+[2015-11-25 21:22:38 +0000] [23988] [INFO] Booting worker with pid: 23988
+[2015-11-25 21:22:38 +0000] [23991] [INFO] Booting worker with pid: 23991
 ```
+This creates a master process with process id 23977 and 4 worker processes.
+Since Gunicorn is listening on a port > 1000 root privileges are not needed.
+
+##### Stopping Gunicorn
+
+Unix signals are used to stop the server when its running. Launching Gunicorn
+with the --pid option means we don't need to go fishing to find the master
+process pid. Without the --pid option we have to figure out the master process
+ourselves with "ps aux" or something. Usually the lowest number process id is
+the master process. Sending the TERM signal to it initiates a gracefull
+shutdown.
+
+```bash
+> cat run/gunicorn/pid
+23977
+> kill -TERM 23977
+```
+
+##### Deploying new code
+
+###### TLDR
+
+```bash
+git pull origin master && kill -HUP `cat run/gunicorn/pid`
+```
+
+##### WAT?
+
+Gunicorn allows you to do what is known as a "zero downtime deploy" by
+signalling the master process to launch a new set of workers serving the new
+code.
+
+Once new code is pulled, find the process id of the master process by looking
+in the pid file. After that send the HUP signal.
+
+```bash
+> cd c2-viewer
+> git pull origin master
+... updating...
+> cat run/gunicorn/pid
+23977
+> kill -HUP 23977
+```
+
+The HUP signal prompts Gunicorn to reload its config and launch new workers
+that have loaded the new code.
 
