@@ -3,5 +3,8 @@ init:
 
 publish:
 	git pull origin master
-	kill -HUP $(cat run/gunicorn/pid)
-	gunicorn --pid run/gunicorn/pid -w 4 c2viewer:app
+	gunicorn --pid run/gunicorn/pid -w 4 c2viewer:app &
+
+stop:
+	PID=$(cat run/gunicorn/pid)
+	kill -TERM $PID
