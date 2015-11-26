@@ -20,5 +20,6 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 import c2viewer.views
+import c2viewer.tile_server
 
 # https://exploreflask.com/organizing.html

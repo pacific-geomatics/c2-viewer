@@ -4,12 +4,12 @@ import os
 import hashlib
 import requests
 from urllib import urlencode
-from flask import render_template, send_file, jsonify, request, session, redirect, abort
+from flask import render_template, jsonify, request, session, redirect, abort
 from flask.ext.login import login_user, login_required, logout_user, current_user, confirm_login
 from c2viewer import app, login_manager
 from c2viewer.utils import save_log
 from c2viewer.login import request_loader, user_loader
-from c2viewer.forms import MyForm
+from c2viewer.forms import LoginForm, OAuth2Form
 
 
 @app.route('/')
@@ -35,19 +35,6 @@ def map():
     return render_template('map.html')
 
 
-@app.route('/user', methods=['GET', 'POST'])
-@login_required
-def user():
-    form = MyForm()
-    if form.validate_on_submit():
-        user = request_loader(request)
-        save_log({'status': 200, 'message': 'Get JSON User Details'})
-        return jsonify(user.get(user.id))
-
-    save_log({'status': 200, 'message': 'Render HTML User Form'})
-    return render_template('user.html', form=form), 200
-
-
 @app.route('/current', methods=['GET'])
 @login_required
 def current():
@@ -59,15 +46,9 @@ def current():
 @login_required
 def logout():
     save_log({'status': 200, 'message': 'Users Logout'})
+    save_log({'status': 301, 'message': 'Redirect to Login'})
     logout_user()
-    return jsonify({'message': 'User Logout'})
-
-
-@app.route("/settings")
-@login_required
-def settings():
-    save_log({'status': 200, 'message': 'View Settings'})
-    return jsonify({'message': 'View Settings'})
+    return redirect('/login'), 301
 
 
 @app.route('/state')
@@ -103,7 +84,7 @@ def logs():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    form = MyForm()
+    form = LoginForm()
     if form.validate_on_submit():
         user = request_loader(request)
 
@@ -118,7 +99,7 @@ def login():
 
 @app.route('/oauth2', methods=['GET', 'POST'])
 def oauth2():
-    form = MyForm()
+    form = OAuth2Form()
     if form.validate_on_submit():
         user = request_loader(request)
         state()
@@ -140,7 +121,6 @@ def oauth2():
 @app.route('/oauth2callback')
 def oauth2callback():
     # https://developers.google.com/identity/protocols/OpenIDConnect
-
     if request.args.get('state', '') != session['state']:
         save_log({'status': 401, 'message': 'Invalid state parameter'})
         abort(401)
@@ -162,6 +142,7 @@ def oauth2callback():
     params = {'id_token': r.json().get('id_token')}
     r = requests.get('https://www.googleapis.com/oauth2/v1/tokeninfo', params=params)
 
+    # Error contacting Google's OAuth2 token info page
     if not r.ok:
         save_log({'status': 401, 'message': 'Error getting Google Account'})
         abort(401)
@@ -170,15 +151,24 @@ def oauth2callback():
     email = r.json().get('email')
     email_verified = r.json().get('email_verified')
 
+    # Checks if Google has verified the email
     if email_verified:
+
+        # Load User in local database
         user = user_loader(email)
+
+        # Checks if user has valid authentication to proceed to Index page
         if user.is_authenticated:
             login_user(user)
             save_log({'status': 301, 'message': 'Redirect to Index'})
             return redirect('/')
+
+        # User has valid Google credentials, but dot not have the authority to proceed.
         else:
             save_log({'status': 401, 'message': 'Not Authorized'})
             abort(401)
+
+    # User has not been validated by Google OAuth2
     else:
         save_log({'status': 401, 'message': 'Email not Verified'})
         abort(401)
