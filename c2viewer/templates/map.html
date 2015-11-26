@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 
+<div id="map_controls">
+  <input class="map_control" id="zoom_in" type="submit" value="+" />
+  <input class="map_control" id="zoom_out" type="submit" value="-" />
+  <input class="map_control" id="logout" type="submit" value="logout" />
+</div>
 <!-- MAP -->
 <div id="map"></div>
 {% endblock %}

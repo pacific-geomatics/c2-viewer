@@ -87,4 +87,31 @@ var map = new mapboxgl.Map({
     zoom: 17
 });
 
-map.addControl(new mapboxgl.Navigation());
+
+
+
+document.addEventListener('DOMContentLoaded', function(){
+
+  var ccv = function(){
+    var zoomin_control = document.querySelector('#zoom_in');
+    var zoomout_control = document.querySelector('#zoom_out');
+    var logout_control = document.querySelector('#logout');
+
+    zoomin_control.addEventListener('click', function(e){
+      var current_zoom =  map.getZoom();
+      map.setZoom(current_zoom + 0.5);
+    })
+
+    zoomout_control.addEventListener('click', function(e){
+      var current_zoom =  map.getZoom();
+      map.setZoom(current_zoom - 0.5);
+    });
+
+    logout_control.addEventListener('click', function(e){
+      location.href = '/logout'
+    });
+
+  }();
+
+});
+
