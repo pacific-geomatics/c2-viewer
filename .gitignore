@@ -1,4 +1,6 @@
 env
+# vim swp files
+*.swp
 
 # Logs
 logs
