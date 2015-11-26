@@ -4,7 +4,7 @@ DEBUG = True
 SECRET_KEY = '4hLAJ6ZM9I4fL3lTu-PNNgMI'
 CLIENT_ID = '318442113295-5glonlcmqp4qhf7ut8bvobpkhnsj578m.apps.googleusercontent.com'
 APPLICATION_NAME = 'c2-viewer'
-PASSWORD = 'Password123'
+PASSWORD = 'PacGeo123!@#'
 VALID_EMAILS = {
     'carriere.denis@gmail.com': {'name': 'Denis', 'email': 'carriere.denis@gmail.com', 'password': PASSWORD},
     'john@pacgeo.com': {'name': 'John', 'email': 'john@pacgeo.com', 'password': PASSWORD},
