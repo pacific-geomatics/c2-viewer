@@ -225,3 +225,8 @@ def page_not_found(e):
 @app.errorhandler(401)
 def page_not_found(e):
         return render_template('errors/401.html'), 404
+
+@app.errorhandler(500)
+def page_not_found(e):
+        return render_template('errors/500.html'), 500
+
