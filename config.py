@@ -14,7 +14,8 @@ VALID_EMAILS = {
     'patrick.irwin@gmail.com': {'name': 'Patrick', 'email': 'patrick.irwin@gmail.com', 'password': PASSWORD},
     'matt@pacgeo.com': {'name': 'Matt', 'email': 'matt@pacgeo.com', 'password': PASSWORD},
     'localhost': {'name': 'localhost', 'email': 'localhost', 'password': PASSWORD},
-    'matthew.tomlins@gmail.com': {'name': 'Matt', 'email': 'matthew.tomlins@gmail.com', 'password': PASSWORD}
+    'matthew.tomlins@gmail.com': {'name': 'Matt', 'email': 'matthew.tomlins@gmail.com', 'password': PASSWORD},
+    'steved@reticle.ca': {'name: 'Steve', 'email': 'steved@reticle.ca', 'password': PASSWORD}
 }
 PREFERRED_URL_SCHEME = 'https'
 LOG_FILE = 'c2viewer.log'
