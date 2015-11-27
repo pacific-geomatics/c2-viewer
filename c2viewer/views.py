@@ -3,6 +3,7 @@
 import os
 import hashlib
 import requests
+import subprocess
 from urllib import urlencode
 from flask import render_template, jsonify, request, session, redirect, abort
 from flask.ext.login import login_user, login_required, logout_user, current_user, confirm_login
@@ -65,11 +66,7 @@ def state():
 def hooks():
     if request.method == 'POST':
         save_log({'status': 200, 'message': 'POST JSON Webhook from Github'})
-        return jsonify(request.form)
-
-    elif request.method == 'GET':
-        save_log({'status': 200, 'message': 'GET JSON Webhook from Github'})
-        return jsonify({'message': 'Hook push from Github'})
+        subprocess.call(['make', 'publish'])
 
 
 @app.route("/logs")
