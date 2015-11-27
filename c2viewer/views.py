@@ -68,6 +68,10 @@ def hooks():
         save_log({'status': 200, 'message': 'POST JSON Webhook from Github'})
         subprocess.call(['make', 'publish'])
 
+    elif request.method == 'GET':
+        save_log({'status': 200, 'message': 'GET JSON Webhook from Github'})
+        return jsonify({'message': 'Hook push from Github'})
+
 
 @app.route("/logs")
 @login_required
