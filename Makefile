@@ -1,10 +1,12 @@
 init:
 	pip install -r requirements.txt
 
+start:
+	./scripts/start.sh
+
 publish:
-	git pull origin master
-	gunicorn --pid run/gunicorn/pid -w 4 c2viewer:app &
+	./scripts/stop.sh
+	./scripts/start.sh
 
 stop:
-	PID=$(cat run/gunicorn/pid)
-	kill -TERM $PID
+	./scripts/stop.sh
