@@ -77,6 +77,7 @@ def hooks():
     if request.method == 'POST':
         save_log({'status': 200, 'message': 'POST JSON Webhook from Github'})
         subprocess.call(['make', 'publish'])
+        return jsonify({'message': 'Hook push from Github'})
 
     elif request.method == 'GET':
         save_log({'status': 200, 'message': 'GET JSON Webhook from Github'})
