@@ -36,6 +36,16 @@ def map():
     return render_template('map.html')
 
 
+@app.route('/test')
+def url_root():
+    return jsonify({
+        'url_root': request.url_root,
+        'path': request.path,
+        'script_root': request.script_root,
+        'base_url': request.base_url,
+        'url': request.url})
+
+
 @app.route('/current', methods=['GET'])
 @login_required
 def current():
