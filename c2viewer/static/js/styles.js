@@ -1,3 +1,169 @@
+var darkStyle = {
+    "version": 8,
+    "sources": {
+        "imagery": {
+            "type": "raster",
+            "tiles": [
+                "https://a.tiles.mapbox.com/v4/mapbox.dark/{z}/{x}/{y}.jpg?access_token=pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ"],
+            "tileSize": 256
+        },
+        "building-data": {
+            "type": "vector",
+            "url": "mapbox://rocksocker.1n8xkrjh"
+        },
+        "mapping-data": {
+            "type": "vector",
+            "url": "mapbox://rocksocker.70xj2wlp"
+        },
+        "zone-data": {
+            "type": "vector",
+            "url": "mapbox://rocksocker.61ibhdoe"
+        }
+
+    },
+    "layers": [
+    {
+        "id": "imagery",
+        "type": "raster",
+        "source": "imagery",
+        "minzoom": 0,
+        "maxzoom": 21
+    },
+    {
+        "id": "zone-data",
+        "type": "line",
+        "source": "zone-data",
+        "source-layer": "CRL-Control-Zones",
+        "minzoom": 0,
+        "maxzoom": 21,
+        "layout": {
+            "line-join": "round",
+            "line-cap": "round"
+        },
+        "paint": {
+            "line-color": "#c26161",
+            "line-width": 3
+        },
+        "interactive": true
+    },{
+        "id": "mapping-data",
+        "type": "line",
+        "source": "mapping-data",
+        "source-layer": "BUA-Mapping",
+        "minzoom": 0,
+        "maxzoom": 21,
+        "layout": {
+            "line-join": "round",
+            "line-cap": "round"
+        },
+        "paint": {
+            "line-color": "#e3e3e3",
+            "line-width": 1
+        },
+        "interactive": true
+    },{
+        "id": "building-data",
+        "type": "line",
+        "source": "building-data",
+        "source-layer": "CNL-Buildings",
+        "minzoom": 0,
+        "maxzoom": 21,
+        "layout": {
+            "line-join": "round",
+            "line-cap": "round"
+        },
+        "paint": {
+            "line-color": "#c7c7c7",
+            "line-width": 1
+        },
+        "interactive": true
+    }]
+}
+
+
+var topoStyle = {
+    "version": 8,
+    "sources": {
+        "imagery": {
+            "type": "raster",
+            "tiles": [
+                "https://a.tiles.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}.jpg?access_token=pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ"],
+            "tileSize": 256
+        },
+        "building-data": {
+            "type": "vector",
+            "url": "mapbox://rocksocker.1n8xkrjh"
+        },
+        "mapping-data": {
+            "type": "vector",
+            "url": "mapbox://rocksocker.70xj2wlp"
+        },
+        "zone-data": {
+            "type": "vector",
+            "url": "mapbox://rocksocker.61ibhdoe"
+        }
+
+    },
+    "layers": [
+    {
+        "id": "imagery",
+        "type": "raster",
+        "source": "imagery",
+        "minzoom": 0,
+        "maxzoom": 21
+    },
+    {
+        "id": "zone-data",
+        "type": "line",
+        "source": "zone-data",
+        "source-layer": "CRL-Control-Zones",
+        "minzoom": 0,
+        "maxzoom": 21,
+        "layout": {
+            "line-join": "round",
+            "line-cap": "round"
+        },
+        "paint": {
+            "line-color": "#c26161",
+            "line-width": 3
+        },
+        "interactive": true
+    },{
+        "id": "mapping-data",
+        "type": "line",
+        "source": "mapping-data",
+        "source-layer": "BUA-Mapping",
+        "minzoom": 0,
+        "maxzoom": 21,
+        "layout": {
+            "line-join": "round",
+            "line-cap": "round"
+        },
+        "paint": {
+            "line-color": "#e3e3e3",
+            "line-width": 1
+        },
+        "interactive": true
+    },{
+        "id": "building-data",
+        "type": "line",
+        "source": "building-data",
+        "source-layer": "CNL-Buildings",
+        "minzoom": 0,
+        "maxzoom": 21,
+        "layout": {
+            "line-join": "round",
+            "line-cap": "round"
+        },
+        "paint": {
+            "line-color": "#c7c7c7",
+            "line-width": 1
+        },
+        "interactive": true
+    }]
+}
+
+
 var imageryStyle = {
     "version": 8,
     "sources": {

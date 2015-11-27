@@ -4,17 +4,27 @@ body { margin:0; padding:0; }
 
 #map_controls {
   position: absolute;
-  top: 0;
+  bottom: 0;
   right: 0;
   z-index: 999;
   background-color: #fff;
-  padding: 0.3em;
-  width: 20em;
-  border-bottom-left-radius: 0.2em;
+  padding: 0.4em;
+  border-bottom-left-radius: 0.5em;
 }
 
-input.map_control {
-  border-radius: 0.2em;
+#basemaps {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  background-color: #fff;
+  padding: 0.4em;
+  border-bottom-right-radius: 0.5em;
+}
+
+input.map_control, input.basemap {
+  font-size: 1.3em;
+  border-radius: 0.3em;
   background-color: none;
   border: none;
 }

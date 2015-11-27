@@ -17,11 +17,18 @@ document.addEventListener('DOMContentLoaded', function(){
     var logout_control = document.querySelector('#logout');
     var rotate_control = document.querySelector('#rotate');
     var tilt_control = document.querySelector('#tilt');
+    var imagery_control = document.querySelector('#imagery');
+    var topo_control = document.querySelector('#topo');
+    var dark_control = document.querySelector('#dark');
+
+    logout_control.addEventListener('click', function(e){
+      location.href = '/logout'
+    });
 
     // Slowly Fly to Location
     // https://www.mapbox.com/mapbox-gl-js/example/flyto-options/
     zoomin_control.addEventListener('click', function(e){
-      console.log('Set Zoom In')
+      console.log('Set Zoom In');
       map.flyTo({
         zoom: map.getZoom() + 1,
         speed: 0.3
@@ -29,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function(){
     })
 
     zoomout_control.addEventListener('click', function(e){
-      console.log('Set Zoom Out')
+      console.log('Set Zoom Out');
       map.flyTo({
         zoom: map.getZoom() - 1,
         speed: 0.3
@@ -37,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function(){
     });
 
     tilt_control.addEventListener('click', function(e){
-      console.log('Set Pitch')
+      console.log('Set Pitch');
       var cycle = {0: 30, 30: 60, 60: 0}
       map.setPitch(cycle[map.getPitch()])
     });
@@ -47,18 +54,26 @@ document.addEventListener('DOMContentLoaded', function(){
       map.flyTo({
         bearing: map.getBearing() + 90,
         zoom: map.getZoom() + 0.01,
-        speed: 0.01,
-        curve: 1,
-        easing: function (t) {
-          return t;
-        }
+        speed: 0.005,
       })
     });
 
-    logout_control.addEventListener('click', function(e){
-      location.href = '/logout'
+    // Basemaps
+    // https://www.mapbox.com/mapbox-gl-js/example/setstyle/
+    imagery_control.addEventListener('click', function(e){
+      console.log('Change Imagery Basemap');
+      map.setStyle(imageryStyle);
     });
 
+    topo_control.addEventListener('click', function(e){
+      console.log('Change Topographic Basemap');
+      map.setStyle(topoStyle);
+    });
+
+    dark_control.addEventListener('click', function(e){
+      console.log('Change Imagery Basemap');
+      map.setStyle(darkStyle);
+    });
   }();
 
 });
