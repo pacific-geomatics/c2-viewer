@@ -9,8 +9,6 @@ var map = new mapboxgl.Map({
 });
 
 
-
-
 document.addEventListener('DOMContentLoaded', function(){
 
   var ccv = function(){
