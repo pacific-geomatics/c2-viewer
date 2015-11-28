@@ -1,6 +1,14 @@
 {% extends "base.html" %}
-{% block content %}
 
+{% block head %}
+  <link rel="stylesheet"
+  href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.11.4/mapbox-gl.css"
+  integrity="sha384-CS7AiMtZb5c/8weFoWn7/r2tRXJDwcTEdZudDXjRVNbwSJmKo8MGqDDQxYK7FjmX"
+  crossorigin="anonymous">
+  <link href="/static/css/map.css" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
 <div id="map_controls">
   <input class="map_control" id="zoom_in" type="submit" value="+" />
   <input class="map_control" id="zoom_out" type="submit" value="-" />
@@ -15,4 +23,14 @@
 </div>
 <!-- MAP -->
 <div id="map"></div>
+{% endblock %}
+
+{% block footer %}
+  <script
+    src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.11.4/mapbox-gl.js"
+    integrity="sha384-K0CCfJOoW1X+e/rRauXwWmz56xkvEAgqn1oKTQOTBI/0TQbvIMOyzeYlU/RbNHle"
+    crossorigin="anonymous"></script>
+  <script>mapboxgl.accessToken = "{{ ACCESS_TOKEN }}";</script>
+  <script src="{{ url_for('static', filename='js/styles.js') }}" type="text/javascript"></script>
+  <script src="{{ url_for('static', filename='js/map.js') }}" type="text/javascript"></script>
 {% endblock %}
