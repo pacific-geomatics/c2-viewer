@@ -1,13 +1,9 @@
-mapboxgl.accessToken = 'pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ';
-
 var map = new mapboxgl.Map({
     container: 'map',
     style: imageryStyle,
     center: [-77.364673, 46.052700],
-    zoom: 17
+    zoom: 16
 });
-
-
 
 document.addEventListener('DOMContentLoaded', function(){
 
@@ -71,8 +67,8 @@ document.addEventListener('DOMContentLoaded', function(){
     });
 
     dark_control.addEventListener('click', function(e){
-      console.log('Change Imagery Basemap');
-      map.setStyle('mapbox://styles/pacgeo/cihh6waia00t86vm54p4kijoy');
+      console.log('Change Dark Basemap');
+      map.setStyle(darkStyle);
     });
   }();
 

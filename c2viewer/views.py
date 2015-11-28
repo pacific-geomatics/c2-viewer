@@ -33,7 +33,7 @@ def unauthorized():
 def map():
     confirm_login()
     save_log({'status': 200, 'message': 'Render HTML Map'})
-    return render_template('map.html')
+    return render_template('map.html', ACCESS_TOKEN=app.config['ACCESS_TOKEN'])
 
 
 @app.route('/test')

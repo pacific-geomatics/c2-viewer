@@ -1,10 +1,13 @@
+var darkStyle = 'mapbox://styles/pacgeo/cihh6waia00t86vm54p4kijoy'
+
 var topoStyle = {
     "version": 8,
     "sources": {
         "imagery": {
             "type": "raster",
             "tiles": [
-                "https://a.tiles.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}.jpg?access_token=pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ"],
+                "https://a.tiles.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}.jpg?access_token=" + mapboxgl.accessToken
+                ],
             "tileSize": 256
         },
         "building-data": {
@@ -87,7 +90,8 @@ var imageryStyle = {
         "imagery": {
             "type": "raster",
             "tiles": [
-                "https://a.tiles.mapbox.com/v4/pacgeo.neiemcnb/{z}/{x}/{y}.jpg?access_token=pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ"],
+                "https://a.tiles.mapbox.com/v4/pacgeo.neiemcnb/{z}/{x}/{y}.jpg?access_token=" + mapboxgl.accessToken
+                ],
             "tileSize": 256
         },
         "building-data": {
