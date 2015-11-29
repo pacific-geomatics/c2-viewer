@@ -1,9 +1,36 @@
 {% extends "base.html" %}
 {% block content %}
+
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+}
+</style>
+
 <h1>Log Page</h1>
-<ul>
-{% for log in logs %}
-  <li>{{ log }}</li>
+<table style="width:100%">
+  <tr>
+    {% for key in logs[0].iterkeys() %}
+    <th>{{ key }}</th>
+    {% endfor %}
+  </tr>
+{% for row in logs %}
+  <tr>
+  {% set rowloop = loop %}
+  {% for key, value in row.iteritems() %}
+    <td id="cell-{{ rowloop.index }}-{{ loop.index }}">{{ value }}</td>
+  {% endfor %}
+  </tr>
 {% endfor %}
-</ul>
+</table>
+
+<form method="POST" action="/logs">
+  {{ form.hidden_tag() }}
+  <input id="clear" name="clear" type="hidden" value="True">
+  <input class="submit" type="submit" value="Clear Logs">
+</form>
 {% endblock %}

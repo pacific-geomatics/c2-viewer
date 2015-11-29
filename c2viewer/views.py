@@ -4,18 +4,19 @@ import os
 import hashlib
 import requests
 import subprocess
+import pymongo
 from urllib import urlencode
 from flask import render_template, jsonify, request, session, redirect, abort
 from flask.ext.login import login_user, login_required, logout_user, current_user, confirm_login
-from c2viewer import app, login_manager
+from c2viewer import app, login_manager, db
 from c2viewer.utils import save_log
 from c2viewer.login import request_loader, user_loader
-from c2viewer.forms import LoginForm, OAuth2Form
+from c2viewer.forms import LoginForm, OAuth2Form, LogsForm
 
 
 @app.route('/')
 def index():
-    if bool(current_user.is_authenticated):
+    if current_user.is_authenticated:
         save_log({'status': 200, 'message': 'Redirect to Map'})
         return redirect('/map'), 301
     save_log({'status': 301, 'message': 'Redirect to Login'})
@@ -82,14 +83,23 @@ def hooks():
     return jsonify({'message': 'Hook push from Github'})
 
 
-@app.route("/logs")
+@app.route("/logs", methods=['GET', 'POST'])
 @login_required
 def logs():
-    log_file = app.config['LOG_FILE']
-    if os.path.exists(log_file):
-        with open(log_file) as f:
-            save_log({'status': 200, 'message': 'GET HTML Logs'})
-            return render_template('logs.html', logs=f.readlines())
+    form = LogsForm()
+    if form.validate_on_submit():
+        db.logs.remove({})
+        save_log({'status': 200, 'message': 'Cleared Logs'})
+        save_log({'status': 301, 'message': 'Redirect to Logs'})
+        return redirect('/logs'), 301
+
+    # Query MongoDB for logs
+    sort = [('_id', pymongo.DESCENDING)]
+    limit = int(request.args.get('limit', 50))
+    logs = db.logs.find({}, {'_id': 0}).sort(sort).limit(limit)
+
+    save_log({'status': 200, 'message': 'GET HTML Logs'})
+    return render_template('logs.html', form=form, logs=logs)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -98,7 +108,7 @@ def login():
     if form.validate_on_submit():
         user = request_loader(request)
 
-        if user.submited_password == user.password:
+        if user.is_authorized:
             login_user(user)
             save_log({'status': 301, 'message': 'Redirect to Index'})
             return redirect('/'), 301

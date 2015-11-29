@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
+from pymongo import MongoClient
 from flask import Flask
 from logging.handlers import RotatingFileHandler
 from flask.ext.login import LoginManager
@@ -18,6 +19,10 @@ app.logger.addHandler(handler)
 # Handle Logins
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+# Mongo Database
+client = MongoClient()
+db = client['pacgeo']
 
 import c2viewer.views
 import c2viewer.tile_server

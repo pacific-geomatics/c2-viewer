@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import json
 import datetime
 from flask import request
 from flask.ext.login import current_user
-from c2viewer import app
+from c2viewer import db
 
 
 def get_ip(request):
@@ -15,9 +14,10 @@ def get_ip(request):
 
 
 def save_log(message):
-    log = {'id': current_user.id,
+    log = {'email': current_user.email,
            'route': request.url_rule.rule,
            'address': get_ip(request),
+           'method': request.method,
            'datetime': str(datetime.datetime.now())}
     log.update(message)
-    app.logger.info(json.dumps(log))
+    db.logs.insert(log)

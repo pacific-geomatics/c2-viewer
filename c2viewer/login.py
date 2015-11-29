@@ -1,34 +1,32 @@
 # -*- coding: utf-8 -*-
 
 from flask.ext.login import UserMixin, AnonymousUserMixin
-from c2viewer import login_manager, app
+from c2viewer import login_manager, db
 from c2viewer.utils import get_ip
 
 
 class Anonymous(AnonymousUserMixin):
     is_authenticated = False
+    oauth2 = False
 
     def __init__(self):
         self.id = 'Guest'
-        self.email = 'guest@email.com'
-        self.name = self.id
+        self.email = 'guest@example.com'
 
 
 class User(UserMixin):
     is_authenticated = False
-    user_database = app.config['VALID_EMAILS']
+    oauth2 = False
 
-    def __init__(self, user_id):
-        self.id = user_id
+    def __init__(self, email, password=''):
+        self.id = email
+        self.email = email
+        self.password = password
 
-    def __getattr__(self, item):
-        user = self.user_database.get(self.id)
-        if user:
-            return user.get(item, '')
-        return ''
-
-    def get(self, user_id):
-        user = self.user_database.get(user_id, {})
+    def get(self, email):
+        user = db.users.find_one({'email': email}, {'_id': 0, 'password': 0})
+        if not user:
+            user = {'email': self.email}
         user.update({
             'is_anonymous': self.is_anonymous,
             'is_authenticated': self.is_authenticated})
@@ -36,38 +34,36 @@ class User(UserMixin):
 
     @property
     def is_authenticated(self):
-        if bool(self.id in self.user_database):
+        if db.users.find_one({'email': self.email}):
+            return True
+        return False
+
+    @property
+    def is_authorized(self):
+        if db.users.find_one({'email': self.email, 'password': self.password}):
             return True
         return False
 
     @property
     def is_anonymous(self):
-        return not bool(self.id)
+        return not self.email
 
 
 @login_manager.user_loader
-def user_loader(user_id):
-    if user_id:
-        return User(user_id)
+def user_loader(email):
+    if email:
+        return User(email)
     return Anonymous()
 
 
 @login_manager.request_loader
 def request_loader(request):
     if 'email' in request.form:
-        email = request.form.get('email')
-        password = request.form.get('password')
-        user = User(email)
-        user.email = email
-        user.submited_password = password
-        return user
+        return User(request.form.get('email'), request.form.get('password'))
+
     elif 'email' in request.args:
-        email = request.args.get('email')
-        password = request.args.get('password')
-        user = User(email)
-        user.email = email
-        user.submited_password = password
-        return user
+        return User(request.args.get('email'), request.args.get('password'))
+
     elif get_ip(request) == '127.0.0.1':
-        return User('localhost')
+        return User('localhost', 'localhost')
     return Anonymous()

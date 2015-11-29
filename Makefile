@@ -10,3 +10,6 @@ publish:
 
 stop:
 	./scripts/stop.sh
+
+load:
+	mongoimport --db pacgeo --drop --collection users mongodb/users.json
