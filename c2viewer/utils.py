@@ -23,7 +23,6 @@ def get_location(ip):
     # Use Maxmind to find location based on IP
     g = geocoder.maxmind(ip)
     if g.ok:
-        save_log({'status': 200, 'message': 'Get IP Location'})
         db.location.insert(g.json)
         return g.json
     return {}
