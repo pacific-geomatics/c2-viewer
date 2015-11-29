@@ -21,16 +21,23 @@ th, td {
 
 <table style="width:100%">
   <tr>
-    {% for key in logs[0].iterkeys() %}
-    <th>{{ key }}</th>
-    {% endfor %}
+    <th>Status</th>
+    <th>Route</th>
+    <th>Email</th>
+    <th>Address</th>
+    <th>Message</th>
+    <th>Datetime</th>
+    <th>Method</th>
   </tr>
 {% for row in logs %}
   <tr>
-  {% set rowloop = loop %}
-  {% for key, value in row.iteritems() %}
-    <td id="cell-{{ rowloop.index }}-{{ loop.index }}">{{ value }}</td>
-  {% endfor %}
+    <td>{{ row.status }}</td>
+    <td>{{ row.route }}</td>
+    <td>{{ row.email }}</td>
+    <td>{{ row.address }}</td>
+    <td>{{ row.message }}</td>
+    <td>{{ row.datetime }}</td>
+    <td>{{ row.method }}</td>
   </tr>
 {% endfor %}
 </table>
