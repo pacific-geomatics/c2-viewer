@@ -112,6 +112,8 @@ def login():
             login_user(user)
             save_log({'status': 301, 'message': 'Redirect to Index'})
             return redirect('/'), 301
+        else:
+            save_log({'status': 401, 'message': 'Failed login attempt'})
 
     save_log({'status': 301, 'message': 'Redirect to Login'})
     return render_template('login.html', form=form), 200

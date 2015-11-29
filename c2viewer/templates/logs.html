@@ -28,6 +28,9 @@ th, td {
     <th>Message</th>
     <th>Datetime</th>
     <th>Method</th>
+    <th>Country</th>
+    <th>City</th>
+    <th>ISP</th>
   </tr>
 {% for row in logs %}
   <tr>
@@ -38,6 +41,9 @@ th, td {
     <td>{{ row.message }}</td>
     <td>{{ row.datetime }}</td>
     <td>{{ row.method }}</td>
+    <td>{{ row.location.country }}</td>
+    <td>{{ row.location.city }}</td>
+    <td>{{ row.location.isp }}</td>
   </tr>
 {% endfor %}
 </table>
