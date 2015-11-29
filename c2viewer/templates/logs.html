@@ -12,6 +12,13 @@ th, td {
 </style>
 
 <h1>Log Page</h1>
+
+<form method="POST" action="/logs">
+  {{ form.hidden_tag() }}
+  <input id="clear" name="clear" type="hidden" value="True">
+  <input class="submit" type="submit" value="Clear Logs">
+</form>
+
 <table style="width:100%">
   <tr>
     {% for key in logs[0].iterkeys() %}
@@ -27,10 +34,4 @@ th, td {
   </tr>
 {% endfor %}
 </table>
-
-<form method="POST" action="/logs">
-  {{ form.hidden_tag() }}
-  <input id="clear" name="clear" type="hidden" value="True">
-  <input class="submit" type="submit" value="Clear Logs">
-</form>
 {% endblock %}

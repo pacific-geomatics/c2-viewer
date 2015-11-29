@@ -154,6 +154,7 @@ def oauth2callback():
     }
     # Get Google Token
     r = requests.post('https://www.googleapis.com/oauth2/v3/token', data=payload)
+    save_log({'status': 200, 'message': 'Get Google Token', 'method': 'POST'})
     if not r.ok:
         save_log({'status': 401, 'message': 'Error getting Google Token'})
         abort(401)
@@ -163,6 +164,7 @@ def oauth2callback():
     r = requests.get('https://www.googleapis.com/oauth2/v1/tokeninfo', params=params)
 
     # Error contacting Google's OAuth2 token info page
+    save_log({'status': 200, 'message': 'GET Google Account'})
     if not r.ok:
         save_log({'status': 401, 'message': 'Error getting Google Account'})
         abort(401)
@@ -180,6 +182,7 @@ def oauth2callback():
         # Checks if user has valid authentication to proceed to Index page
         if user.is_authenticated:
             login_user(user)
+            save_log({'status': 200, 'message': 'User is Authenticated by OAuth2'})
             save_log({'status': 301, 'message': 'Redirect to Index'})
             return redirect('/')
 
