@@ -6,12 +6,18 @@ import requests
 import subprocess
 import pymongo
 from urllib import urlencode
-from flask import render_template, jsonify, request, session, redirect, abort
+from flask import render_template, jsonify, request, session, redirect, abort, send_from_directory
 from flask.ext.login import login_user, login_required, logout_user, current_user, confirm_login
 from c2viewer import app, login_manager, db
 from c2viewer.utils import save_log
 from c2viewer.login import request_loader, user_loader
 from c2viewer.forms import LoginForm, OAuth2Form, LogsForm
+
+
+@app.route('/robots.txt')
+@app.route('/sitemap.xml')
+def robots():
+    return send_from_directory(app.static_folder, request.path[1:])
 
 
 @app.route('/')
