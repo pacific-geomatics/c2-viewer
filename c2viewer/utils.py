@@ -40,6 +40,7 @@ def save_log(message):
            'route': request.url_rule.rule,
            'address': get_ip(request),
            'method': request.method,
+           'user_agent': request.headers['User-Agent'],
            'datetime': str(datetime.datetime.now()),
            'location': get_location(get_ip(request))}
     log.update(message)

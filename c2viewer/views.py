@@ -35,17 +35,34 @@ def unauthorized():
     abort(401)
 
 
+@app.route('/photos')
+@app.route('/photos/')
+@app.route('/photos/<int:photo_id>')
+@login_required
+def photos(photo_id=''):
+    photo = db.photos.find_one({'id': photo_id})
+    if photo:
+        save_log({'status': 301, 'message': 'Redirect to AWS Photo'})
+        return redirect(photo['url']), 301
+
+    # Query Photos from MongoDB
+    photos = db.photos.find({}, {'_id': 0})
+    save_log({'status': 200, 'message': 'Render HTML Photo'})
+    return render_template('photos.html', photos=photos), 200
+
+
 @app.route('/map')
 @login_required
 def map():
     confirm_login()
     save_log({'status': 200, 'message': 'Render HTML Map'})
-    return render_template('map.html', ACCESS_TOKEN=app.config['ACCESS_TOKEN'])
+    return render_template('map.html', ACCESS_TOKEN=app.config['ACCESS_TOKEN']), 200
 
 
 @app.route('/test')
 def url_root():
     return jsonify({
+        'user_agent': request.headers['User-Agent'],
         'url_root': request.url_root,
         'path': request.path,
         'script_root': request.script_root,
