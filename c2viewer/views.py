@@ -98,9 +98,10 @@ def state():
 
 @app.route("/hooks/github", methods=['POST', 'GET'])
 def hooks():
-    if request.method == 'POST':
+    if bool(request.method == 'POST' and 'GitHub-Hookshot' in request.headers['User-Agent']):
         save_log({'status': 200, 'message': 'POST JSON Webhook from Github'})
         subprocess.call(['make', 'publish'])
+
     elif request.method == 'GET':
         save_log({'status': 200, 'message': 'GET JSON Webhook from Github'})
     return jsonify({'message': 'Hook push from Github'})
