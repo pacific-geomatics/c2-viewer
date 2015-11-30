@@ -37,7 +37,7 @@ def get_ip(request):
 
 def save_log(message):
     log = {'email': current_user.email,
-           'route': request.url_rule.rule,
+           'route': request.path,
            'address': get_ip(request),
            'method': request.method,
            'user_agent': request.headers['User-Agent'],
