@@ -225,14 +225,17 @@ def oauth2callback():
 # Error handling:
 @app.errorhandler(404)
 def page_not_found(e):
-        return render_template('errors/404.html'), 404
+    save_log({'status': 404, 'message': 'Page not found'})
+    return render_template('errors/404.html'), 404
 
 
 @app.errorhandler(401)
 def page_unauthorized(e):
-        return render_template('errors/401.html'), 401
+    save_log({'status': 401, 'message': 'Unauthorized'})
+    return render_template('errors/401.html'), 401
 
 
 @app.errorhandler(500)
 def page_not_implemented(e):
-        return render_template('errors/500.html'), 500
+    save_log({'status': 500, 'message': 'Page not Implemented'})
+    return render_template('errors/500.html'), 500
