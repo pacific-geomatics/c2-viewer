@@ -3,20 +3,31 @@ body {
 }
 
 #login_container {
-  padding: 5vw;
+  padding: 7vw 5vw;
   height: 14em;
   position: relative;
 }
 
 #login_form {
+  position: absolute;
   padding: 2em;
   box-shadow: 3px 3px 3px 3px #ddd;
-  position: absolute;
+}
+
+#login_form, .security_warning {
   top: 50%;
   left: 50%;
   margin-right: -50%;
   transform: translate(-50%, -50%);
   text-align: center;
+}
+
+.security_warning {
+  position: relative;
+  background-color: pale-yellow;
+  margin-top: 3em;
+  width: 19em;
+  font-size: 0.8em;
 }
 
 #login_form input {
@@ -40,3 +51,4 @@ div.error_body {
   margin-right: auto;
   width: 40%;
 }
+

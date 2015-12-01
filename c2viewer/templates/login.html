@@ -2,13 +2,17 @@
 {% block content %}
 <div id="login_container">
   <div id="login_form">
-  <img id="logo" src="static/images/pacgeo_logo.png">
-  <form method="POST" action="/login">
-    {{ form.hidden_tag() }}
-    {{ form.email(size=20, placeholder="Your email") }} <br />
-    {{ form.password(size=20, placeholder="Your password") }} <br />
-    <input class="submit" type="submit" value="Log in">
-  </form>
+    <img id="logo" src="static/images/pacgeo_logo.png">
+    <form method="POST" action="/login">
+      {{ form.hidden_tag() }}
+      {{ form.email(size=20, placeholder="Your email") }} <br />
+      {{ form.password(size=20, placeholder="Your password") }} <br />
+      <input class="submit" type="submit" value="Log in">
+    </form>
+    <p class="security_warning">
+      C2Viewer relies on security features and functionality available
+      in Google Chrome 45+.
+    </p>
   </div>
 </div>
 {% endblock %}
