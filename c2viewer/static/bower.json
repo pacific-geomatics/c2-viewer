@@ -1,0 +1,26 @@
+{
+  "name": "c2viewer",
+  "homepage": "https://github.com/pacific-geomatics/c2-viewer",
+  "authors": [
+    "Denis Carriere <carriere.denis@gmail.com>",
+    "Mike Williamson <mike@korora.ca>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "paper-drawer-panel": "PolymerElements/paper-drawer-panel#~1.0.5",
+    "polymer": "Polymer/polymer#^1.2.0",
+    "paper-elements": "PolymerElements/paper-elements#~1.0.6",
+    "install": "~1.0.4",
+    "iron-icons": "PolymerElements/iron-icons#~1.0.5"
+  }
+}

@@ -52,7 +52,7 @@ def photos(photo_id=''):
 
 
 @app.route('/map')
-@login_required
+# @login_required
 def map():
     confirm_login()
     save_log({'status': 200, 'message': 'Render HTML Map'})
