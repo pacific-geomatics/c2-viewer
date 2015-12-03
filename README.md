@@ -185,12 +185,11 @@ Please note: The user shall observe the following expectations and requirements:
 SSL Certified
 
 ```bash
-$ ./letsencrypt-auto \
-  -d addxy.com 
-  -d www.addxy.com 
-  -d tile.addxy.com 
-  --agree-dev-preview 
-  --server https://acme-v01.api.letsencrypt.org/directory 
+./letsencrypt-auto \
+  -d addxy.com \
+  -d www.addxy.com \
+  --agree-dev-preview \
+  --server https://acme-v01.api.letsencrypt.org/directory \
   auth
 ```
 
