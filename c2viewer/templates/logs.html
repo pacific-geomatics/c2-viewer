@@ -1,6 +1,9 @@
 {% extends "base.html" %}
-{% block content %}
 
+{% block title %}C² Viewer | Logs{% endblock %}
+{% block description %}C² Viewer{% endblock %}
+
+{% block body %}
 <style>
 table, th, td {
     border: 1px solid black;
@@ -24,6 +27,7 @@ th, td {
     <th>Status</th>
     <th>Route</th>
     <th>Email</th>
+    <th>Name</th>
     <th>Address</th>
     <th>Message</th>
     <th>Datetime</th>
@@ -38,6 +42,7 @@ th, td {
     <td>{{ row.status }}</td>
     <td>{{ row.route }}</td>
     <td>{{ row.email }}</td>
+    <td>{{ row.given_name }}</td>
     <td>{{ row.address }}</td>
     <td>{{ row.message }}</td>
     <td>{{ row.datetime }}</td>

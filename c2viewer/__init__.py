@@ -1,24 +1,15 @@
 # -*- coding: utf-8 -*-
 
-import logging
 from pymongo import MongoClient
 from flask import Flask
-from logging.handlers import RotatingFileHandler
-from flask.ext.login import LoginManager
+from flask.ext.stormpath import StormpathManager
 
 
 app = Flask(__name__)
 app.config.from_object('config')
 
-# Handle Logging
-# https://gist.github.com/ibeex/3257877
-handler = RotatingFileHandler('c2viewer.log', maxBytes=10000, backupCount=1)
-handler.setLevel(logging.INFO)
-app.logger.addHandler(handler)
-
 # Handle Logins
-login_manager = LoginManager()
-login_manager.init_app(app)
+stormpath_manager = StormpathManager(app)
 
 # Mongo Database
 client = MongoClient()

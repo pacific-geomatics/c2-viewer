@@ -12,7 +12,6 @@ stop:
 	./scripts/stop.sh
 
 load:
-	mongoimport --db pacgeo --drop --collection users mongodb/users.json
 	mongoimport --db pacgeo --drop --collection photos mongodb/photos.json
 
 mongo:
