@@ -4,7 +4,6 @@ import datetime
 import geocoder
 from flask import request
 from c2viewer import db
-from flask.ext.stormpath import user
 
 
 def get_location(ip):
@@ -36,8 +35,7 @@ def get_ip(request):
 
 
 def save_log(message):
-    log = {'user': user.id,
-           'route': request.path,
+    log = {'route': request.path,
            'address': get_ip(request),
            'method': request.method,
            'user_agent': request.headers['User-Agent'],
