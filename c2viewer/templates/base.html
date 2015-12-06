@@ -10,16 +10,17 @@
 <head>
   <title>{% block title %}{% endblock %}</title>
   <meta charset="utf-8" />
-  <meta name="description" content="{% block description %}{% endblock %}">
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="author" content="Pacific Geomatics">
-  <meta name="robots" content="index">
+  <meta name="description" content="{% block description %}{% endblock %}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="author" content="Pacific Geomatics" />
+  <meta name="robots" content="index" />
 
-  <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,300,400italic,400,600italic,600,700italic,700,800italic,800" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-  <link href="/static/favicon.ico" type="image/x-icon" rel="shortcut icon" />
-  <link href="/static/css/app.css" rel="stylesheet" />
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,300,400italic,400,600italic,600,700italic,700,800italic,800" rel="stylesheet" type="text/css" />
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon" rel="shortcut icon" />
+  <link href="{{ url_for('static', filename='css/app.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='css/stormpath.css') }}" rel="stylesheet" />
   {% block head %}{% endblock %}
 </head>
 
