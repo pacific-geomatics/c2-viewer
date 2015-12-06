@@ -33,7 +33,7 @@ def map():
 @groups_required(['pacgeo', 'cnl'], all=False)
 def cnl():
     save_log({'status': 200, 'message': 'Render HTML Map'})
-    return render_template('map.html', ACCESS_TOKEN=app.config['ACCESS_TOKEN']), 200
+    return render_template('map.html'), 200
 
 
 @app.route("/hooks/github", methods=['POST', 'GET'])
