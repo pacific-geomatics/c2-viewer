@@ -36,8 +36,7 @@ def get_ip(request):
 
 
 def save_log(message):
-    log = {'email': user.email,
-           'given_name': user.given_name,
+    log = {'user': user.id,
            'route': request.path,
            'address': get_ip(request),
            'method': request.method,
