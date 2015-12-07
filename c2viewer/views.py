@@ -20,6 +20,11 @@ def google_authenticate():
     return render_template('googlec7417869a8a99a4e.html'), 200
 
 
+@app.route('/test')
+def test():
+    return request.url_root[:-1]
+
+
 @app.route('/')
 def index():
     return redirect('/map'), 301

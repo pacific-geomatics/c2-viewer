@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from datetime import timedelta
 
-TESTING = False
+TESTING = True
 PREFERRED_URL_SCHEME = 'https'
+SERVER_NAME = 'c2viewer.pacgeo.com'
 SECRET_KEY = '4hLAJ6ZM9I4fL3lTu-PNNgMI'
 APPLICATION_NAME = 'c2viewer'
 MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ'
