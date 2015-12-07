@@ -77,23 +77,6 @@ def logs():
     return render_template('logs.html', form=form, logs=logs)
 
 
-@app.route('/photos/<int:photo_id>')
-@app.route('/photos/')
-@app.route('/photos')
-@login_required
-@groups_required(['pacgeo'])
-def photos(photo_id=''):
-    photo = db.photos.find_one({'id': photo_id})
-    if photo:
-        save_log({'status': 301, 'message': 'Redirect to AWS Photo'})
-        return redirect(photo['url']), 301
-
-    # Query Photos from MongoDB
-    photos = db.photos.find({}, {'_id': 0})
-    save_log({'status': 200, 'message': 'Render HTML Photo'})
-    return render_template('photos.html', photos=photos), 200
-
-
 # Error Handling
 @app.errorhandler(404)
 def page_not_found(e):

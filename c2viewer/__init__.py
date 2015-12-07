@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import functools
 from pymongo import MongoClient
-from flask import Flask, url_for
+from flask import Flask
 from flask.ext.stormpath import StormpathManager
-
-url_for = functools.partial(url_for, _scheme='https')
 
 app = Flask(__name__)
 app.config.from_object('config')
