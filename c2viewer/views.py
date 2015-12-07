@@ -15,7 +15,7 @@ def robots():
     return send_from_directory(app.static_folder, request.path[1:])
 
 
-@app.route('googlec7417869a8a99a4e.html')
+@app.route('/googlec7417869a8a99a4e.html')
 def google_authenticate():
     return render_template('googlec7417869a8a99a4e.html'), 200
 
