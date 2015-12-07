@@ -17,7 +17,7 @@ STORMPATH_LOGIN_TEMPLATE = 'login.html'
 STORMPATH_REGISTRATION_TEMPLATE = 'register.html'
 STORMPATH_ENABLE_FORGOT_PASSWORD = True
 STORMPATH_BASE_TEMPLATE = 'base.html'
-STORMPATH_ENABLE_GOOGLE = True
+STORMPATH_ENABLE_GOOGLE = False
 STORMPATH_SOCIAL = {
     'GOOGLE': {
         'client_id': '451432892286-63p5qv006mqrdbvut2l4oibsnfrlod3k.apps.googleusercontent.com',
