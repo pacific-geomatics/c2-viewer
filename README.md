@@ -319,3 +319,8 @@ in the pid file. After that send the HUP signal.
 The HUP signal prompts Gunicorn to reload its config and launch new workers
 that have loaded the new code.
 
+Mapbox Login
+------------
+
+- Account: Matt@pacgeo.com
+- Password: Mb3334Mapp!
