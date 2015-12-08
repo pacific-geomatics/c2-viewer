@@ -15,7 +15,7 @@ load:
 	mongoimport --db pacgeo --drop --collection photos mongodb/photos.json
 
 mongo:
-	docker stop $$(docker ps -q)
+	docker stop $$(docker ps -q) || true
 	docker run -d -p 27017:27017 mongo /usr/bin/mongod --nojournal
 
 serve:
