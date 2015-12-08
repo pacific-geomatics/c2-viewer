@@ -1,7 +1,53 @@
 C&#178; Viewer
 =============
 
+Here are some of my thoughts on C2Viewer. As discussed I really like to C2Viewer, and I think it will be a great service for PacGeo to offer our customers.
+
+Deficiency
+----------
+
+- Currently our customer purchase GeoTiff and then use the data in software like ArcGIS. Most personnel in the company do not have access to the data.   (like mining companies)
+
+- There are many users who have built applications on Google/ Bing ect, but the data does not meet their requirements. These companies are currently not our customers, due to the fact there is no easy way for them to use our data.  (company like Track 24)
+Opportunity
+
+- Offer our customer a secure web map with their data as a fee for service. The customer would view the data/map in his App like Track 24 or as simple standalone viewer. PacGeo may also use the C2Viewer as a way to show demo data.
+
+Requirement
+-----------
+
+- Based on log in the customer would have a unique map
+- Base Map would have 3 default layers
+- Mapbox imagery with customer imagery overlay
+- Topo Map
+- Mapbox "street Map"
+- Custom map based on customers requirement.
+- Search function (at a later date)
+- Customers would use imagery to map OSM
+- Customers vector data added to maps (like CNL)
+- Work on computer
+- Operate on mobile
+- Mobile should have caching. I think Track 24 would be very interested in this function.
+
+Easy to set to use
+------------------
+
+- John must be able to link 3 Mapbox map to new customer log in
+- No coding required to set up new customer with a basic map
+
+Low cost
+--------
+
+As we develop business plan we need to weight the cost of the easy button versus developing that part of the App in house. Long term Cost of ownership.
+
+- Mapbox $6 K per year
+- Amazon S3 bucket
+- Stormpath
+- Integrated into the new PacGeo.com website
+
+
 Pacgeo's Command &amp; Control Viewer.
+--------------------------------------
 
 Web accessible browser map will be able to run standalone laptop or sever behind CNL firewall
 
