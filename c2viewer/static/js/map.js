@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function(){
     var tilt_control = document.querySelector('#tilt');
     var imagery_control = document.querySelector('#imagery');
     var topo_control = document.querySelector('#topo');
-    var dark_control = document.querySelector('#dark');
+    var streets_control = document.querySelector('#streets');
 
     logout_control.addEventListener('click', function(e){
       location.href = '/logout'
@@ -66,9 +66,9 @@ document.addEventListener('DOMContentLoaded', function(){
       map.setStyle(topoStyle);
     });
 
-    dark_control.addEventListener('click', function(e){
-      console.log('Change Dark Basemap');
-      map.setStyle(darkStyle);
+    streets_control.addEventListener('click', function(e){
+      console.log('Change Streets Basemap');
+      map.setStyle(streetsStyle);
     });
   }();
 
