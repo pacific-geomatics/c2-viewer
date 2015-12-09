@@ -5,6 +5,45 @@ var map = new mapboxgl.Map({
     zoom: 16
 });
 
+map.on('style.load', function () {
+  map.addSource('tenKcircle', { 'type': 'geojson', 'data': tenKcircle })
+  map.addLayer({
+    'id': 'tenKcircle',
+    'type': 'line',
+    'source': 'tenKcircle',
+    'layout': {},
+    'paint': {
+      "line-color": "#9c89cc",
+      "line-width": 3
+    }
+  });
+
+  map.addSource('zone1', { 'type': 'geojson', 'data': zone1 })
+  map.addLayer({
+    'id': 'zone1',
+    'type': 'line',
+    'source': 'zone1',
+    'layout': {},
+    'paint': {
+      "line-color": "#f86767",
+      "line-width": 3
+    }
+  });
+
+  map.addSource('cnl', { 'type': 'geojson', 'data': cnl })
+  map.addLayer({
+    'id': 'cnl',
+    'type': 'line',
+    'source': 'cnl',
+    'layout': {},
+    'paint': {
+      "line-color": "#1087bf",
+      "line-width": 3
+    }
+  });
+
+});
+
 document.addEventListener('DOMContentLoaded', function(){
 
   var ccv = function(){
