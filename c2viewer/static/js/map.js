@@ -5,43 +5,50 @@ var map = new mapboxgl.Map({
     zoom: 16
 });
 
+var url = 'https://b.tiles.mapbox.com/v4/pacgeo.ngio6771/features.json?access_token=pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ';
+
 map.on('style.load', function () {
-  map.addSource('tenKcircle', { 'type': 'geojson', 'data': tenKcircle })
-  map.addLayer({
-    'id': 'tenKcircle',
-    'type': 'line',
-    'source': 'tenKcircle',
-    'layout': {},
-    'paint': {
-      "line-color": "#9c89cc",
-      "line-width": 3
-    }
-  });
+  var data = $.get(url).done(function() {
+      data = data.responseJSON.features
 
-  map.addSource('zone1', { 'type': 'geojson', 'data': zone1 })
-  map.addLayer({
-    'id': 'zone1',
-    'type': 'line',
-    'source': 'zone1',
-    'layout': {},
-    'paint': {
-      "line-color": "#f86767",
-      "line-width": 3
-    }
-  });
+      for (i = 0; i < data.length; i++) {
+        var layer_id = 'Layer_' + i
+        map.addSource(layer_id, { 'type': 'geojson', 'data': data[i] })
 
-  map.addSource('cnl', { 'type': 'geojson', 'data': cnl })
-  map.addLayer({
-    'id': 'cnl',
-    'type': 'line',
-    'source': 'cnl',
-    'layout': {},
-    'paint': {
-      "line-color": "#1087bf",
-      "line-width": 3
-    }
-  });
-
+        if (data[i].geometry.type == 'LineString') {
+            map.addLayer({
+              'id': layer_id,
+              'type': 'line',
+              'source': layer_id,
+              'layout': {},
+              'paint': {
+                "line-color": data[i].properties['stroke'],
+                "line-width": data[i].properties['stroke-width']
+              }
+            });
+            console.log('LineString', data[i])
+        } else if (data[i].geometry.type == 'Point') {
+            map.addLayer({
+              "id": layer_id,
+              "type": "symbol",
+              "source": layer_id,
+              "layout": {
+                  "icon-image": data[i].properties['marker-symbol'] + "-15",
+                  "text-field": data[i].properties['title'],
+                  "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+                  "text-offset": [0, 0.6],
+                  "text-anchor": "top"
+              },
+              "paint": {
+                  "text-size": 12
+              }
+          });
+          console.log('Point', data[i])
+        } else if (data[i].geometry.type == 'Polygon') {
+          console.log('Polygon', data[i])
+        }
+      }
+    });
 });
 
 document.addEventListener('DOMContentLoaded', function(){
