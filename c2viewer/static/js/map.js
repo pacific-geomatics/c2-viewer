@@ -1,11 +1,11 @@
 var map = new mapboxgl.Map({
     container: 'map',
     style: imageryStyle,
-    center: [-77.364673, 46.052700],
-    zoom: 16
+    center: CENTER,
+    zoom: ZOOM
 });
 
-var url = 'https://b.tiles.mapbox.com/v4/pacgeo.ngio6771/features.json?access_token=pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ';
+var url = 'https://b.tiles.mapbox.com/v4/' + DATA + '/features.json?access_token=pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ';
 
 map.on('style.load', function () {
   var data = $.get(url).done(function() {

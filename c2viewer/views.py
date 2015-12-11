@@ -4,6 +4,7 @@ import subprocess
 from flask import render_template, jsonify, request, redirect, send_from_directory
 from c2viewer import app
 from flask.ext.stormpath import login_required, groups_required
+from stormpath.client import Client
 
 
 @app.route('/robots.txt')
@@ -14,14 +15,25 @@ def robots():
 
 @app.route('/')
 def index():
-    return redirect('/map'), 301
+    return redirect('/panama'), 301
 
 
-@app.route('/map')
+@app.route('/cnl')
 @login_required
 @groups_required(['pacgeo', 'cnl'], all=False)
-def map():
-    return render_template('map.html'), 200
+def cnl():
+    client = Client()
+    group = client.groups.get(app.config['STORMPATH_GROUPS']['cnl'])
+    return render_template('map.html', custom_data=group.custom_data), 200
+
+
+@app.route('/panama')
+@login_required
+@groups_required(['pacgeo', 'panama'], all=False)
+def panama():
+    client = Client()
+    group = client.groups.get(app.config['STORMPATH_GROUPS']['panama'])
+    return render_template('map.html', custom_data=group.custom_data), 200
 
 
 @app.route("/hooks/github", methods=['POST', 'GET'])

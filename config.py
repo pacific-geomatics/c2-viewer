@@ -16,3 +16,7 @@ STORMPATH_LOGIN_TEMPLATE = 'login.html'
 STORMPATH_REGISTRATION_TEMPLATE = 'register.html'
 STORMPATH_ENABLE_FORGOT_PASSWORD = True
 STORMPATH_BASE_TEMPLATE = 'base.html'
+STORMPATH_GROUPS = {
+    'cnl': '6bJOHmkfKFTrqwzH2zewjk',
+    'panama': '6mfh0GqAfZljEWSq3Do94G'
+}

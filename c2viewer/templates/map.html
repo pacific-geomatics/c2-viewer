@@ -58,7 +58,13 @@
   src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.0/mapbox-gl.js"
   integrity="sha384-IKLm3im4gYUyqiEmJbIhNN1S6b/kJwrwhVKRXoschJo7cKAmTCFUN7VT6OEGcbQv"
   crossorigin="anonymous"></script>
-  <script>mapboxgl.accessToken = "{{ config.MAPBOX_ACCESS_TOKEN }}";</script>
+  <script>
+  mapboxgl.accessToken = "{{ config.MAPBOX_ACCESS_TOKEN }}";
+  var IMAGERY = "{{custom_data.imagery}}",
+      DATA = "{{custom_data.features}}",
+      CENTER = [{{custom_data.map.x}}, {{custom_data.map.y}}],
+      ZOOM = {{custom_data.map.zoom}};
+  </script>
   <script src="{{ url_for('static', filename='js/styles.js') }}" type="text/javascript"></script>
   <script src="{{ url_for('static', filename='js/map.js') }}" type="text/javascript"></script>
 {% endblock %}

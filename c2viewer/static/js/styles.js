@@ -7,7 +7,7 @@ var imageryStyle = {
     "sources": {
         "pacgeo-imagery": {
             "type": "raster",
-            "url": "mapbox://pacgeo.neiemcnb",
+            "url": "mapbox://" + IMAGERY,
             "tileSize": 256
         }
     },
