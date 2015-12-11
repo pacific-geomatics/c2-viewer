@@ -13,6 +13,11 @@ def robots():
     return send_from_directory(app.static_folder, request.path[1:])
 
 
+@app.route('/map')
+def map():
+    return redirect('/panama'), 301
+
+
 @app.route('/')
 def index():
     return redirect('/panama'), 301
