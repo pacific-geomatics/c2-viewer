@@ -1,5 +1,5 @@
 init:
-	pip install -r requirements.txt
+	./scripts/init.sh
 
 start:
 	./scripts/start.sh
@@ -21,4 +21,5 @@ mongo:
 serve:
 	python ./runserver.py
 
-dev: mongo load serve
+dev:
+	mongo load serve

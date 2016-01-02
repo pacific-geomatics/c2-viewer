@@ -43,8 +43,16 @@ def panama():
 
 @app.route("/hooks/github", methods=['POST', 'GET'])
 def hooks():
+    # Verify if Github is submiting a POST
     if bool(request.method == 'POST' and 'GitHub-Hookshot' in request.headers['User-Agent']):
-        subprocess.call(['make', 'publish'])
+
+        # Verify if current Git branch is up-to-date or not
+        pull = subprocess.check_output(['git', 'pull'])
+        if not pull == 'Already up-to-date.\n':
+
+            # Execute scripts/publish.sh
+            subprocess.call(['make', 'publish'])
+
     return jsonify({'message': 'Hook push from Github'})
 
 
