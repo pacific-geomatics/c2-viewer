@@ -1,5 +1,8 @@
 init:
-	pip install -r requirements.txt
+	sudo apt-get install python-pip
+	sudo pip install -r requirements.txt
+	mkdir -p ~/.stormpath
+	cp apiKey.properties ~/.stormpath/apiKey.properties
 
 start:
 	./scripts/start.sh
@@ -21,4 +24,5 @@ mongo:
 serve:
 	python ./runserver.py
 
-dev: mongo load serve
+dev:
+	mongo load serve
