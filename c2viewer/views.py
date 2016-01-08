@@ -34,7 +34,9 @@ def cnl():
 
 @app.route('/demo')
 def demo():
-    return render_template('map.html'), 200
+    client = Client()
+    group = client.groups.get(app.config['STORMPATH_GROUPS']['panama'])
+    return render_template('map.html', custom_data=group.custom_data), 200
 
 
 @app.route("/hooks/github", methods=['POST', 'GET'])
