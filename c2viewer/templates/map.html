@@ -34,12 +34,11 @@
       <paper-item id="topo">Topographic</paper-item>
       <paper-item id="streets">Streets</paper-item>
     </paper-listbox>
-    {% if user.email %}
     <paper-item id="logout">Logout</paper-item>
+    {% if user.email %}
     <paper-item id="email">{{ user.email }}</paper-item>
     {% else %}
-    <paper-item id="logout">Logout</paper-item>
-    <paper-item id="email">{{ user.email }}</paper-item>
+    <paper-item>Guest</paper-item>
     {% endif %}
   </paper-header-panel>
   <paper-header-panel main>
