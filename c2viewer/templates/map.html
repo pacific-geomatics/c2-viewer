@@ -35,11 +35,11 @@
       <paper-item id="streets">Streets</paper-item>
     </paper-listbox>
     {% if user.email %}
-    <paper-button id="logout">Logout</paper-item>
+    <paper-item id="logout">Logout</paper-item>
     <paper-item id="email">{{ user.email }}</paper-item>
     {% else %}
-    <paper-button id="logout">Login</paper-item>
-    <paper-item id="email">Guest</paper-item>
+    <paper-item id="logout">Logout</paper-item>
+    <paper-item id="email">{{ user.email }}</paper-item>
     {% endif %}
   </paper-header-panel>
   <paper-header-panel main>
