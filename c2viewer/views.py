@@ -20,7 +20,7 @@ def map():
 
 @app.route('/')
 def index():
-    return redirect('/panama'), 301
+    return redirect('/demo'), 301
 
 
 @app.route('/cnl')
@@ -32,13 +32,9 @@ def cnl():
     return render_template('map.html', custom_data=group.custom_data), 200
 
 
-@app.route('/panama')
-@login_required
-@groups_required(['pacgeo', 'panama'], all=False)
-def panama():
-    client = Client()
-    group = client.groups.get(app.config['STORMPATH_GROUPS']['panama'])
-    return render_template('map.html', custom_data=group.custom_data), 200
+@app.route('/demo')
+def demo():
+    return render_template('map.html'), 200
 
 
 @app.route("/hooks/github", methods=['POST', 'GET'])
