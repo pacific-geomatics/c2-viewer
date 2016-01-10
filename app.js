@@ -1,8 +1,8 @@
-// Imports
-var nunjucks = require('nunjucks')
-var express = require('express')
-var favicon = require('serve-favicon');
-var path = require('path')
+'use strict';
+import nunjucks from 'nunjucks';
+import express from 'express';
+import favicon from 'serve-favicon';
+import path from 'path';
 
 // Configure
 var app = express();
@@ -18,7 +18,4 @@ app.get('/', function(req, res) {
     res.render('map.html');
 });
 
-// Deploy
-app.listen(3000, function () {
-  console.log('C2 Viewer app listening on port 3000!');
-})
+module.exports = app;

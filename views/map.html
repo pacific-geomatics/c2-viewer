@@ -7,31 +7,43 @@
   <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.2/mapbox-gl.css" rel="stylesheet" ></link>
   <link href="stylesheets/map.css" rel="stylesheet" />
   <link href="stylesheets/MapboxBase.css" rel="stylesheet" >
+  <script src="https://fb.me/react-0.14.6.js"></script>
+  <script src="https://fb.me/react-dom-0.14.6.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.28.2/react-bootstrap.min.js"></script>
 {% endblock %}
 
 {% block body %}
-<div id='map' class='map'></div>
-
-<div class='pin-topleft pin-bottomleft z1 col3'>
-  <div class='fill-white full-height-container'>
-    <div id='filter-categories' class='checkbox-pill col12 clearfix'>
-      <input type='checkbox' id='art' checked='checked'>
-      <label for='art' class='col6 truncate icon check unround button'>Art</label>
-      <input type='checkbox' id='theatre' checked='checked'>
-      <label for='theatre' class='col6 truncate icon check unround button'>Theatre</label>
-      <input type='checkbox' id='music' checked='checked'>
-      <label for='music' class='col6 truncate icon check unround button'>Classical music</label>
-      <input type='checkbox' id='museum' checked='checked'>
-      <label for='museum' class='col6 truncate icon check unround button'>Museums</label>
-    </div>
-    <div id='listing' class='scroll round-bottom fill-light round-bottom'>
-    </div>
+<div id="map"></div>
+<div class="pin-bottomright pin-bottomleft controls text-center">
+  <div class="btn-group" role="group" aria-label="...">
+    <button type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+    </button>
+    <button type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+    </button>
+    <button type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-camera" aria-hidden="true"></span>
+    </button>
+    <button type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+    </button>
+    <button type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+    </button>
   </div>
 </div>
 
+<div class='pin-topleft z1'>
+  <div class='pad1'>
+    <img src='images/pacgeo_logo_white_360px.png' width="120px" alt='PacGeo logo' />
+  </div>
+</div>
 {% endblock %}
 
 {% block footer %}
 <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.2/mapbox-gl.js"></script>
-<script src="javascript/map.js"></script>
+<!--<script src="javascript/map.js"></script>-->
+<script type="text/babel" src="javascript/map.js"></script>
 {% endblock %}

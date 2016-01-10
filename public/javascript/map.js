@@ -12,7 +12,8 @@ var map = new mapboxgl.Map({
   hash: true,
   center: [-74.0015, 40.7268],
   zoom: 14,
-  maxBounds: bounds
+  maxBounds: bounds,
+  attributionControl: false
 });
 
 map.addControl(new mapboxgl.Navigation({
