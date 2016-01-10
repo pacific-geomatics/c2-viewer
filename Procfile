@@ -1,1 +1,0 @@
-web: gunicorn -w 4 c2viewer:app --log-file=-
