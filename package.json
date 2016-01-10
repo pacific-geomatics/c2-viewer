@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "browserify ./public/javascript/map.js -o ./public/javascript/bundle.js && node ./bin/www"
   },
   "dependencies": {
     "babel-preset-es2015": "^6.3.13",
