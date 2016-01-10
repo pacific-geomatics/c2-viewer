@@ -23,5 +23,3 @@ var mapLocation = new mapboxgl.Map({
 map.addControl(new mapboxgl.Navigation({
   position: 'top-right'
 }));
-
-credits.addAttribution("©<a href='https://www.mapbox.com/map-feedback/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>");

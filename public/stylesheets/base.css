@@ -80,3 +80,26 @@ img.inline, .inline           { display:inline-block; }
   white-space:nowrap;
   overflow:hidden;
   }
+
+
+/* Padding
+------------------------------------------------------- */
+.pad0  { padding:5px; }
+.pad0y { padding-top:5px; padding-bottom:5px; }
+.pad0x { padding-right:5px; padding-left:5px; }
+
+.pad1    { padding:10px; }
+.pad2    { padding:20px; }
+.pad4    { padding:40px; }
+
+.pad1x { padding-left: 10px; padding-right: 10px;}
+.pad2x { padding-left: 20px; padding-right: 20px;}
+.pad4x { padding-left: 40px; padding-right: 40px;}
+
+.pad1y { padding-top: 10px; padding-bottom: 10px;}
+.pad2y { padding-top: 20px; padding-bottom: 20px;}
+.pad4y { padding-top: 40px; padding-bottom: 40px;}
+
+.pad8 {  padding: 80px; }
+.pad8y { padding-top: 80px; padding-bottom: 80px;}
+.pad8x { padding-left: 80px; padding-right: 80px;}
