@@ -16,8 +16,8 @@
 
 {% block body %}
 <div id="map"></div>
-<div id="map-location" class='circle pin-bottomleft'></div>
-<div class="pin-bottomright pin-bottomleft controls text-center">
+<div id="map-location" class='circle pin-bottomleft transition'></div>
+<div class="pin-bottomright pin-bottomleft controls text-center z10">
   <div class="btn-group" role="group" aria-label="...">
     <button type="button" class="btn btn-default">
       <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
@@ -37,11 +37,18 @@
   </div>
 </div>
 
-<div class='pin-topleft z1'>
+<div class='pin-topleft z1' id='top-left-logo'>
   <div class='pad1'>
-    <img src='images/pacgeo_logo_white_360px.png' width="120px" alt='PacGeo logo' />
+    <img src='images/pacgeo_logo_white_360px.png' width="110px" alt='PacGeo logo' />
   </div>
 </div>
+
+<div class='pin-bottomright z1 transition' id='bottom-right-logo'>
+  <div class='pad1'>
+    <img src='images/pacgeo_logo_white_360px.png' width="110px" alt='PacGeo logo' />
+  </div>
+</div>
+
 {% endblock %}
 
 {% block footer %}

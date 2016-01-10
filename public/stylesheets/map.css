@@ -5,8 +5,11 @@ body { background-color: rgba(25, 25, 25, 1); }
     height:250px;
     z-index: 10;
     margin: 5px;
-    transition: width 1s, height 1s, transform 1s, bottom 1s;
 }
+#bottom-right-logo { opacity: 1; }
+
+.transition { transition: opacity .15s ease-in-out, width 1s, height 1s, transform 1s, bottom 1s;}
+
 .controls {
   height: 60px;
   line-height: 60px;
@@ -16,14 +19,9 @@ body { background-color: rgba(25, 25, 25, 1); }
     vertical-align: middle;
     float: none;
 }
-.glyphicon {
-    font-size: 1.8em;
-}
-
-.btn-default {
-    background-color: rgba(255, 255, 255, 1);
-}
-
+.glyphicon { font-size: 1.8em; }
+.btn-default { background-color: rgba(255, 255, 255, 1);}
+.btn-group { background-color: rgba(25, 25, 25, 1); }
 .circle { border-radius: 50%; }
 
 @media screen and (max-width: 700px) {
@@ -34,6 +32,16 @@ body { background-color: rgba(25, 25, 25, 1); }
 
 @media screen and (max-width: 550px) {
     #map-location {
-        bottom: 55px;
+        opacity: 0;
+        filter: alpha(opacity=0);
+    }
+}
+@media screen and (max-width: 500px) {
+    #bottom-right-logo {
+        opacity: 0;
+        filter: alpha(opacity=0);
+    }
+    #map-location {
+        display: none;
     }
 }
