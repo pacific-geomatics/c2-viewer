@@ -3,11 +3,12 @@ mapboxgl.accessToken = 'pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2Y
 mapboxgl.config.FORCE_HTTPS = true;
 
 var styles = require('./styles');
+var center = [-77.693, 8.155]
 
 var map = new mapboxgl.Map({
   container: 'map',
   style: styles.imagery,
-  center: [-77.693, 8.155],
+  center: center,
   zoom: 15,
   attributionControl: true,
 });
@@ -15,7 +16,7 @@ var map = new mapboxgl.Map({
 var mapLocation = new mapboxgl.Map({
   container: 'map-location',
   style: styles.topo,
-  center: [-77.693, 8.155],
+  center: center,
   zoom: 10,
   attributionControl: false,
 });
@@ -24,6 +25,7 @@ map.addControl(new mapboxgl.Navigation({
   position: 'top-right'
 }));
 
+credits.addAttribution("©<a href='https://www.mapbox.com/map-feedback/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>");
 },{"./styles":2}],2:[function(require,module,exports){
 // Mapbox Styles Documentation
 // https://www.mapbox.com/mapbox-gl-style-spec/#layer-type

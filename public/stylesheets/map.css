@@ -1,5 +1,12 @@
-#map { position:absolute; top:0; bottom:0; width:100%; }
-#map-location { width:250px; height:250px; z-index: 10; margin: 5px;}
+body { background-color: rgba(25, 25, 25, 1); }
+#map { position:absolute; top:0; bottom:55px; width:100%; }
+#map-location {
+    width:250px;
+    height:250px;
+    z-index: 10;
+    margin: 5px;
+    transition: width 2s, height 2s, transform 2s, bottom 2s;
+}
 .controls {
   height: 60px;
   line-height: 60px;
@@ -14,13 +21,19 @@
 }
 
 .btn-default {
-    background-color: rgba(255, 255, 255, 0.75);
+    background-color: rgba(255, 255, 255, 1);
 }
 
 .circle { border-radius: 50%; }
 
 @media screen and (max-width: 700px) {
     #map-location {
-        display: none;
+        width:150px; height:150px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    #map-location {
+        bottom: 55px;
     }
 }
