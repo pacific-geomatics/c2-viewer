@@ -18,21 +18,22 @@
 <div id="map"></div>
 <div id="map-location" class='circle pin-bottomleft transition'></div>
 <div class="pin-bottomright pin-bottomleft controls text-center z10">
-  <div class="btn-group" role="group" aria-label="...">
-    <button type="button" class="btn btn-default">
-      <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+  <div class="btn-group" role="group" aria-label="button-group">
+    <button type="button" class="btn btn-default" id="btn-locations">
+      <span class="glyphicon glyphicon-map-marker" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Locations"></span>
     </button>
-    <button type="button" class="btn btn-default">
-      <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+    <button type="button" class="btn btn-default" id="btn-basemaps">
+      <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Basemaps"></span>
     </button>
-    <button type="button" class="btn btn-default">
-      <span class="glyphicon glyphicon-camera" aria-hidden="true"></span>
+    <button type="button" class="btn btn-default" id="btn-photos">
+      <span class="glyphicon glyphicon-camera" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Photos"></span>
     </button>
-    <button type="button" class="btn btn-default">
-      <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+
+    <button type="button" class="btn btn-default" id="btn-geodata">
+      <span class="glyphicon glyphicon-globe" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="GeoData"></span>
     </button>
-    <button type="button" class="btn btn-default">
-      <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+    <button type="button" class="btn btn-default" id="btn-settings">
+      <span class="glyphicon glyphicon-cog" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Settings"></span>
     </button>
   </div>
 </div>

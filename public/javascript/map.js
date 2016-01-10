@@ -23,3 +23,5 @@ var mapLocation = new mapboxgl.Map({
 map.addControl(new mapboxgl.Navigation({
   position: 'top-right'
 }));
+
+$('.btn.danger').button('toggle').addClass('fat')

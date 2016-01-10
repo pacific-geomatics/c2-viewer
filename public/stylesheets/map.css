@@ -42,6 +42,6 @@ body { background-color: rgba(25, 25, 25, 1); }
         filter: alpha(opacity=0);
     }
     #map-location {
-        display: none;
+        display:;
     }
 }

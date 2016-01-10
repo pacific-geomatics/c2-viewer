@@ -24,6 +24,8 @@ var mapLocation = new mapboxgl.Map({
 map.addControl(new mapboxgl.Navigation({
   position: 'top-right'
 }));
+
+$('.btn.danger').button('toggle').addClass('fat')
 },{"./styles":2}],2:[function(require,module,exports){
 // Mapbox Styles Documentation
 // https://www.mapbox.com/mapbox-gl-style-spec/#layer-type
