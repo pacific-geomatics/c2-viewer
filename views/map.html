@@ -5,9 +5,9 @@
 {% block description %}C² Viewer{% endblock %}
 
 {% block head %}
-  <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.2/mapbox-gl.css" rel="stylesheet" ></link>
+  <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.2/mapbox-gl.css" rel="stylesheet" />
+  <link href="stylesheets/base.css" rel="stylesheet" />
   <link href="stylesheets/map.css" rel="stylesheet" />
-  <link href="stylesheets/MapboxBase.css" rel="stylesheet" >
   <script src="https://fb.me/react-0.14.6.js"></script>
   <script src="https://fb.me/react-dom-0.14.6.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
@@ -16,6 +16,7 @@
 
 {% block body %}
 <div id="map"></div>
+<div id="map-location" class='circle pin-bottomleft'></div>
 <div class="pin-bottomright pin-bottomleft controls text-center">
   <div class="btn-group" role="group" aria-label="...">
     <button type="button" class="btn btn-default">

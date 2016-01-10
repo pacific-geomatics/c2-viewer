@@ -18,41 +18,6 @@ var imageryStyle = {
         "source-layer": "imagery"}]
 };
 
-var streetsStyle = {
-    "version": 8,
-    "name": "Mapbox Streets",
-    "sources": {
-        "mapbox-streets": {
-            "type": "raster",
-            "url": "mapbox://mapbox.streets",
-            "tileSize": 256
-        }
-    },
-    "layers": [{
-        "type": "raster",
-        "id": "streets",
-        "source": "mapbox-streets",
-        "source-layer": "streets"}]
-};
-
-var topoStyle = {
-    "version": 8,
-    "name": "Mapbox Streets",
-    "sources": {
-        "mapbox-outdoors": {
-            "type": "raster",
-            "url": "mapbox://mapbox.outdoors",
-            "tileSize": 256
-        }
-    },
-    "layers": [{
-        "type": "raster",
-        "id": "outdoors",
-        "source": "mapbox-outdoors",
-        "source-layer": "outdoors"
-    }]
-};
-
-module.exports.imagery = imageryStyle;
-module.exports.streets = streetsStyle;
-module.exports.topo = topoStyle;
+module.exports.imagery = imageryStyle
+module.exports.streets = 'mapbox://styles/mapbox/streets-v8';
+module.exports.topo = 'mapbox://styles/mapbox/bright-v8';

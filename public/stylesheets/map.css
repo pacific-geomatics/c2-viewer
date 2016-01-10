@@ -1,4 +1,5 @@
 #map { position:absolute; top:0; bottom:0; width:100%; }
+#map-location { width:250px; height:250px; z-index: 10; margin: 5px;}
 .controls {
   height: 60px;
   line-height: 60px;
@@ -9,9 +10,17 @@
     float: none;
 }
 .glyphicon {
-    font-size: 2.2em;
+    font-size: 1.8em;
 }
 
 .btn-default {
-    background-color:rgba(255, 255, 255, 0.75);
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
+.circle { border-radius: 50%; }
+
+@media screen and (max-width: 700px) {
+    #map-location {
+        display: none;
+    }
 }
