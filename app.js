@@ -1,6 +1,8 @@
 // Imports
 var nunjucks = require('nunjucks')
 var express = require('express')
+var favicon = require('serve-favicon');
+var path = require('path')
 
 // Configure
 var app = express();
@@ -9,6 +11,7 @@ nunjucks.configure('views', {
     express: app
 });
 app.use(express.static('public'));
+app.use(favicon(path.join('public', 'favicon.ico')));
 
 // Views
 app.get('/', function(req, res) {
