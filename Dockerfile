@@ -1,4 +1,4 @@
-FROM mhart/alpine-node
+FROM node
 MAINTAINER Denis Carriere <carriere.denis@gmail.com>
 
 WORKDIR /
