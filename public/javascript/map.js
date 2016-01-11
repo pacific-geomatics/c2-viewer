@@ -9,8 +9,8 @@ var map = new mapboxgl.Map({
   style: styles.imagery,
   center: center,
   zoom: 15,
-  attributionControl: true,
-});
+  attributionControl: false,
+}).addControl(new mapboxgl.Attribution({'position': 'bottom-left'}));
 
 var mapLocation = new mapboxgl.Map({
   container: 'map-location',

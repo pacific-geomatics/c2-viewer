@@ -15,41 +15,35 @@
 {% endblock %}
 
 {% block body %}
-<div id="map"></div>
-<div id="map-location" class='circle pin-bottomleft transition'></div>
-<div class="pin-bottomright pin-bottomleft controls text-center z10">
-  <div class="btn-group" role="group" aria-label="button-group">
-    <button type="button" class="btn btn-default" id="btn-locations">
-      <span class="glyphicon glyphicon-map-marker" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Locations"></span>
-    </button>
-    <button type="button" class="btn btn-default" id="btn-basemaps">
-      <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Basemaps"></span>
-    </button>
-    <button type="button" class="btn btn-default" id="btn-photos">
-      <span class="glyphicon glyphicon-camera" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Photos"></span>
-    </button>
+<div id='main-container'>
+  <div id="map" class="transition map"></div>
+  <div id="map-location" class='circle pin-bottomright transition z10 map-location'></div>
+  <div id="controls" class="pin-bottomright pin-bottomleft controls text-center z5 transition fill-black">
+    <div class="btn-group" role="group" aria-label="button-group">
+      <button type="button" class="btn btn-default" id="btn-locations">
+        <span class="glyphicon glyphicon-map-marker" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Locations"></span>
+      </button>
+      <button type="button" class="btn btn-default" id="btn-basemaps">
+        <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Basemaps"></span>
+      </button>
+      <button type="button" class="btn btn-default" id="btn-photos">
+        <span class="glyphicon glyphicon-camera" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Photos"></span>
+      </button>
 
-    <button type="button" class="btn btn-default" id="btn-geodata">
-      <span class="glyphicon glyphicon-globe" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="GeoData"></span>
-    </button>
-    <button type="button" class="btn btn-default" id="btn-settings">
-      <span class="glyphicon glyphicon-cog" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Settings"></span>
-    </button>
+      <button type="button" class="btn btn-default" id="btn-geodata">
+        <span class="glyphicon glyphicon-globe" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="GeoData"></span>
+      </button>
+      <button type="button" class="btn btn-default" id="btn-settings">
+        <span class="glyphicon glyphicon-cog" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Settings"></span>
+      </button>
+    </div>
+  </div>
+  <div class='z1 pin-bottomleft pad0 transition' id="pacgeo-logo">
+    <img src='images/pacgeo_logo_white_360px.png' width="150px" alt='PacGeo logo transition' />
   </div>
 </div>
-
-<div class='pin-topleft z1' id='top-left-logo'>
-  <div class='pad1'>
-    <img src='images/pacgeo_logo_white_360px.png' width="110px" alt='PacGeo logo' />
-  </div>
+<div class='pin-bottomleft pin-topleft options fill-light z10' id='options'>
 </div>
-
-<div class='pin-bottomright z1 transition' id='bottom-right-logo'>
-  <div class='pad1'>
-    <img src='images/pacgeo_logo_white_360px.png' width="110px" alt='PacGeo logo' />
-  </div>
-</div>
-
 {% endblock %}
 
 {% block footer %}

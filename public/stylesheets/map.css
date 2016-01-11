@@ -1,4 +1,3 @@
-body { background-color: rgba(25, 25, 25, 1); }
 #map { position:absolute; top:0; bottom:55px; width:100%; }
 #map-location {
     width:250px;
@@ -6,42 +5,19 @@ body { background-color: rgba(25, 25, 25, 1); }
     z-index: 10;
     margin: 5px;
 }
-#bottom-right-logo { opacity: 1; }
-
-.transition { transition: opacity .15s ease-in-out, width 1s, height 1s, transform 1s, bottom 1s;}
-
-.controls {
-  height: 60px;
-  line-height: 60px;
-}
-.vcenter {
-    display: inline-block;
-    vertical-align: middle;
-    float: none;
-}
+#options { width: 80%; max-width: 400px; display: none;}
+#pacgeo-logo { bottom: 75px;}
+#controls { height: 55px; line-height: 55px; }
+.transition { transition: opacity .30s ease-in-out, width 1s, height 1s, transform 1s, bottom 1s;}
 .glyphicon { font-size: 1.8em; }
 .btn-default { background-color: rgba(255, 255, 255, 1);}
 .btn-group { background-color: rgba(25, 25, 25, 1); }
 .circle { border-radius: 50%; }
 
 @media screen and (max-width: 700px) {
-    #map-location {
-        width:150px; height:150px;
-    }
+    #map-location { width:150px; height:150px; }
 }
 
-@media screen and (max-width: 550px) {
-    #map-location {
-        opacity: 0;
-        filter: alpha(opacity=0);
-    }
-}
 @media screen and (max-width: 500px) {
-    #bottom-right-logo {
-        opacity: 0;
-        filter: alpha(opacity=0);
-    }
-    #map-location {
-        display:;
-    }
+    #map-location { display: none; }
 }
