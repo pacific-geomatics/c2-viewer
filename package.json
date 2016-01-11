@@ -28,5 +28,8 @@
   "bugs": {
     "url": "https://github.com/pacific-geomatics/c2-viewer/issues"
   },
-  "homepage": "https://github.com/pacific-geomatics/c2-viewer#readme"
+  "homepage": "https://github.com/pacific-geomatics/c2-viewer#readme",
+  "devDependencies": {
+    "browserify": "^13.0.0"
+  }
 }
