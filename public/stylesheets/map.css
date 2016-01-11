@@ -9,15 +9,16 @@
 #pacgeo-logo { bottom: 75px;}
 #controls { height: 55px; line-height: 55px; }
 .transition { transition: opacity .30s ease-in-out, width 1s, height 1s, transform 1s, bottom 1s;}
-.glyphicon { font-size: 1.8em; }
+.glyphicon { font-size: 30px; }
 .btn-default { background-color: rgba(255, 255, 255, 1);}
 .btn-group { background-color: rgba(25, 25, 25, 1); }
 .circle { border-radius: 50%; }
+.basemaps > button > .glyphicon { font-size: 42px; }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 750px) {
     #map-location { width:150px; height:150px; }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 600px) {
     #map-location { display: none; }
 }
