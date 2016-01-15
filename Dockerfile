@@ -1,11 +1,16 @@
-FROM mhart/alpine-node
+FROM node:slim
 MAINTAINER Denis Carriere <carriere.denis@gmail.com>
 
-WORKDIR /
-ADD . /pacgeo
-WORKDIR /pacgeo
+# Create app directory
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+# Install app dependencies
+COPY package.json /usr/src/app/
 RUN npm install
-RUN npm install -g browserify
+
+# Bundle app source
+COPY . /usr/src/app
 
 EXPOSE 3000
 CMD ["npm", "start"]
