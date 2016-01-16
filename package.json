@@ -1,10 +1,14 @@
 {
   "name": "c2viewer",
+  "description": "PacGeo's C2 Viewer (Command & Control)",
   "version": "0.0.0",
-  "description": "c2viewer",
+  "engines": {
+    "node": ">= 5.4.1",
+    "npm": ">= 3.3.12"
+  },
   "private": true,
   "scripts": {
-    "start": "node index.js"
+    "start": "node bin/www"
   },
   "dependencies": {
     "debug": "^2.2.0",
@@ -28,6 +32,9 @@
   },
   "homepage": "https://github.com/pacific-geomatics/c2-viewer#readme",
   "devDependencies": {
-    "browserify": "^13.0.0"
+    "babel-cli": "^6.4.0",
+    "babel-core": "^6.4.0",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13"
   }
 }

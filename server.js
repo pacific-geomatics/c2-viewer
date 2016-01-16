@@ -1,9 +1,13 @@
+#!/usr/bin/env node
+
+'use strict';
+
 // NodeJS Requirements
-const nunjucks = require('nunjucks');
-const express = require('express');
-const favicon = require('serve-favicon');
-const path = require('path');
-const robots = require('robots.txt')
+import nunjucks from 'nunjucks';
+import express from 'express';
+import favicon from 'serve-favicon';
+import path from 'path';
+import robots from 'robots.txt';
 
 // Constants
 const PORT = 3000;
