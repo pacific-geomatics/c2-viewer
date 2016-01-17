@@ -5,7 +5,7 @@ var styleImagery = {
     "sources": {
         "pacgeo-imagery": {
             "type": "raster",
-            "url": "mapbox://" + imagery,
+            "url": "mapbox://" + imageryID,
             "tileSize": 256
         }
     },
@@ -15,8 +15,38 @@ var styleImagery = {
         "source": "pacgeo-imagery",
         "source-layer": "imagery"}]
 };
-var styleStreets = 'mapbox://styles/mapbox/streets-v8';
-var styleTopographic = 'mapbox://styles/mapbox/bright-v8';
+var styleStreets = {
+    "version": 8,
+    "name": "PacGeo Streets",
+    "sources": {
+        "pacgeo-streets": {
+            "type": "raster",
+            "url": "mapbox://" + streetsID,
+            "tileSize": 256
+        }
+    },
+    "layers": [{
+        "type": "raster",
+        "id": "imagery",
+        "source": "pacgeo-streets",
+        "source-layer": "streets"}]
+};
+var styleTopographic = {
+    "version": 8,
+    "name": "PacGeo Topographic",
+    "sources": {
+        "pacgeo-streets": {
+            "type": "raster",
+            "url": "mapbox://" + topographicID,
+            "tileSize": 256
+        }
+    },
+    "layers": [{
+        "type": "raster",
+        "id": "imagery",
+        "source": "pacgeo-streets",
+        "source-layer": "streets"}]
+};
 
 // Map Configuration
 var map = new mapboxgl.Map({

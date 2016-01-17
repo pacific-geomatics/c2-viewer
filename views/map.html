@@ -82,7 +82,9 @@
 var lat = {{ center[0] }};
 var lng = {{ center[1] }};
 var center = [lng, lat];
-var imagery = "{{ imagery }}";
+var imageryID = "{{ imagery }}";
+var streetsID = "pacgeo.onakdha8";
+var topographicID = "pacgeo.onakba36";
 var zoom = {{ zoom }};
 mapboxgl.accessToken = "{{ token }}";
 mapboxgl.config.FORCE_HTTPS = true;
