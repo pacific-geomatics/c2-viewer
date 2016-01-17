@@ -31,7 +31,7 @@ var token = 'pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMz
 // Views
 app.get('/', function(req, res) {
     res.render('map.html', {
-        center: [50.5847, -95.9399],
+        center: [27.5492, -62.5864],
         zoom: 2,
         imagery: 'pacgeo.onak54hl',
         token: token
