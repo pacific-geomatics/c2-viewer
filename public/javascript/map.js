@@ -1,7 +1,3 @@
-// Tokens
-mapboxgl.accessToken = 'pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ'
-mapboxgl.config.FORCE_HTTPS = true;
-var zoomDifference = 5;
 // Map Styles
 var styleImagery = {
     "version": 8,
@@ -9,7 +5,7 @@ var styleImagery = {
     "sources": {
         "pacgeo-imagery": {
             "type": "raster",
-            "url": "mapbox://pacgeo.o79jddlo",
+            "url": "mapbox://" + imagery,
             "tileSize": 256
         }
     },
@@ -23,12 +19,11 @@ var styleStreets = 'mapbox://styles/mapbox/streets-v8';
 var styleTopographic = 'mapbox://styles/mapbox/bright-v8';
 
 // Map Configuration
-var center = [-77.693, 8.155]
 var map = new mapboxgl.Map({
   container: 'map',
   style: styleImagery,
   center: center,
-  zoom: 15,
+  zoom: zoom,
   attributionControl: false,
 }).addControl(new mapboxgl.Attribution({'position': 'bottom-left'}));
 var geocoder = new mapboxgl.Geocoder();

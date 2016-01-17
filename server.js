@@ -25,13 +25,44 @@ app.use("/bower_components", express.static(__dirname + '/bower_components'));
 app.use(favicon(path.join('public', 'favicon.ico')));
 app.use(robots(path.join('public', 'robots.txt')));
 
+// Mapbox Tokens
+var token = 'pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ'
+
 // Views
 app.get('/', function(req, res) {
-    res.render('map.html');
+    res.render('map.html', {
+        center: [50.5847, -95.9399],
+        zoom: 2,
+        imagery: 'pacgeo.onak54hl',
+        token: token
+    });
 });
 
-app.get('/test', function(req, res) {
-    res.render('test.html');
+app.get('/:var(leaddog|leadDog|LeadDog)?', function(req, res) {
+    res.render('map.html', {
+        center: [7.858, -10.93],
+        zoom: 13,
+        imagery: 'pacgeo.onak54hl',
+        token: token
+    });
+});
+
+app.get('/:var(cnl|CNL)?', function(req, res) {
+    res.render('map.html', {
+        center: [46.052, -77.365],
+        zoom: 15,
+        imagery: 'pacgeo.neiemcnb',
+        token: token
+    });
+});
+
+app.get('/:var(panama|Panama)?', function(req, res) {
+    res.render('map.html', {
+        center: [8.1564, -77.6917],
+        zoom: 15,
+        imagery: 'pacgeo.o79jddlo',
+        token: token
+    });
 });
 
 // Start Server

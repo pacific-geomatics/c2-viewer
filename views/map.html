@@ -42,17 +42,17 @@
       </div>
 
       <!-- Photos -->
-      <button type="button" class="btn btn-default controls-photos" id="btn-photos">
+      <button type="button" class="btn btn-default controls-photos disabled" id="btn-photos">
         <span class="glyphicon glyphicon-camera" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Photos"></span>
       </button>
 
       <!-- GeoData -->
-      <button type="button" class="btn btn-default controls-geodata" id="btn-geodata">
+      <button type="button" class="btn btn-default controls-geodata disabled" id="btn-geodata">
         <span class="glyphicon glyphicon-globe" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="GeoData"></span>
       </button>
 
       <!-- Settings -->
-      <button type="button" class="btn btn-default controls-settings" id="btn-settings">
+      <button type="button" class="btn btn-default controls-settings disabled" id="btn-settings">
         <span class="glyphicon glyphicon-cog" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Settings"></span>
       </button>
     </div>
@@ -71,5 +71,15 @@
 {% block footer %}
 <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.2/mapbox-gl.js"></script>
 <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v0.1.0/mapbox-gl-geocoder.js'></script>
+<script>
+var lat = {{ center[0] }};
+var lng = {{ center[1] }};
+var center = [lng, lat];
+var imagery = "{{ imagery }}";
+var zoom = {{ zoom }};
+mapboxgl.accessToken = "{{ token }}";
+mapboxgl.config.FORCE_HTTPS = true;
+var zoomDifference = 5;
+</script>
 <script src="javascript/map.js"></script>
 {% endblock %}
