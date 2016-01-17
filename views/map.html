@@ -1,44 +1,51 @@
-
 {% extends "base.html" %}
 
 {% block title %}C² Viewer{% endblock %}
 {% block description %}C² Viewer{% endblock %}
 
 {% block head %}
-  <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.2/mapbox-gl.css" rel="stylesheet" />
-  <link href="stylesheets/base.css" rel="stylesheet" />
-  <link href="stylesheets/map.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.2/mapbox-gl.css">
+  <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v0.1.0/mapbox-gl-geocoder.css'>
+  <link rel="stylesheet" href="stylesheets/base.css">
+  <link rel="stylesheet" href="stylesheets/map.css">
+  <link rel="import" href="/bower_components/paper-button/paper-button.html">
 {% endblock %}
 
 {% block body %}
 <div id='main-container'>
+
   <!--Main Map-->
   <div id="map" class="transition map"></div>
 
   <!--Location Diagram-->
-  <div id="map-location" class='circle pin-bottomright transition z10 map-location'></div>
+  <div id="map-mini" class='circle pin-bottomright transition z10 map-location'></div>
 
   <!--Bottom Controls-->
   <div id="controls" class="pin-bottomright pin-bottomleft controls text-center z5 transition fill-black">
     <div class="btn-group" role="group" aria-label="button-group">
+
       <!--Locations-->
-      <button type="button" class="btn btn-default" id="btn-locations">
-        <span class="glyphicon glyphicon-map-marker" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Locations"></span>
+      <button type="button" class="btn btn-default controls-locate-me" id="btn-locations">
+        <span class="glyphicon glyphicon-map-marker" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Locate me!"></span>
       </button>
+
       <!--Layers-->
-      <button type="button" class="btn btn-default" id="btn-layers">
+      <button type="button" class="btn btn-default controls-layers" id="btn-layers">
         <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Layers"></span>
       </button>
+
       <!--Photos-->
-      <button type="button" class="btn btn-default" id="btn-photos">
+      <button type="button" class="btn btn-default controls-photos" id="btn-photos">
         <span class="glyphicon glyphicon-camera" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Photos"></span>
       </button>
+
       <!--GeoData-->
-      <button type="button" class="btn btn-default" id="btn-geodata">
+      <button type="button" class="btn btn-default controls-geodata" id="btn-geodata">
         <span class="glyphicon glyphicon-globe" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="GeoData"></span>
       </button>
+
       <!--Settings-->
-      <button type="button" class="btn btn-default" id="btn-settings">
+      <button type="button" class="btn btn-default controls-settings" id="btn-settings">
         <span class="glyphicon glyphicon-cog" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Settings"></span>
       </button>
     </div>
@@ -50,10 +57,17 @@
   </div>
 
   <!--Basemaps Menu-->
-  <div class='z1 pin-topleft pad1 basemaps'>
-    <button type="button" class="btn btn-default" id="btn-locations">
-      <span class="glyphicon glyphicon-th basemap" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Basemaps"></span>
-    </button>
+  <div class='z1 pin-topright pad1 basemaps'>
+    <div class="btn-group" role="group" aria-label="basemaps">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="btn-locations">
+        <span class="glyphicon glyphicon-th basemap" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Basemaps"></span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right">
+        <li class="basemap-imagery"><a href="#">Imagery</a></li>
+        <li class="basemap-streets"><a href="#">Street</a></li>
+        <li class="basemap-topographic"><a href="#">Topographic</a></li>
+      </ul>
+    </div>
   </div>
 </div>
 <div class='pin-bottomleft pin-topleft options fill-light z10' id='options'>
@@ -62,5 +76,6 @@
 
 {% block footer %}
 <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.2/mapbox-gl.js"></script>
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v0.1.0/mapbox-gl-geocoder.js'></script>
 <script src="javascript/map.js"></script>
 {% endblock %}

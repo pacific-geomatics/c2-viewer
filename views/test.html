@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}C² Viewer{% endblock %}
+{% block description %}C² Viewer{% endblock %}
+
+<!-- Head -->
+{% block head %}
+<link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.2/mapbox-gl.css">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<style>
+/* Initial setup. Make everything flexible that should be.
+   http://codepen.io/benthinkin/pen/wadabR
+*/
+body {
+  padding:0;
+  margin:0;
+}
+.flex-container {
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-content: stretch;
+  align-items: stretch;
+  height: 100vh;
+}
+
+.content {
+  flex-flow: row;
+  flex-basis: 80%;
+}
+
+#map {
+  background-color: gray;
+  flex-basis: 80%;
+}
+
+.logo,
+.controls {
+  background-color: red;
+  flex-basis: 10%;
+}
+
+.controls-right {
+  flex-basis: 20%;
+  background-color: blue;
+}
+
+@media all and (max-width: 640px) {
+
+}
+
+</style>
+{% endblock %}
+
+<!-- Body -->
+{% block body %}
+<div class="flex-container">
+  <div class="logo">A</div>
+  <div class="flex-container content">
+    <div class="map" id="map"></div>
+    <div class="controls-right"></div>
+  </div>
+  <div class="controls">
+    <paper-button><iron-icon icon="check"></iron-icon>link</paper-button>
+    <paper-button raised><iron-icon icon="file-download"></iron-icon>raised</paper-button>
+    <paper-button toggles raised><iron-icon icon="favorite"></iron-icon>toggles</paper-button>
+    <paper-button disabled><iron-icon icon="block"></iron-icon>disabled</paper-button>
+  </div>
+</div>
+{% endblock %}
+
+<!-- Footer -->
+{% block footer %}
+<script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.2/mapbox-gl.js"></script>
+<script src="javascript/map.js"></script>
+{% endblock %}

@@ -20,13 +20,18 @@ nunjucks.configure('views', {
 });
 
 // Static files
-app.use(express.static('public'));
+app.use(express.static(__dirname + '/public'));
+app.use("/bower_components", express.static(__dirname + '/bower_components'));
 app.use(favicon(path.join('public', 'favicon.ico')));
 app.use(robots(path.join('public', 'robots.txt')));
 
 // Views
 app.get('/', function(req, res) {
     res.render('map.html');
+});
+
+app.get('/test', function(req, res) {
+    res.render('test.html');
 });
 
 // Start Server

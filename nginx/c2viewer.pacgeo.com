@@ -8,7 +8,7 @@ server {
     ssl_certificate_key /etc/letsencrypt/live/c2viewer.pacgeo.com/privkey.pem;
 
     location / {
-        proxy_pass http://127.0.0.1:8000/;
+        proxy_pass http://127.0.0.1:3000/;
     }
 }
 
