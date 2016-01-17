@@ -31,7 +31,8 @@ var map = new mapboxgl.Map({
   zoom: 15,
   attributionControl: false,
 }).addControl(new mapboxgl.Attribution({'position': 'bottom-left'}));
-map.addControl(new mapboxgl.Geocoder());
+var geocoder = new mapboxgl.Geocoder();
+map.addControl(geocoder);
 
 // Location Diagram
 var mapMini = new mapboxgl.Map({
@@ -93,5 +94,13 @@ $(".controls-locate-me").click(function() {
 
 // Sync Mini Map with Map
 map.on('moveend', function (e) {
-    mapMini.flyTo({ center: map.getCenter(), zoom: map.getZoom() - zoomDifference })
+  mapMini.flyTo({ center: map.getCenter(), zoom: map.getZoom() - zoomDifference })
 });
+
+// Click on Map and add LatLng to search box
+map.on("click", function(e) {
+  lat = parseFloat(Math.round(e.lngLat.lat * 10000) / 10000).toFixed(4);
+  lng = parseFloat(Math.round(e.lngLat.lng * 10000) / 10000).toFixed(4);
+  latlng = lat + ', ' + lng
+  $(".mapboxgl-ctrl-geocoder input").attr("value", latlng);
+})

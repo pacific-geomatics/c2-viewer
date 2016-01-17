@@ -14,61 +14,55 @@
 {% block body %}
 <div id='main-container'>
 
-  <!--Main Map-->
+  <!-- Main Map -->
   <div id="map" class="transition map"></div>
 
-  <!--Location Diagram-->
+  <!-- Location Diagram -->
   <div id="map-mini" class='circle pin-bottomright transition z10 map-location'></div>
 
-  <!--Bottom Controls-->
+  <!-- Bottom Controls -->
   <div id="controls" class="pin-bottomright pin-bottomleft controls text-center z5 transition fill-black">
     <div class="btn-group" role="group" aria-label="button-group">
 
-      <!--Locations-->
+      <!-- Locations -->
       <button type="button" class="btn btn-default controls-locate-me" id="btn-locations">
         <span class="glyphicon glyphicon-map-marker" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Locate me!"></span>
       </button>
 
-      <!--Layers-->
-      <button type="button" class="btn btn-default controls-layers" id="btn-layers">
-        <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Layers"></span>
-      </button>
+      <!-- Basemaps Menu -->
+      <div class="btn-group dropup" role="group" aria-label="basemaps">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="btn-locations">
+          <span class="glyphicon glyphicon-th basemap" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Basemaps"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li class="basemap-imagery"><a href="#">Imagery</a></li>
+          <li class="basemap-streets"><a href="#">Street</a></li>
+          <li class="basemap-topographic"><a href="#">Topographic</a></li>
+        </ul>
+      </div>
 
-      <!--Photos-->
+      <!-- Photos -->
       <button type="button" class="btn btn-default controls-photos" id="btn-photos">
         <span class="glyphicon glyphicon-camera" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Photos"></span>
       </button>
 
-      <!--GeoData-->
+      <!-- GeoData -->
       <button type="button" class="btn btn-default controls-geodata" id="btn-geodata">
         <span class="glyphicon glyphicon-globe" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="GeoData"></span>
       </button>
 
-      <!--Settings-->
+      <!-- Settings -->
       <button type="button" class="btn btn-default controls-settings" id="btn-settings">
         <span class="glyphicon glyphicon-cog" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Settings"></span>
       </button>
     </div>
   </div>
 
-  <!--PacGeo Logo-->
+  <!-- PacGeo Logo -->
   <div class='z1 pin-bottomleft pad0 transition' id="pacgeo-logo">
     <img src='images/pacgeo_logo_white_360px.png' width="150px" alt='PacGeo logo transition' />
   </div>
 
-  <!--Basemaps Menu-->
-  <div class='z1 pin-topright pad1 basemaps'>
-    <div class="btn-group" role="group" aria-label="basemaps">
-      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="btn-locations">
-        <span class="glyphicon glyphicon-th basemap" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Basemaps"></span>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-right">
-        <li class="basemap-imagery"><a href="#">Imagery</a></li>
-        <li class="basemap-streets"><a href="#">Street</a></li>
-        <li class="basemap-topographic"><a href="#">Topographic</a></li>
-      </ul>
-    </div>
-  </div>
 </div>
 <div class='pin-bottomleft pin-topleft options fill-light z10' id='options'>
 </div>
