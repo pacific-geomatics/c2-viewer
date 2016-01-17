@@ -8,7 +8,6 @@
   <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v0.1.0/mapbox-gl-geocoder.css'>
   <link rel="stylesheet" href="stylesheets/base.css">
   <link rel="stylesheet" href="stylesheets/map.css">
-  <link rel="import" href="/bower_components/paper-button/paper-button.html">
 {% endblock %}
 
 {% block body %}
@@ -55,13 +54,21 @@
           <li class="location-world"><a href="/">World</a></li>
           <li class="location-panama"><a href="/Panama">Panama</a></li>
           <li class="location-sierra-leone"><a href="/SierraLeone">Sierra Leone</a></li>
+          <li class="location-chalk-river"><a href="/ChalkRiver">Chalk River</a></li>
         </ul>
       </div>
 
       <!-- Settings -->
-      <button type="button" class="btn btn-default controls-settings disabled" id="btn-settings">
-        <span class="glyphicon glyphicon-cog" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Settings"></span>
-      </button>
+      <div class="btn-group dropup" role="group" aria-label="settings">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="btn-locations">
+          <span class="glyphicon glyphicon-cog settings" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Settings"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li class="settings-fullname disabled"><a>{{ user.fullName }}</a></li>
+          <li class="settings-login"><a href="/login">Login</a></li>
+          <li class="settings-logout"><a href="/logout">Logout</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 
@@ -89,6 +96,7 @@ var zoom = {{ zoom }};
 mapboxgl.accessToken = "{{ token }}";
 mapboxgl.config.FORCE_HTTPS = true;
 var zoomDifference = 5;
+console.log("Welcome {{ user.fullName }}!");
 </script>
 <script src="javascript/map.js"></script>
 {% endblock %}

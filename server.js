@@ -4,10 +4,12 @@
 
 // NodeJS Requirements
 import nunjucks from 'nunjucks';
-import express from 'express';
 import favicon from 'serve-favicon';
 import path from 'path';
 import robots from 'robots.txt';
+import express from 'express';
+import stormpath from 'express-stormpath';
+var router = express.Router();
 
 // Constants
 const PORT = 3000;
@@ -18,6 +20,9 @@ nunjucks.configure('views', {
     autoescape: true,
     express: app
 });
+app.use(stormpath.init(app, {
+  website: true
+}));
 
 // Static files
 app.use(express.static(__dirname + '/public'));
@@ -47,12 +52,13 @@ app.get('/:var(SierraLeone|sierraLeone|sierraleone|leaddog|leadDog|LeadDog)?', f
     });
 });
 
-app.get('/:var(cnl|CNL)?', function(req, res) {
+app.get('/:var(cnl|CNL|chalkriver|ChalkRiver)?', stormpath.groupsRequired(['cnl', 'pacgeo'], false), function(req, res) {
     res.render('map.html', {
         center: [46.052, -77.365],
         zoom: 15,
         imagery: 'pacgeo.neiemcnb',
-        token: token
+        token: token,
+        user: req.user
     });
 });
 
@@ -61,11 +67,23 @@ app.get('/:var(panama|Panama)?', function(req, res) {
         center: [8.1564, -77.6917],
         zoom: 15,
         imagery: 'pacgeo.o79jddlo',
-        token: token
+        token: token,
+        user: req.user
     });
 });
 
-// Start Server
-app.listen(PORT, function () {
-  console.log('Example app listening on port 3000!');
-})
+app.get('/basemaps', function(req, res) {
+    if (req.user) {
+        res.json({ hello: req.user.fullName })
+    } else {
+        res.json({ hello: "Guest" })
+    }
+});
+
+// Starting Server
+// Once Stormpath has initialized itself, start your web server!
+app.on('stormpath.ready', function () {
+    app.listen(PORT, function () {
+      console.log('Example app listening on port 3000!');
+    })
+});
