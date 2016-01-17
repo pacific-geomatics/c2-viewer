@@ -4,7 +4,7 @@
 {% block description %}C² Viewer{% endblock %}
 
 {% block head %}
-  <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.2/mapbox-gl.css">
+  <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.3/mapbox-gl.css">
   <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v0.1.0/mapbox-gl-geocoder.css'>
   <link rel="stylesheet" href="stylesheets/base.css">
   <link rel="stylesheet" href="stylesheets/map.css">
@@ -51,10 +51,9 @@
           <span class="glyphicon glyphicon-globe locations" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Locations"></span>
         </button>
         <ul class="dropdown-menu">
-          <li class="location-world"><a href="/">World</a></li>
-          <li class="location-panama"><a href="/Panama">Panama</a></li>
-          <li class="location-sierra-leone"><a href="/SierraLeone">Sierra Leone</a></li>
-          <li class="location-chalk-river"><a href="/ChalkRiver">Chalk River</a></li>
+          {% for location in locations %}
+          <li class="location-{{ location }}"><a href="/{{ location }}">{{ location}}</a></li>
+          {% endfor %}
         </ul>
       </div>
 
@@ -83,7 +82,7 @@
 {% endblock %}
 
 {% block footer %}
-<script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.2/mapbox-gl.js"></script>
+<script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.3/mapbox-gl.js"></script>
 <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v0.1.0/mapbox-gl-geocoder.js'></script>
 <script>
 var lat = {{ center[0] }};

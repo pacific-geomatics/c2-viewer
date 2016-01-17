@@ -21,7 +21,7 @@ var styleStreets = {
     "sources": {
         "pacgeo-streets": {
             "type": "raster",
-            "url": "mapbox://" + streetsID,
+            "url": "mapbox://mapbox.emerald",
             "tileSize": 256
         }
     },
@@ -37,7 +37,7 @@ var styleTopographic = {
     "sources": {
         "pacgeo-streets": {
             "type": "raster",
-            "url": "mapbox://" + topographicID,
+            "url": "mapbox://mapbox.streets",
             "tileSize": 256
         }
     },
@@ -54,15 +54,15 @@ var map = new mapboxgl.Map({
   style: styleImagery,
   center: center,
   zoom: zoom,
-  attributionControl: false,
-}).addControl(new mapboxgl.Attribution({'position': 'bottom-left'}));
+  attributionControl: {'position': 'bottom-left'}
+});
 var geocoder = new mapboxgl.Geocoder();
 map.addControl(geocoder);
 
 // Location Diagram
 var mapMini = new mapboxgl.Map({
   container: 'map-mini',
-  style: styleTopographic,
+  style: styleStreets,
   center: center,
   zoom: map.getZoom() - zoomDifference,
   attributionControl: false,
@@ -128,4 +128,5 @@ map.on("click", function(e) {
   lng = parseFloat(Math.round(e.lngLat.lng * 10000) / 10000).toFixed(4);
   latlng = lat + ', ' + lng
   $(".mapboxgl-ctrl-geocoder input").attr("value", latlng);
+  $(".mapboxgl-ctrl-geocoder input").text(latlng);
 })
