@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 git pull
 sudo docker build -t pacgeo/c2viewer .
 sudo docker stop c2viewer
