@@ -5,6 +5,7 @@
     z-index: 10;
     margin: 5px;
     bottom: 60px;
+    box-shadow: 5px 5px 15px rgba(100, 100, 100, 0.7);
 }
 #options { width: 80%; max-width: 400px; display: none;}
 #pacgeo-logo { bottom: 75px;}

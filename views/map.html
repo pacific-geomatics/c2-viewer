@@ -31,7 +31,7 @@
 
       <!-- Basemaps Menu -->
       <div class="btn-group dropup" role="group" aria-label="basemaps">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="btn-locations">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="btn-basemaps">
           <span class="glyphicon glyphicon-th basemap" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Basemaps"></span>
         </button>
         <ul class="dropdown-menu">
@@ -47,9 +47,16 @@
       </button>
 
       <!-- GeoData -->
-      <button type="button" class="btn btn-default controls-geodata disabled" id="btn-geodata">
-        <span class="glyphicon glyphicon-globe" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="GeoData"></span>
-      </button>
+      <div class="btn-group dropup" role="group" aria-label="locations">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="btn-locations">
+          <span class="glyphicon glyphicon-globe locations" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Locations"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li class="location-world"><a href="/">World</a></li>
+          <li class="location-panama"><a href="/Panama">Panama</a></li>
+          <li class="location-sierra-leone"><a href="/SierraLeone">Sierra Leone</a></li>
+        </ul>
+      </div>
 
       <!-- Settings -->
       <button type="button" class="btn btn-default controls-settings disabled" id="btn-settings">

@@ -38,10 +38,10 @@ app.get('/', function(req, res) {
     });
 });
 
-app.get('/:var(leaddog|leadDog|LeadDog)?', function(req, res) {
+app.get('/:var(SierraLeone|sierraLeone|sierraleone|leaddog|leadDog|LeadDog)?', function(req, res) {
     res.render('map.html', {
-        center: [7.858, -10.93],
-        zoom: 13,
+        center: [7.8732, -10.9358],
+        zoom: 12,
         imagery: 'pacgeo.onak54hl',
         token: token
     });
