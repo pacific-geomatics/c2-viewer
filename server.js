@@ -31,7 +31,7 @@ app.use(robots(path.join('public', 'robots.txt')));
 
 // Mapbox Tokens
 var token = 'pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ'
-var locations = ["World", "SierraLeone", "Panama"]
+var locations = ["World", "SierraLeone", "Panama", "CNL"]
 
 // Views
 app.get('/:var(|World|world)?', function(req, res) {
