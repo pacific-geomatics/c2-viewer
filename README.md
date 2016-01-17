@@ -1,6 +1,31 @@
 C&#178; Viewer
 =============
 
+Install
+-------
+
+Clone from **GitHub**
+
+```
+git clone git@github.com:pacific-geomatics/c2-viewer.git
+cd c2viewer
+```
+
+Deploy with **NPM**
+
+```bash
+npm install
+npm start
+```
+
+Deploy with **Docker**
+
+```bash
+sudo docker build -t pacgeo/c2viewer .
+sudo docker run -d -p 3000:3000 --name c2viewer pacgeo/c2viewer
+```
+
+
 Here are some of my thoughts on C2Viewer. As discussed I really like to C2Viewer, and I think it will be a great service for PacGeo to offer our customers.
 
 Deficiency
@@ -89,7 +114,7 @@ Unclass data /Beta version/ WMS on a laptop.
 - List of the other layers we could offer: building names, camera view sheds, ect
 - Based on feedback from CNL add additional layers on to the Tool.
 
- 
+
 ### 3rd Milestone
 
 **Deliver final version 15 Dec 2015.**
@@ -112,7 +137,7 @@ Gather feedback for addition scope for the next phase if required. Anything cool
 - Tile Map Service ([GDAL2Tiles.py](https://hub.docker.com/r/geodata/gdal/))
 - MBTiles ([GDAL2Tiles.py](https://github.com/developmentseed/gdal2mb))
 - WMS ([Mapbox Atlas](mapbox.com/atlas))
- 
+
 ### Elevation
 
 - 2m lidar +2 cm
@@ -179,7 +204,7 @@ Drape 2014
 
 - tms[20]:http://{switch:a,b,c}.tile.addxy.com/chalkriver/{zoom}/{x}/{y}.png?api_key=123
 - tms[20]:http://{switch:a,b,c}.tile.addxy.com/chalkriver-drape2014/{zoom}/{x}/{y}.png?api_key=123
- 
+
 
 #### Brockville Airport
 
@@ -205,7 +230,7 @@ Drape 2014
 - http://a.tile.addxy.com/brockville/24/0/0.png?api_key=123
 
 ### Layers
- 
+
 - Old imagery DRAPE (we could drop if required)
 
 - 30 cm WV-3 imagery May 15 (now that we have the ground control we should have the final version in a few days.)
@@ -214,14 +239,14 @@ Drape 2014
 
 - Buildings (from the data CNL gave us)
 
- 
+
 There may be other layers but have to see what data CNL gave us. I know Reticle / CNL wants some type of view shed with the 2 cm DEMs. Not sure how/what that would that would look like. Any ideas????
- 
- 
+
+
 ### CNL FTP info
 
 Please note: The user shall observe the following expectations and requirements: The DRAPE imagery we have is licensed to us by the province of Ontario through the Ministry of Natural Resources.  So when the DRAPE imagery is used, by the contractor, in any product it needs to give copyright credit to the province of Ontario.  I have placed a simple text file 'QUEENS_PRINTER.txt' that provides the wording to be used in a label that needs to be part of any product (e.g. hardcopy, softcopy map such as a PDF) that uses the
- 
+
 - Imagery.server:  https://sftp.cnl.ca/thinclient/Login.aspx
 - Username: Reticle
 - Password: reticle_dec6

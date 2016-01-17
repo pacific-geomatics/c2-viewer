@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}C² Viewer{% endblock %}
+{% block description %}C² Viewer{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.2/mapbox-gl.css">
+  <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v0.1.0/mapbox-gl-geocoder.css'>
+  <link rel="stylesheet" href="stylesheets/base.css">
+  <link rel="stylesheet" href="stylesheets/map.css">
+  <link rel="import" href="/bower_components/paper-button/paper-button.html">
+{% endblock %}
+
+{% block body %}
+<div id='main-container'>
+
+  <!-- Main Map -->
+  <div id="map" class="transition map"></div>
+
+  <!-- Location Diagram -->
+  <div id="map-mini" class='circle pin-bottomright transition z10 map-location'></div>
+
+  <!-- Bottom Controls -->
+  <div id="controls" class="pin-bottomright pin-bottomleft controls text-center z5 transition fill-black">
+    <div class="btn-group" role="group" aria-label="button-group">
+
+      <!-- Locations -->
+      <button type="button" class="btn btn-default controls-locate-me" id="btn-locations">
+        <span class="glyphicon glyphicon-map-marker" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Locate me!"></span>
+      </button>
+
+      <!-- Basemaps Menu -->
+      <div class="btn-group dropup" role="group" aria-label="basemaps">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="btn-basemaps">
+          <span class="glyphicon glyphicon-th basemap" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Basemaps"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li class="basemap-imagery"><a href="#">Imagery</a></li>
+          <li class="basemap-streets"><a href="#">Street</a></li>
+          <li class="basemap-topographic"><a href="#">Topographic</a></li>
+        </ul>
+      </div>
+
+      <!-- Photos -->
+      <button type="button" class="btn btn-default controls-photos disabled" id="btn-photos">
+        <span class="glyphicon glyphicon-camera" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Photos"></span>
+      </button>
+
+      <!-- GeoData -->
+      <div class="btn-group dropup" role="group" aria-label="locations">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="btn-locations">
+          <span class="glyphicon glyphicon-globe locations" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Locations"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li class="location-world"><a href="/">World</a></li>
+          <li class="location-panama"><a href="/Panama">Panama</a></li>
+          <li class="location-sierra-leone"><a href="/SierraLeone">Sierra Leone</a></li>
+        </ul>
+      </div>
+
+      <!-- Settings -->
+      <button type="button" class="btn btn-default controls-settings disabled" id="btn-settings">
+        <span class="glyphicon glyphicon-cog" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Settings"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- PacGeo Logo -->
+  <div class='z1 pin-bottomleft pad0 transition' id="pacgeo-logo">
+    <img src='images/pacgeo_logo_white_360px.png' width="150px" alt='PacGeo logo transition' />
+  </div>
+
+</div>
+<div class='pin-bottomleft pin-topleft options fill-light z10' id='options'>
+</div>
+{% endblock %}
+
+{% block footer %}
+<script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.2/mapbox-gl.js"></script>
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v0.1.0/mapbox-gl-geocoder.js'></script>
+<script>
+var lat = {{ center[0] }};
+var lng = {{ center[1] }};
+var center = [lng, lat];
+var imageryID = "{{ imagery }}";
+var streetsID = "pacgeo.onakdha8";
+var topographicID = "pacgeo.onakba36";
+var zoom = {{ zoom }};
+mapboxgl.accessToken = "{{ token }}";
+mapboxgl.config.FORCE_HTTPS = true;
+var zoomDifference = 5;
+</script>
+<script src="javascript/map.js"></script>
+{% endblock %}
