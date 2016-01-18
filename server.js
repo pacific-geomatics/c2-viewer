@@ -101,7 +101,7 @@ app.get('/CNL/Petawawa', stormpath.groupsRequired(['cnl', 'pacgeo'], false), fun
 app.get('/Panama/Yaviza', function(req, res) {
     res.render('map.html', {
         center: [8.1564, -77.6917],
-        zoom: 15,
+        zoom: 16,
         imagery: 'pacgeo.o79jddlo',
         token: token,
         user: req.user,
