@@ -35,8 +35,8 @@ app.use(robots(path.join('public', 'robots.txt')));
 var token = 'pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ'
 var locations = [
     { name: "World", href: ""},
-    { name: "Daru, Sierra Leone", href: "Daru-Sierra-Leone" },
-    { name: "Yaviza, Panama", href: "Yaviza-Panama"},
+    { name: "Daru, Sierra Leone", href: "Sierra-Leone/Daru" },
+    { name: "Yaviza, Panama", href: "Panama/Yaviza"},
     { name: "CNL", href: "CNL"}
 ]
 
@@ -51,15 +51,6 @@ app.get('/:var(|World)?', function(req, res) {
     });
 });
 
-app.get('/Daru-Sierra-Leone', function(req, res) {
-    res.render('map.html', {
-        center: [7.9878, -10.8424],
-        zoom: 15,
-        imagery: 'pacgeo.onak54hl',
-        token: token,
-        locations: locations
-    });
-});
 
 // CNL Config
 var configCNL = {
@@ -68,9 +59,9 @@ var configCNL = {
     locations: [
         { name: "World", href: ""},
         { name: "CNL", href: "CNL"},
-        { name: "Chalk River", href: "Chalk-River"},
-        { name: "Petawawa", href: "Petawawa"},
-        { name: "Deep River", href: "Deep-River"},
+        { name: "⚫ Chalk River", href: "CNL/Chalk-River"},
+        { name: "⚫ Petawawa", href: "CNL/Petawawa"},
+        { name: "⚫ Deep River", href: "CNL/Deep-River"},
     ]
 };
 
@@ -83,15 +74,15 @@ app.get('/CNL', stormpath.groupsRequired(['cnl', 'pacgeo'], false), function(req
 });
 
 // CNL Location - Chalk River
-app.get('/Chalk-River', stormpath.groupsRequired(['cnl', 'pacgeo'], false), function(req, res) {
-    configCNL.center = [46.022030, -77.451456];
+app.get('/CNL/Chalk-River', stormpath.groupsRequired(['cnl', 'pacgeo'], false), function(req, res) {
+    configCNL.center = [46.0174, -77.4495];
     configCNL.zoom = 14;
     configCNL.user = req.user;
     res.render('map.html', configCNL );
 });
 
 // CNL Location - Deep River
-app.get('/Deep-River', stormpath.groupsRequired(['cnl', 'pacgeo'], false), function(req, res) {
+app.get('/CNL/Deep-River', stormpath.groupsRequired(['cnl', 'pacgeo'], false), function(req, res) {
     configCNL.center = [46.100351, -77.488929];
     configCNL.zoom = 14;
     configCNL.user = req.user;
@@ -99,7 +90,7 @@ app.get('/Deep-River', stormpath.groupsRequired(['cnl', 'pacgeo'], false), funct
 });
 
 // CNL Location - Petawawa
-app.get('/Petawawa', stormpath.groupsRequired(['cnl', 'pacgeo'], false), function(req, res) {
+app.get('/CNL/Petawawa', stormpath.groupsRequired(['cnl', 'pacgeo'], false), function(req, res) {
     configCNL.center = [45.8948, -77.2681];
     configCNL.zoom = 14;
     configCNL.user = req.user;
@@ -107,13 +98,24 @@ app.get('/Petawawa', stormpath.groupsRequired(['cnl', 'pacgeo'], false), functio
 });
 
 // Panama
-app.get('/Yaviza-Panama', function(req, res) {
+app.get('/Panama/Yaviza', function(req, res) {
     res.render('map.html', {
         center: [8.1564, -77.6917],
         zoom: 15,
         imagery: 'pacgeo.o79jddlo',
         token: token,
         user: req.user,
+        locations: locations
+    });
+});
+
+// Sierra Leone
+app.get('/Sierra-Leone/Daru', function(req, res) {
+    res.render('map.html', {
+        center: [7.9878, -10.8424],
+        zoom: 15,
+        imagery: 'pacgeo.onak54hl',
+        token: token,
         locations: locations
     });
 });

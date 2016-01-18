@@ -7,8 +7,8 @@
   <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.3/mapbox-gl.js"></script>
   <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.3/mapbox-gl.css">
   <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v0.1.0/mapbox-gl-geocoder.css'>
-  <link rel="stylesheet" href="stylesheets/base.css">
-  <link rel="stylesheet" href="stylesheets/map.css">
+  <link rel="stylesheet" href="/stylesheets/base.css">
+  <link rel="stylesheet" href="/stylesheets/map.css">
 {% endblock %}
 
 {% block body %}
@@ -41,10 +41,15 @@
         </ul>
       </div>
 
-      <!-- Photos -->
-      <button type="button" class="btn btn-default controls-photos disabled" id="btn-photos">
-        <span class="glyphicon glyphicon-camera" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Photos"></span>
-      </button>
+      <!-- Features -->
+      <div class="btn-group dropup" role="group" aria-label="features">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="btn-locations">
+          <span class="glyphicon glyphicon-tasks features" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Features"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li class="features-collection-plan active"><a href="#">Collection Plan</a></li>
+        </ul>
+      </div>
 
       <!-- GeoData -->
       <div class="btn-group dropup" role="group" aria-label="locations">
@@ -74,7 +79,7 @@
 
   <!-- PacGeo Logo -->
   <div class='z1 pin-bottomleft pad0 transition' id="pacgeo-logo">
-    <img src='images/pacgeo_logo_white_360px.png' width="150px" alt='PacGeo logo transition' />
+    <img src='/images/pacgeo_logo_white_360px.png' width="150px" alt='PacGeo logo transition' />
   </div>
 
 </div>
@@ -97,5 +102,5 @@ mapboxgl.config.FORCE_HTTPS = true;
 var zoomDifference = 5;
 console.log("Welcome {{ user.fullName }}!");
 </script>
-<script src="javascript/map.js"></script>
+<script src="/javascript/map.js"></script>
 {% endblock %}

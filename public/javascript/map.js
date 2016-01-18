@@ -58,6 +58,7 @@ var map = new mapboxgl.Map({
 });
 var geocoder = new mapboxgl.Geocoder();
 map.addControl(geocoder);
+map.doubleClickZoom.disable();
 
 // Location Diagram
 var mapMini = new mapboxgl.Map({
@@ -79,19 +80,28 @@ $('.btn.danger').button('toggle').addClass('fat')
 // Basemap controls
 $(".basemap-imagery").click(function() {
   map.setStyle(styleImagery)
-  $("#pacgeo-logo img").attr("src", "images/pacgeo_logo_white_360px.png")
+  $("#pacgeo-logo img").attr("src", "/images/pacgeo_logo_white_360px.png")
 });
 
 $(".basemap-topographic").click(function() {
   map.setStyle(styleTopographic)
-  $("#pacgeo-logo img").attr("src", "images/pacgeo_logo_grey_360px.png")
+  $("#pacgeo-logo img").attr("src", "/images/pacgeo_logo_grey_360px.png")
 });
 
 $(".basemap-streets").click(function() {
   map.setStyle(styleStreets)
-  $("#pacgeo-logo img").attr("src", "images/pacgeo_logo_grey_360px.png")
+  $("#pacgeo-logo img").attr("src", "/images/pacgeo_logo_grey_360px.png")
 });
 
+$(".features-collection-plan").click(function() {
+  if ($(".features-collection-plan").hasClass('active')) {
+    map.removeLayer("polygon");
+    $(".features-collection-plan").toggleClass('active');
+  } else {
+    addLayer("polygon");
+    $(".features-collection-plan").toggleClass('active');
+  }
+});
 
 // Bottom Controls
 $(".controls-locate-me").click(function() {
@@ -122,27 +132,12 @@ map.on('moveend', function (e) {
   mapMini.flyTo({ center: map.getCenter(), zoom: map.getZoom() - zoomDifference })
 });
 
-// Click on Map and add LatLng to search box
-map.on("click", function(e) {
-  var lat = parseFloat(Math.round(e.lngLat.lat * 10000) / 10000).toFixed(4);
-  var lng = parseFloat(Math.round(e.lngLat.lng * 10000) / 10000).toFixed(4);
-  var latlng = lat + ', ' + lng
-  $(".mapboxgl-ctrl-geocoder input").attr("value", latlng);
-  $(".mapboxgl-ctrl-geocoder input").text(latlng);
-})
 
-// Add Data
-map.on('style.load', function () {
-    var polygon = new mapboxgl.GeoJSONSource({data: '/panama/polygon.geojson'});
-
-    // Add Sources
-    map.addSource('polygon', polygon);
-
-    // Polygon
+function addLayer(source) {
     map.addLayer({
-        "id": "polygon",
+        "id": source,
         "type": "line",
-        "source": "polygon",
+        "source": source,
         "interactive": true,
         "layout": {
             "line-join": "round",
@@ -153,7 +148,33 @@ map.on('style.load', function () {
             "line-width": 6
         }
     });
+}
+
+// Add Data
+map.on('style.load', function () {
+    var polygon = new mapboxgl.GeoJSONSource({data: '/panama/polygon.geojson'});
+
+    // Add Sources
+    map.addSource('polygon', polygon);
+    addLayer('polygon')
 });
+
+map.on('dblclick', function (e) {
+    var lat = parseFloat(Math.round(e.lngLat.lat * 10000) / 10000).toFixed(4);
+    var lng = parseFloat(Math.round(e.lngLat.lng * 10000) / 10000).toFixed(4);
+    var latlng = lat + ', ' + lng
+
+    new mapboxgl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML("<big>" + latlng +"</big>" )
+        .addTo(map);
+});
+
+
+// Click on Map and add LatLng to search box
+map.on("click", function(e) {
+
+})
 
 map.on('click', function (e) {
     map.featuresAt(e.point, {layer: 'polygon', radius: 10, includeGeometry: true}, function (err, features) {
