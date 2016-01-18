@@ -124,9 +124,46 @@ map.on('moveend', function (e) {
 
 // Click on Map and add LatLng to search box
 map.on("click", function(e) {
-  lat = parseFloat(Math.round(e.lngLat.lat * 10000) / 10000).toFixed(4);
-  lng = parseFloat(Math.round(e.lngLat.lng * 10000) / 10000).toFixed(4);
-  latlng = lat + ', ' + lng
+  var lat = parseFloat(Math.round(e.lngLat.lat * 10000) / 10000).toFixed(4);
+  var lng = parseFloat(Math.round(e.lngLat.lng * 10000) / 10000).toFixed(4);
+  var latlng = lat + ', ' + lng
   $(".mapboxgl-ctrl-geocoder input").attr("value", latlng);
   $(".mapboxgl-ctrl-geocoder input").text(latlng);
 })
+
+// Add Data
+map.on('style.load', function () {
+    var polygon = new mapboxgl.GeoJSONSource({data: '/panama/polygon.geojson'});
+
+    // Add Sources
+    map.addSource('polygon', polygon);
+
+    // Polygon
+    map.addLayer({
+        "id": "polygon",
+        "type": "line",
+        "source": "polygon",
+        "interactive": true,
+        "layout": {
+            "line-join": "round",
+            "line-cap": "round"
+        },
+        "paint": {
+            "line-color": "#1087bf",
+            "line-width": 6
+        }
+    });
+});
+
+map.on('click', function (e) {
+    map.featuresAt(e.point, {layer: 'polygon', radius: 10, includeGeometry: true}, function (err, features) {
+        if (err || !features.length)
+            return;
+
+        var feature = features[0];
+        new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            .setHTML("<b><u>" + feature.properties.title +"</u></b><br/><p>" + feature.properties.description + "</p>")
+            .addTo(map);
+    });
+});
