@@ -79,20 +79,30 @@ $('.btn.danger').button('toggle').addClass('fat')
 
 // Basemap controls
 $(".basemap-imagery").click(function() {
-  map.setStyle(styleImagery)
-  $("#pacgeo-logo img").attr("src", "/images/pacgeo_logo_white_360px.png")
+    map.setStyle(styleImagery)
+    $(".basemap-imagery").addClass('active');
+    $(".basemap-topographic").removeClass('active');
+    $(".basemap-streets").removeClass('active');
+    $("#pacgeo-logo img").attr("src", "/images/pacgeo_logo_white_360px.png")
 });
 
 $(".basemap-topographic").click(function() {
-  map.setStyle(styleTopographic)
-  $("#pacgeo-logo img").attr("src", "/images/pacgeo_logo_grey_360px.png")
+    map.setStyle(styleTopographic)
+    $(".basemap-imagery").removeClass('active');
+    $(".basemap-topographic").addClass('active');
+    $(".basemap-streets").removeClass('active');
+    $("#pacgeo-logo img").attr("src", "/images/pacgeo_logo_grey_360px.png")
 });
 
 $(".basemap-streets").click(function() {
-  map.setStyle(styleStreets)
-  $("#pacgeo-logo img").attr("src", "/images/pacgeo_logo_grey_360px.png")
+    map.setStyle(styleStreets)
+    $(".basemap-imagery").removeClass('active');
+    $(".basemap-topographic").removeClass('active');
+    $(".basemap-streets").addClass('active');
+    $("#pacgeo-logo img").attr("src", "/images/pacgeo_logo_grey_360px.png")
 });
 
+// Features
 $(".features-collection-plan").click(function() {
   if ($(".features-collection-plan").hasClass('active')) {
     map.removeLayer("polygon");

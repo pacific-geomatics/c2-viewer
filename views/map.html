@@ -35,7 +35,7 @@
           <span class="glyphicon glyphicon-th basemap" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Basemaps"></span>
         </button>
         <ul class="dropdown-menu">
-          <li class="basemap-imagery"><a href="#">Imagery</a></li>
+          <li class="basemap-imagery active"><a href="#">Imagery</a></li>
           <li class="basemap-streets"><a href="#">Street</a></li>
           <li class="basemap-topographic"><a href="#">Topographic</a></li>
         </ul>
@@ -48,6 +48,8 @@
         </button>
         <ul class="dropdown-menu">
           <li class="features-collection-plan active"><a href="#">Collection Plan</a></li>
+          <li class="features-poi disabled"><a href="#">Points of Interest</a></li>
+          <li class="features-boundaries disabled"><a href="#">Boundaries</a></li>
         </ul>
       </div>
 
@@ -102,5 +104,5 @@ mapboxgl.config.FORCE_HTTPS = true;
 var zoomDifference = 5;
 console.log("Welcome {{ user.fullName }}!");
 </script>
-<script src="/javascript/map.js"></script>
+<script src="/javascript/bundle.js"></script>
 {% endblock %}
