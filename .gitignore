@@ -8,6 +8,8 @@ logs
 *.log
 c2viewer.log.*
 
+/public/**/*.js
+
 # Runtime data
 pids
 *.pid
