@@ -1,17 +1,15 @@
 import express from 'express';
 
-(function () {
-  var router = express.Router();
+var router = express.Router();
 
-  // middleware that is specific to this router
-  router.use(function timeLog(req, res, next) {
-    console.log('Time: ', Date.now());
-    next();
-  });
-  // define the home page route
-  router.get('/', function(req, res) {
-    res.render('index.html');
-  });
+// middleware that is specific to this router
+router.use(function timeLog(req, res, next) {
+  console.log('Time: ', Date.now());
+  next();
+});
+// define the home page route
+router.get('/', function(req, res) {
+  res.render('index.html');
+});
 
-  module.exports = router;
-})();
+module.exports = router;

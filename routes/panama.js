@@ -1,6 +1,8 @@
 import express from 'express';
 
 (function () {
+  'use strict';
+  
   var router = express.Router();
 
   // middleware that is specific to this router
