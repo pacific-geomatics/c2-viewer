@@ -7,7 +7,7 @@ env
 logs
 *.log
 c2viewer.log.*
-bundle.js
+/public/**/*.js
 
 # Runtime data
 pids
