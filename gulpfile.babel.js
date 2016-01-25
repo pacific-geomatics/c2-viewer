@@ -1,10 +1,9 @@
 import path from 'path';
-import browserify from 'browserify';
-import webpack from 'webpack';
 import source from 'vinyl-source-stream';
 import buffer from 'vinyl-buffer';
 import watchify from 'watchify';
 import { assign } from 'lodash';
+import browserify from 'browserify';
 import gulp from 'gulp';
 import gutil from 'gulp-util';
 import clean from 'gulp-clean';
@@ -15,12 +14,11 @@ import nodemon from 'gulp-nodemon';
 import streamify from 'gulp-streamify';
 import sourcemaps from 'gulp-sourcemaps';
 
-
 // Browserify
 // https://github.com/gulpjs/gulp/blob/master/docs/recipes/fast-browserify-builds-with-watchify.md
 // add custom browserify options here
 var customOpts = {
-  entries: ['./src/index.js'],
+  entries: ['./src/app.js'],
   debug: true
 };
 var opts = assign({}, watchify.args, customOpts);
@@ -50,13 +48,13 @@ function bundle() {
 // Clean
 gulp.task('clean', function(){
   return gulp.src(['dist/*'], { read: false })
-  .pipe(clean());
+    .pipe(clean());
 });
 
 // Move
 gulp.task('move',['clean'], function(){
-  gulp.src(['src/public/**/*'])
-  .pipe(gulp.dest('dist'));
+  return gulp.src(['src/public/**/*'])
+    .pipe(gulp.dest('dist'));
 });
 
 // Lint

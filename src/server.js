@@ -4,11 +4,7 @@ import favicon from 'serve-favicon';
 import robots from 'robots.txt';
 import express from 'express';
 import stormpath from 'express-stormpath';
-import gulp from 'gulp';
-import Router from './routes';
 import { port } from './config';
-import index from './routes/index';
-import panama from './routes/panama';
 
 // Configure
 const app = global.app = express();
@@ -30,8 +26,8 @@ app.use(favicon('./dist/favicon.ico'));
 app.use(robots('./dist/robots.txt'));
 
 // Views
-app.use('/', index)
-app.use('/panama', panama)
+app.use('/', require('./routes/index'))
+app.use('/panama', require('./routes/panama'))
 
 // Starting Server
 app.on('stormpath.ready', function () {
