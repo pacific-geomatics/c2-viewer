@@ -1,4 +1,4 @@
-FROM node:slim
+FROM mhart/alpine-node
 MAINTAINER Denis Carriere <carriere.denis@gmail.com>
 
 # Stormpath Credentials
@@ -9,15 +9,12 @@ ENV STORMPATH_CLIENT_APIKEY_SECRET=7ukbB9oDRjgyMEX/057SKtAwwLtOR3fbKvNQOp4i/uI
 RUN mkdir -p /src
 WORKDIR /src
 
-# Install global dependencies
+# Install Node dependencies
 RUN npm install gulp babel-cli -g
-
-# Bundle app source
-COPY package.json /src/
 RUN npm install
 
 # Bundle app source
-COPY . /src/
+COPY . /src
 
 # Ports
 EXPOSE 3000
