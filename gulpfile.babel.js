@@ -26,12 +26,16 @@ var opts = assign({}, watchify.args, customOpts);
 var b = watchify(browserify(opts));
 b.transform('babelify', {presets: ['es2015', 'react']})
 
-gulp.task('browserify', bundle);
-b.on('update', bundle);
+gulp.task('browserify', bundle); // so you can run `gulp js` to build the file
+b.on('update', bundle); // on any dep update, runs the bundler
+b.on('log', gutil.log); // output build logs to terminal
+
 function bundle() {
   return b.bundle()
+    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe(source('bundle.js'))
     //.pipe(streamify(uglify()))
+    .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./dist/javascript'));
@@ -66,7 +70,7 @@ gulp.task('lint', function () {
 /**
  * Start Server
  */
-gulp.task('start', ['move', 'browserify', 'lint'], function () {
+gulp.task('start', ['clean', 'move', 'browserify'], function () {
   nodemon({
     script: 'src/server.js'
   , exec: 'babel-node'

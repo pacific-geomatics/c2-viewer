@@ -14,10 +14,13 @@
     "watch": "gulp watch"
   },
   "dependencies": {
+    "bootstrap": "^3.3.6",
     "express": "^4.13.3",
     "express-stormpath": "^2.3.5",
     "jquery": "^2.2.0",
     "lodash": "^4.0.0",
+    "mapbox-gl": "^0.12.4",
+    "mapbox.js": "^2.2.4",
     "nunjucks": "^2.3.0",
     "radium": "^0.16.4",
     "react": "^0.14.6",

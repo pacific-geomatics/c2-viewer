@@ -1,29 +1,48 @@
 import path from 'path';
-import favicon from 'serve-favicon';
 import robots from 'robots.txt';
 import express from 'express';
+import favicon from 'serve-favicon';
+import nunjucks from 'nunjucks';
 import stormpath from 'express-stormpath';
-import { port } from './config';
 import index from './routes';
+import { port } from './config';
 
-// Configure
+/**
+ * Configure
+ */
 const app = global.app = express();
 
-// Enable Stormpath
+/**
+ * Enable Nunjucks
+ */
+nunjucks.configure(path.join(__dirname, 'views'), {
+    autoescape: true,
+    express: app
+});
+
+/**
+ * Enable Stormpath
+ */
 app.use(stormpath.init(app, {
   website: true
 }));
 
-// Static files
+/**
+ * Static files
+ */
 app.use(express.static('./dist'));
-app.use(favicon('./dist/favicon.ico'));
-app.use(robots('./dist/robots.txt'));
+app.use(favicon(path.resolve(__dirname, 'public', 'favicon.ico')));
+app.use(robots(path.resolve(__dirname, 'public', 'robots.txt')));
 
-// Views
+/**
+ * Views
+ */
 app.use('/', index)
 app.use('/panama', stormpath.groupsRequired(['cnl', 'pacgeo'], false), index)
 
-// Starting Server
+/**
+ * Starting Server
+ */
 app.on('stormpath.ready', function () {
   app.listen(port, function () {
     console.log('Example app listening on port 3000!');

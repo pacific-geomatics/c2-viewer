@@ -7,7 +7,7 @@ router.use(function timeLog(req, res, next) {
   next();
 });
 router.get('/', function(req, res) {
-  res.render('index.html');
+  res.render('map.html');
 });
 
 module.exports = router;

@@ -1,0 +1,25 @@
+#map { position:absolute; top:0; bottom:55px; width:100%; }
+#map-mini {
+    width:250px;
+    height:250px;
+    z-index: 10;
+    margin: 5px;
+    bottom: 60px;
+    box-shadow: 5px 5px 15px rgba(100, 100, 100, 0.7);
+}
+#options { width: 80%; max-width: 400px; display: none;}
+#pacgeo-logo { bottom: 75px;}
+#controls { height: 55px; line-height: 55px; }
+.basemaps { top: 50px; }
+.transition { transition: opacity .30s ease-in-out, width 1s, height 1s, transform 1s, bottom 1s;}
+.glyphicon { font-size: 30px; }
+.btn-default { background-color: rgba(255, 255, 255, 1);}
+.btn-group { background-color: rgba(25, 25, 25, 1); }
+.circle { border-radius: 50%; }
+
+@media screen and (max-width: 750px) {
+    #map-mini { width:120px; height:120px; }
+}
+
+@media screen and (max-width: 500px) {
+}
