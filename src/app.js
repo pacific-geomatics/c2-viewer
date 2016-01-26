@@ -3,7 +3,7 @@
 //import Timer from './components/timer.js'
 //import Radium from 'radium';
 //import mapboxgl from 'mapbox-gl';
-import { } from './components/hello';
+import classicStyles from './modules/classicStyles';
 
 // Mapbox Tokens
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ';
@@ -11,8 +11,10 @@ mapboxgl.accessToken = 'pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2Y
 // Map Configuration
 var map = new mapboxgl.Map({
   container: 'map',
-  style: 'mapbox://styles/mapbox/streets-v8',
-  center: [-75.0, 45.0],
-  zoom: 15,
+  style: classicStyles('pacgeo.p054nodi'),
+  center: [43.128, 36.32],
+  zoom: 17,
   attributionControl: {'position': 'bottom-left'}
 });
+var geocoder = new mapboxgl.Geocoder();
+map.addControl(geocoder);

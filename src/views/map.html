@@ -5,7 +5,9 @@
 
 {% block head %}
   <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.4/mapbox-gl.js'></script>
-  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.4/mapbox-gl.css' rel='stylesheet' />
+  <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v0.1.0/mapbox-gl-geocoder.js'></script>
+  <link rel='stylesheet' href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.4/mapbox-gl.css' />
+  <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v0.1.0/mapbox-gl-geocoder.css' type='text/css' />
   <link rel="stylesheet" href="/stylesheets/base.css">
   <link rel="stylesheet" href="/stylesheets/map.css">
 {% endblock %}
@@ -86,4 +88,8 @@
   </div>
   <div class='pin-bottomleft pin-topleft options fill-light z10' id='options'>
   </div>
+{% endblock %}
+
+{% block footer %}
+  <script src='javascript/bundle.js'></script>
 {% endblock %}
