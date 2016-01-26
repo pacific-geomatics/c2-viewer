@@ -2,7 +2,8 @@
 //import ReactDOM from 'react-dom';
 //import Timer from './components/timer.js'
 //import Radium from 'radium';
-import mapboxgl from 'mapbox-gl';
+//import mapboxgl from 'mapbox-gl';
+import { } from './components/hello';
 
 // Mapbox Tokens
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ';
