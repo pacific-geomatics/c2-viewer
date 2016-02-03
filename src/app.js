@@ -1,9 +1,26 @@
-//import React from 'react';
-//import ReactDOM from 'react-dom';
-//import Timer from './components/timer.js'
-//import Radium from 'radium';
-//import mapboxgl from 'mapbox-gl';
+/**
+ * C2 Viewer App
+ */
+import React, { Component } from 'react';
+import classNames from 'classnames';
+import ReactDOM from 'react-dom';
+import Map from './components/Map';
 import classicStyles from './modules/classicStyles';
+import mapboxgl from 'mapbox-gl';
+import './css/styles.css';
+
+const App = React.createClass({
+  render() {
+    return (
+      <Map />
+    );
+  }
+});
+
+ReactDOM.render(
+  <App />,
+  document.getElementById('app')
+);
 
 // Mapbox Tokens
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ';
@@ -14,7 +31,7 @@ var map = new mapboxgl.Map({
   style: classicStyles('pacgeo.p054nodi'),
   center: [43.128, 36.32],
   zoom: 17,
-  attributionControl: {'position': 'bottom-left'}
+  attributionControl: false
 });
-var geocoder = new mapboxgl.Geocoder();
-map.addControl(geocoder);
+
+export default map;
