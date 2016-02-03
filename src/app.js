@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import ReactDOM from 'react-dom';
 import Map from './components/Map';
+import { t } from './tokens';
 import mapboxgl from 'mapbox-gl';
 import './css/styles.css';
 
@@ -22,12 +23,12 @@ ReactDOM.render(
 );
 
 // Mapbox Tokens
-mapboxgl.accessToken = 'pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ';
+mapboxgl.accessToken = t;
 
 // Map Configuration
 var map = new mapboxgl.Map({
   container: 'map',
-  style: 'mapbox://styles/pacgeo/cik67f0kv008onykoyvznp1nq',
+  style: 'mapbox://styles/pacgeo/cik68r1ds00bs96kpiidveijr',
   center: [43.128, 36.32],
   zoom: 17,
   attributionControl: false
