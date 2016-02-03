@@ -1,21 +1,32 @@
 /**
  * Mapbox Map
  */
-import React, { Component } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import map from '../app';
 
-function handleClick(e) {
-  console.log(e.nativeEvent.which); // type: left, value - 1
-  console.log(e.nativeEvent.which); // type: right, value - 3
-  console.log(e.type); // type: left, value - click
-  console.log(e.type); // type: right, value - contextmenu
-}
-
-const Map = React.createClass({
-  render() {
-    return <div id="map" onKeyDown={ handleClick } onClick={ handleClick } onContextMenu={ handleClick }></div>;
+class Map extends React.Component {
+  handleClick(e) {
+    console.log(e.nativeEvent.which);
+    console.log(e.type);
+    console.log(e.nativeEvent);
+    console.log(e.nativeEvent.x, e.nativeEvent.y);
   }
-});
+  render() {
+    return (
+      <div id="map"
+        onDoubleClick={ this.handleClick }
+        onDrag={ this.handleClick }
+        onKeyDown={ this.handleClick }
+        onClick={ this.handleClick }
+        onContextMenu={ this.handleClick }
+        onMouseOver={ this.handleClick }
+        onWheel={ this.handleClick }
+        onCopy={ this.handleClick }
+        onPaste={ this.handleClick }>
+      </div>
+    )
+  }
+}
 
 export default Map;

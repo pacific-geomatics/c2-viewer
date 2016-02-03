@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import ReactDOM from 'react-dom';
 import Map from './components/Map';
-import classicStyles from './modules/classicStyles';
 import mapboxgl from 'mapbox-gl';
 import './css/styles.css';
 
@@ -28,10 +27,19 @@ mapboxgl.accessToken = 'pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2Y
 // Map Configuration
 var map = new mapboxgl.Map({
   container: 'map',
-  style: classicStyles('pacgeo.p054nodi'),
+  style: 'mapbox://styles/pacgeo/cik67f0kv008onykoyvznp1nq',
   center: [43.128, 36.32],
   zoom: 17,
   attributionControl: false
 });
+
+function handleClick(e) {
+  map.featuresAt(e.point, {radius: 5}, function (err, features) {
+    console.log(features);
+  });
+}
+
+map.on('click', handleClick);
+map.keyboard.disable()
 
 export default map;
