@@ -1,51 +1,53 @@
 /**
  * Mapbox Map
  */
+import $ from 'jquery';
 import React from 'react';
 import classNames from 'classnames';
-import map from '../app';
+import mapboxgl from 'mapbox-gl';
+import { accessToken } from './accessToken';
+import { mapStyles } from './mapStyles';
+
+const styles = {
+  map: {
+    'position' : 'absolute',
+    'bottom': 0,
+    'top': 0,
+    'width': '100%',
+    'zIndex': 0
+  }
+}
+/**
+ * On Click Functions
+ */
+function handleClick(e) {
+  map.featuresAt(e.point, {radius: 5}, function (err, features) {
+    console.log(features);
+  });
+}
+
+/**
+ * When Map is ready, enable Mapbox Configurations
+ */
+$( "#map" ).ready(function(){
+  mapboxgl.accessToken = accessToken;
+  const map = new mapboxgl.Map({
+    container: 'map',
+    style: mapStyles.hybrid,
+    center: [43.128, 36.32],
+    zoom: 15,
+    attributionControl: false
+  });
+  map.on('click', handleClick);
+  map.keyboard.disable()
+})
 
 class Map extends React.Component {
-  handleClick(e) {
-    console.log(e.nativeEvent.which);
-    console.log(e.type);
-    console.log(e.nativeEvent);
-    console.log(e.nativeEvent.x, e.nativeEvent.y);
-  }
   render() {
     return (
-      <div id="map"
-        onDoubleClick={ this.handleClick }
-        onDrag={ this.handleClick }
-        onKeyDown={ this.handleClick }
-        onClick={ this.handleClick }
-        onContextMenu={ this.handleClick }
-        onMouseOver={ this.handleClick }
-        onWheel={ this.handleClick }
-        onCopy={ this.handleClick }
-        onPaste={ this.handleClick }>
-      </div>
+      <div id="map" style={ styles.map }></div>
     )
   }
 }
 
 export default Map;
-
-const tokenPart1 = 'pk.eyJ1Ij'
-const tokenPart2 = 'oicG'
-const tokenPart3 = 'FjZ2VvIiwiYSI'
-const tokenPart4 = '6ImE2ZmE3YTQy'
-const tokenPart5 = 'NmRjNTVmYTAxM'
-const tokenPart6 = 'WE2YWZlNGFjZj'
-const tokenPart7 = 'MzZWVhIn0.wRU'
-const tokenPart8 = '0txw3VIEOVtyc'
-const tokenPart9 = '8PCYdQ'
-export const token = (tokenPart1 +
-                    tokenPart2 +
-                    tokenPart3 +
-                    tokenPart4 +
-                    tokenPart5 +
-                    tokenPart6 +
-                    tokenPart7 +
-                    tokenPart8 +
-                    tokenPart9)

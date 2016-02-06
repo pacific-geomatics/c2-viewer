@@ -7,7 +7,7 @@ const tokenPart6 = 'WE2YWZlNGFjZj'
 const tokenPart7 = 'MzZWVhIn0.wRU'
 const tokenPart8 = '0txw3VIEOVtyc'
 const tokenPart9 = '8PCYdQ'
-export const token = (
+export const accessToken = (
   tokenPart1 +
   tokenPart2 +
   tokenPart3 +

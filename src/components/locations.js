@@ -1,4 +1,4 @@
-{
+export const locations = {
   "cnl": {
     "center": [46.052, -77.365],
     "zoom": 15,
