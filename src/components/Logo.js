@@ -27,16 +27,13 @@ const logos = {
 class Logo extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { logo: logos.white, width: '150px' }
+    this.state = { checked: true, logo: logos.white, width: '150px' }
   }
   handleClick(e) {
-    console.log(this.state.logo.name)
-    if (this.state.logo.name == 'white') {
-      this.setState({ logo: logos.grey })
-      this.setState({ width: '350px'})
+    if (this.state.checked) {
+      this.setState({ logo: logos.grey, width: '350px', checked: !this.state.checked})
     } else {
-      this.setState({ logo: logos.white })
-      this.setState({ width: '150px'})
+      this.setState({ logo: logos.white, width: '150px', checked: !this.state.checked})
     }
   }
   render() {

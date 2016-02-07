@@ -35,7 +35,6 @@ class Map extends React.Component {
     map.on('move', this.handleMove.bind(this))
     this.setState({ map: map })
   }
-
   handleMove(e) {
     console.log(this.state.map.getCenter())
     console.log(this.state.map.getBearing())
@@ -43,14 +42,12 @@ class Map extends React.Component {
     console.log(this.state.map.getPitch())
     console.log(this.state.map.getZoom())
   }
-
   handleClick(e) {
     console.log(this.state.map.getCenter())
     this.state.map.featuresAt(e.point, { radius: 5, includeGeometry: true }, function (err, features) {
       console.log(features);
     });
   }
-
   render() {
     return (
       <div id="map" style={ styles.map }></div>
