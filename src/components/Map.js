@@ -18,16 +18,19 @@ const styles = {
 }
 
 class Map extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   componentDidMount() {
     mapboxgl.accessToken = accessToken;
     var map = new mapboxgl.Map({
       container: 'map',
-      style: mapStyles.demoMilitary,
-      center: [43.128, 36.32],
-      zoom: 15,
+      style: this.props.style,
+      center: this.props.center,
+      zoom: this.props.zoom,
       attributionControl: false
     });
-    map.keyboard.disable()
+    //map.keyboard.disable()
     map.on('click', this.handleClick.bind(this))
     map.on('move', this.handleMove.bind(this))
     this.setState({ map: map })
@@ -36,9 +39,13 @@ class Map extends React.Component {
   handleMove(e) {
     console.log(this.state.map.getCenter())
     console.log(this.state.map.getBearing())
+    console.log(this.state.map.getBounds())
+    console.log(this.state.map.getPitch())
+    console.log(this.state.map.getZoom())
   }
 
   handleClick(e) {
+    console.log(this.state.map.getCenter())
     this.state.map.featuresAt(e.point, { radius: 5, includeGeometry: true }, function (err, features) {
       console.log(features);
     });

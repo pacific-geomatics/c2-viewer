@@ -11,7 +11,9 @@ class App extends React.Component {
     return (
       <section>
         <Logo />
-        <Map />
+        <Map center={ [43.128, 36.32] }
+             style='mapbox://styles/mapbox/satellite-hybrid-v8'
+             zoom={ 15 } />
       </section>
     )
   }
