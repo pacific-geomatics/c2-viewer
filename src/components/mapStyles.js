@@ -1,4 +1,3 @@
-console.log('Hello');
 export const mapStyles = {
   demoMilitary: 'mapbox://styles/pacgeo/cik67f0kv008onykoyvznp1nq',
   ski: 'mapbox://styles/pacgeo/cik68r1ds00bs96kpiidveijr',
