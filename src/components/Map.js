@@ -18,28 +18,31 @@ const styles = {
   }
 }
 /**
- * On Click Functions
- */
-function handleClick(e) {
-  map.featuresAt(e.point, {radius: 5}, function (err, features) {
-    console.log(features);
-  });
-}
-
-/**
  * When Map is ready, enable Mapbox Configurations
  */
 $( "#map" ).ready(function(){
   mapboxgl.accessToken = accessToken;
-  const map = new mapboxgl.Map({
+  var map = new mapboxgl.Map({
     container: 'map',
-    style: mapStyles.hybrid,
+    style: mapStyles.demoMilitary,
     center: [43.128, 36.32],
     zoom: 15,
     attributionControl: false
   });
-  map.on('click', handleClick);
+  map.addControl(new mapboxgl.Navigation());
   map.keyboard.disable()
+
+  /**
+  * On Click Functions
+  */
+  map.on('click', function(e){
+    map.featuresAt(e.point, { radius: 5, includeGeometry: true }, function (err, features) {
+      console.log(features);
+    });
+  });
+  map.on('move', function(e){
+    console.log(map.getCenter())
+  });
 })
 
 class Map extends React.Component {
