@@ -6,6 +6,12 @@ import classNames from 'classnames';
 import mapboxgl from 'mapbox-gl';
 import { accessToken } from './accessToken';
 import { mapStyles } from './mapStyles';
+import converter from 'coordinator';
+
+let toUSNG = converter('latlong', 'usng')
+let toMGRS = converter('latlong', 'mgrs')
+let toUTM = converter('latlong', 'utm')
+let toLatLng = converter('usng', 'latlong')
 
 const styles = {
   map: {
@@ -41,6 +47,20 @@ class Map extends React.Component {
     console.log(this.state.map.getBounds())
     console.log(this.state.map.getPitch())
     console.log(this.state.map.getZoom())
+    const center = this.state.map.getCenter()
+    console.log(toMGRS(center.lat, center.lng, 4))
+    console.log(toUTM(center.lat, center.lng, 4))
+    console.log(toUSNG(center.lat, center.lng, 4))
+    console.log(toLatLng(toUSNG(center.lat, center.lng, 4)))
+  }
+  loadCommentsFromServer() {
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      success: (data) => {
+        this.setState({data: data});
+      }
+    });
   }
   handleClick(e) {
     console.log(this.state.map.getCenter())

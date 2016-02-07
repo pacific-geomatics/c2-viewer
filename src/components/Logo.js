@@ -30,6 +30,7 @@ class Logo extends React.Component {
     this.state = { checked: true, logo: logos.white, width: '150px' }
   }
   handleClick(e) {
+    console.log(this.myLogo)
     if (this.state.checked) {
       this.setState({ logo: logos.grey, width: '350px', checked: !this.state.checked})
     } else {
@@ -42,7 +43,7 @@ class Logo extends React.Component {
         style={ styles.logo }
         src={ this.state.logo.src }
         width={ this.state.width }
-        alt='Logo'
+        ref={(ref) => this.myLogo = ref}
         onClick={ this.handleClick.bind(this) }
       />
     )
