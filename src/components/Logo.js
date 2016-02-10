@@ -4,22 +4,12 @@
 import React from 'react';
 import classNames from 'classnames';
 
-const styles = {
-  logo: {
-    'position' : 'absolute',
-    'bottom': 15,
-    'left': 15,
-    'zIndex':10,
-    'transition': 'all 1s'
-  }
-}
+
 const logos = {
   grey : {
-    name: 'grey',
     src: 'images/pacgeo_logo_grey_360px.png'
   },
   white : {
-    name: 'white',
     src: 'images/pacgeo_logo_white_360px.png'
   }
 }
@@ -27,21 +17,28 @@ const logos = {
 class Logo extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { checked: true, logo: logos.white, width: '150px' }
+    this.state = { checked: props.checked, logo: props.logo, width: props.width }
   }
   handleClick(e) {
     console.log(this.myLogo)
     if (this.state.checked) {
-      this.setState({ logo: logos.grey, width: '350px', checked: !this.state.checked})
+      this.setState({ logo: "grey", width: '350px', checked: !this.state.checked})
     } else {
-      this.setState({ logo: logos.white, width: '150px', checked: !this.state.checked})
+      this.setState({ logo: "white", width: '150px', checked: !this.state.checked})
     }
   }
   render() {
+    const style = {
+      'position' : 'absolute',
+      'bottom': 15,
+      'left': 15,
+      'zIndex':10,
+      'transition': 'all 1s'
+    }
     return (
       <img
-        style={ styles.logo }
-        src={ this.state.logo.src }
+        style={ style }
+        src={ logos[this.state.logo].src }
         width={ this.state.width }
         ref={(ref) => this.myLogo = ref}
         onClick={ this.handleClick.bind(this) }
@@ -49,5 +46,7 @@ class Logo extends React.Component {
     )
   }
 }
+Logo.propTypes = { checked: React.PropTypes.bool.isRequired, logo: React.PropTypes.string, width: React.PropTypes.string }
+Logo.defaultProps = { checked: true, logo: "white", width: '150px' }
 
 export default Logo;

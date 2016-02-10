@@ -22,7 +22,7 @@
     "isomorphic-style-loader": "0.0.8",
     "jquery": "^2.2.0",
     "lodash": "^4.0.0",
-    "mapbox-gl": "^0.12.4",
+    "mapbox-gl": "^0.14.0",
     "mapbox.js": "^2.2.4",
     "nunjucks": "^2.3.0",
     "radium": "^0.16.5",

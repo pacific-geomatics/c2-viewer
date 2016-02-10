@@ -13,16 +13,6 @@ let toMGRS = converter('latlong', 'mgrs')
 let toUTM = converter('latlong', 'utm')
 let toLatLng = converter('usng', 'latlong')
 
-const styles = {
-  map: {
-    'position' : 'absolute',
-    'bottom': 0,
-    'top': 0,
-    'width': '100%',
-    'zIndex': 0
-  }
-}
-
 class Map extends React.Component {
   constructor(props) {
     super(props);
@@ -39,15 +29,18 @@ class Map extends React.Component {
     //map.keyboard.disable()
     map.on('click', this.handleClick.bind(this))
     map.on('move', this.handleMove.bind(this))
-    this.setState({ map: map })
+    this._map = map;
+    /**
+     * Add Shift Zoom + Shift Select for box selection.
+     **/
   }
   handleMove(e) {
-    console.log(this.state.map.getCenter())
-    console.log(this.state.map.getBearing())
-    console.log(this.state.map.getBounds())
-    console.log(this.state.map.getPitch())
-    console.log(this.state.map.getZoom())
-    const center = this.state.map.getCenter()
+    console.log(this._map.getCenter())
+    console.log(this._map.getBearing())
+    console.log(this._map.getBounds())
+    console.log(this._map.getPitch())
+    console.log(this._map.getZoom())
+    const center = this._map.getCenter()
     console.log(toMGRS(center.lat, center.lng, 4))
     console.log(toUTM(center.lat, center.lng, 4))
     console.log(toUSNG(center.lat, center.lng, 4))
@@ -63,14 +56,21 @@ class Map extends React.Component {
     });
   }
   handleClick(e) {
-    console.log(this.state.map.getCenter())
-    this.state.map.featuresAt(e.point, { radius: 5, includeGeometry: true }, function (err, features) {
+    console.log(this._map.getCenter())
+    this._map.featuresAt(e.point, { radius: 5, includeGeometry: true }, function (err, features) {
       console.log(features);
     });
   }
   render() {
+    const style = {
+      'position' : 'absolute',
+      'bottom': 0,
+      'top': 0,
+      'width': '100%',
+      'zIndex': 0
+    }
     return (
-      <div id="map" style={ styles.map }></div>
+      <div id="map" style={ style }></div>
     )
   }
 }
