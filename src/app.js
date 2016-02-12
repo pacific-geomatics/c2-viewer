@@ -13,9 +13,7 @@ class App extends React.Component {
       <section>
         <Search />
         <Logo />
-        <Map center={ [43.128, 36.32] }
-             style='mapbox://styles/mapbox/streets-v8'
-             zoom={ 15 } />
+        <Map />
       </section>
     )
   }

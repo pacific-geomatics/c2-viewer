@@ -2,43 +2,32 @@
  * App Logo
  */
 import React from 'react';
-import classNames from 'classnames';
-
-
-const logos = {
-  grey : {
-    src: 'images/pacgeo_logo_grey_360px.png'
-  },
-  white : {
-    src: 'images/pacgeo_logo_white_360px.png'
-  }
-}
 
 class Logo extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { checked: props.checked, logo: props.logo, width: props.width }
+    this.state = { src: props.src, width: props.width }
   }
   handleClick(e) {
-    console.log(this.myLogo)
-    if (this.state.checked) {
-      this.setState({ logo: "grey", width: '350px', checked: !this.state.checked})
+    if (this.state.brightness) {
+      this.setState({ brightness: '' })
     } else {
-      this.setState({ logo: "white", width: '150px', checked: !this.state.checked})
+      this.setState({ brightness: 'brightness(0.1)' })
     }
   }
   render() {
     const style = {
-      'position' : 'absolute',
-      'bottom': 15,
-      'left': 15,
-      'zIndex':10,
-      'transition': 'all 1s'
+      'position' : 'absolute'
+     ,'bottom': 15
+     ,'left': 15
+     ,'zIndex': 10
+     ,'transition': 'all 1s'
+     ,'WebkitFilter': this.state.brightness
     }
     return (
       <img
         style={ style }
-        src={ logos[this.state.logo].src }
+        src={ this.state.src }
         width={ this.state.width }
         ref={(ref) => this.myLogo = ref}
         onClick={ this.handleClick.bind(this) }
@@ -46,7 +35,8 @@ class Logo extends React.Component {
     )
   }
 }
-Logo.propTypes = { checked: React.PropTypes.bool.isRequired, logo: React.PropTypes.string, width: React.PropTypes.string }
-Logo.defaultProps = { checked: true, logo: "white", width: '150px' }
+
+Logo.propTypes = { src: React.PropTypes.string, width: React.PropTypes.string }
+Logo.defaultProps = { src: "images/pacgeo_logo_white_360px.png", width: '150px' }
 
 export default Logo;

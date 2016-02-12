@@ -4,8 +4,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import mapboxgl from 'mapbox-gl';
-import { accessToken } from './accessToken';
-import { mapStyles } from './mapStyles';
+import { accessToken } from '../modules/accessToken';
+import { mapStyles } from '../modules/mapStyles';
 import converter from 'coordinator';
 
 let toUSNG = converter('latlong', 'usng')
@@ -22,7 +22,7 @@ class Map extends React.Component {
     var map = new mapboxgl.Map({
       container: 'map',
       style: this.props.style,
-      center: this.props.center,
+      center: [ this.props.lat, this.props.lng ],
       zoom: this.props.zoom,
       attributionControl: false
     });
@@ -63,11 +63,11 @@ class Map extends React.Component {
   }
   render() {
     const style = {
-      'position' : 'absolute',
-      'bottom': 0,
-      'top': 0,
-      'width': '100%',
-      'zIndex': 0
+      'position' : 'absolute'
+     ,'bottom': 0
+     ,'top': 0
+     ,'width': '100%'
+     ,'zIndex': 0
     }
     return (
       <div id="map" style={ style }></div>
@@ -75,4 +75,16 @@ class Map extends React.Component {
   }
 }
 
+Map.propTypes = {
+  lat: React.PropTypes.number
+ ,lng: React.PropTypes.number
+ ,zoom: React.PropTypes.number
+ ,style: React.PropTypes.string
+}
+Map.defaultProps = {
+  lat: 43.128
+ ,lng: 36.32
+ ,zoom: 15
+ ,style: mapStyles.hybrid
+}
 export default Map;
