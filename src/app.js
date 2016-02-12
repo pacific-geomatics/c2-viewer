@@ -10,11 +10,11 @@ import Search from './components/Search';
 class App extends React.Component {
   render() {
     return (
-      <section>
+      <div>
         <Search />
         <Logo />
         <Map />
-      </section>
+      </div>
     )
   }
 }

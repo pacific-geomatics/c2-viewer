@@ -29,7 +29,7 @@ class Logo extends React.Component {
         style={ style }
         src={ this.state.src }
         width={ this.state.width }
-        ref={(ref) => this.myLogo = ref}
+        ref={ (ref) => this.logo = ref }
         onClick={ this.handleClick.bind(this) }
       />
     )

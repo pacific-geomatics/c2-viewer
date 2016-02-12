@@ -2,15 +2,8 @@
  * App Logo
  */
 import React from 'react';
-import classNames from 'classnames';
+import { Input } from 'react-bootstrap';
 
-const style = {
-  'position' : 'absolute',
-  'top': 15,
-  'left': 15,
-  'zIndex': 10,
-  'transition': 'all 1s'
-}
 
 class Search extends React.Component {
   constructor(props) {
@@ -22,14 +15,16 @@ class Search extends React.Component {
     }
   }
   render() {
+    const style = {
+      'position' : 'absolute',
+      'top': 15,
+      'left': 15,
+      'zIndex': 10,
+      'transition': 'all 1s'
+    }
     return (
       <div style={ style }>
-        <input type="text" ref={(ref) => this.myTextInput = ref} />
-        <input
-          type="button"
-          value="Focus the text input"
-          onClick={this.handleClick.bind(this)}
-        />
+        <Input type="text" bsSize='large' placeholder='Search' ref={(ref) => this.myTextInput = ref} />
       </div>
     )
   }

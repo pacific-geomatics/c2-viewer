@@ -1,29 +1,29 @@
 /**
  * Mapbox Map
  */
-import React from 'react';
-import classNames from 'classnames';
-import mapboxgl from 'mapbox-gl';
-import { accessToken } from '../modules/accessToken';
-import { mapStyles } from '../modules/mapStyles';
-import converter from 'coordinator';
-
-let toUSNG = converter('latlong', 'usng')
-let toMGRS = converter('latlong', 'mgrs')
-let toUTM = converter('latlong', 'utm')
-let toLatLng = converter('usng', 'latlong')
+import React from 'react'
+import mapboxgl from 'mapbox-gl'
+import { accessToken } from '../modules/accessToken'
+import { mapStyles } from '../modules/mapStyles'
+import Coordinates from './Coordinates'
 
 class Map extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
+    this.state = {
+      lat: props.lat
+     ,lng: props.lng
+     ,style: props.style
+     ,zoom: props.zoom
+    }
   }
   componentDidMount() {
     mapboxgl.accessToken = accessToken;
     var map = new mapboxgl.Map({
-      container: 'map',
-      style: this.props.style,
-      center: [ this.props.lat, this.props.lng ],
-      zoom: this.props.zoom,
+      container: this.mapboxMap,
+      style: this.state.style,
+      center: [ this.state.lat, this.state.lng ],
+      zoom: this.state.zoom,
       attributionControl: false
     });
     //map.keyboard.disable()
@@ -35,31 +35,19 @@ class Map extends React.Component {
      **/
   }
   handleMove(e) {
-    console.log(this._map.getCenter())
-    console.log(this._map.getBearing())
-    console.log(this._map.getBounds())
-    console.log(this._map.getPitch())
-    console.log(this._map.getZoom())
-    const center = this._map.getCenter()
-    console.log(toMGRS(center.lat, center.lng, 4))
-    console.log(toUTM(center.lat, center.lng, 4))
-    console.log(toUSNG(center.lat, center.lng, 4))
-    console.log(toLatLng(toUSNG(center.lat, center.lng, 4)))
-  }
-  loadCommentsFromServer() {
-    $.ajax({
-      url: this.props.url,
-      dataType: 'json',
-      success: (data) => {
-        this.setState({data: data});
-      }
-    });
+    let center = this._map.getCenter()
+    this.setState({ lat: center.lat, lng: center.lng, center: center })
+    this.setState({ bearing: this._map.getBearing() })
+    this.setState({ bounds: this._map.getBounds() })
+    this.setState({ pitch: this._map.getPitch() })
+    this.setState({ zoom: this._map.getZoom() })
   }
   handleClick(e) {
-    console.log(this._map.getCenter())
-    this._map.featuresAt(e.point, { radius: 5, includeGeometry: true }, function (err, features) {
-      console.log(features);
-    });
+    let center = e.lngLat
+    this.setState({ lat: center.lat, lng: center.lng, center: center })
+    //this._map.featuresAt(e.point, { radius: 5, includeGeometry: true }, function (err, features) {
+    //  console.log(features);
+    //});
   }
   render() {
     const style = {
@@ -70,7 +58,13 @@ class Map extends React.Component {
      ,'zIndex': 0
     }
     return (
-      <div id="map" style={ style }></div>
+      <div>
+        <Coordinates lat={ this.state.lat } lng={ this.state.lng }/>
+        <div
+          ref={ (ref) => this.mapboxMap = ref }
+          style={ style }>
+        </div>
+      </div>
     )
   }
 }
