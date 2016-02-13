@@ -32,8 +32,10 @@ class App extends React.Component {
       attributionControl: false
     });
     //map.keyboard.disable()
+    // Event Listeners
     map.on('click', this.handleClick.bind(this))
     map.on('move', this.handleMove.bind(this))
+    map.on('resize', this.handleResize.bind(this))
     this._map = map;
     this.setState({
       left: this.mapboxMap.clientWidth / 2 + this.mapboxMap.offsetLeft
@@ -44,7 +46,6 @@ class App extends React.Component {
      **/
   }
   handleMove(e) {
-    console.log(e)
     let center = this._map.getCenter()
     this.setState({
       lat: center.lat
@@ -61,6 +62,9 @@ class App extends React.Component {
      ,left: this.mapboxMap.clientWidth / 2 + this.mapboxMap.offsetLeft
      ,top: this.mapboxMap.clientHeight / 2 + this.mapboxMap.offsetTop
     })
+  }
+  handleResize(e) {
+    // console.log(e)
   }
   handleClick(e) {
     this.setState({
@@ -88,8 +92,9 @@ class App extends React.Component {
         <Crosshair left={ this.state.left } top={ this.state.top }/>
         <Coordinates lat={ this.state.lat } lng={ this.state.lng } zoom={ this.state.zoom }/>
         <NoClickZone right={ 0 } top={ 0 } bottom={ 0 } width={ 20 } />
-        <NoClickZone right={ 0 } left={ 0 } bottom={ 0 } height={ 20 } />
+        <NoClickZone right={ 20 } left={ 0 } bottom={ 0 } height={ 20 } />
         <div
+          onClick={ this.handleResize.bind(this) }
           ref={ (ref) => this.mapboxMap = ref }
           style={ style }>
         </div>

@@ -10,8 +10,8 @@ class Logo extends React.Component {
   render() {
     const style = {
       'position' : 'absolute'
-     ,'bottom': 15
-     ,'left': 15
+     ,'bottom': 2
+     ,'left': 13
      ,'zIndex': 15
      ,'transition': 'all 1s'
      ,'WebkitFilter': 'drop-shadow(1.5px 1.5px 0px black) drop-shadow(1px 1px 10px black)'

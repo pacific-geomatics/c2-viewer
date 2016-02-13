@@ -18,6 +18,7 @@ class NoClickZone extends React.Component {
      ,'width': this.props.width
      ,'height': this.props.height
      ,'backgroundColor': 'black'
+     ,'WebkitFilter': 'opacity(0.35)'
     }
     return <div style={ style }></div>
   }

@@ -34,7 +34,6 @@ class Coordinates extends React.Component {
   getPrecision() {
     let zoom = this.props.zoom
     let precision = 3
-    console.log(zoom)
     if (zoom > 14) { precision = 5 }
     else if ( zoom > 11 ) { precision = 4 }
     this.setState({ precision: precision })
@@ -43,7 +42,6 @@ class Coordinates extends React.Component {
     let mgrs = toUSNG(this.props.lat, this.props.lng, this.state.precision)
     let lat = this.props.lat.toFixed(this.state.precision)
     let lng = this.props.lng.toFixed(this.state.precision)
-    console.log(mgrs)
     this.setState({ latlng: `${lat}, ${lng}`, mgrs: mgrs })
   }
   render() {
