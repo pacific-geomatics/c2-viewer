@@ -1,5 +1,5 @@
 /**
- * App Logo
+ * Search
  */
 import React from 'react';
 import { Input } from 'react-bootstrap';
@@ -29,5 +29,6 @@ class Search extends React.Component {
     )
   }
 }
-
+Search.propTypes = { }
+Search.defaultProps = { }
 export default Search;

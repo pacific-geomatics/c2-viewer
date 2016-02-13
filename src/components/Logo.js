@@ -1,42 +1,37 @@
 /**
- * App Logo
+ * Logo
  */
 import React from 'react';
 
 class Logo extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { src: props.src, width: props.width }
-  }
-  handleClick(e) {
-    if (this.state.brightness) {
-      this.setState({ brightness: '' })
-    } else {
-      this.setState({ brightness: 'brightness(0.1)' })
-    }
   }
   render() {
     const style = {
       'position' : 'absolute'
      ,'bottom': 15
      ,'left': 15
-     ,'zIndex': 10
+     ,'zIndex': 15
      ,'transition': 'all 1s'
-     ,'WebkitFilter': this.state.brightness
+     ,'WebkitFilter': 'drop-shadow(1.5px 1.5px 0px black) drop-shadow(1px 1px 10px black)'
+     ,'pointerEvents': 'none'
     }
     return (
       <img
         style={ style }
-        src={ this.state.src }
-        width={ this.state.width }
-        ref={ (ref) => this.logo = ref }
-        onClick={ this.handleClick.bind(this) }
+        src={ this.props.src }
+        width={ this.props.width }
       />
     )
   }
 }
-
-Logo.propTypes = { src: React.PropTypes.string, width: React.PropTypes.string }
-Logo.defaultProps = { src: "images/pacgeo_logo_white_360px.png", width: '150px' }
-
+Logo.propTypes = {
+  src: React.PropTypes.string
+ ,width: React.PropTypes.number
+}
+Logo.defaultProps = {
+  src: "images/pacgeo_logo_white_360px.png"
+ ,width: 150
+}
 export default Logo;

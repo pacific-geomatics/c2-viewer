@@ -26,18 +26,25 @@ class Coordinates extends React.Component {
   }
   componentWillReceiveProps() {
     this.getCoordinates()
+    this.getPrecision()
   }
   handleSelect(event, eventKey) {
-    this.setState(eventKey, function() {
-      this.getCoordinates()
-    })
+    this.setState( eventKey )
+  }
+  getPrecision() {
+    let zoom = this.props.zoom
+    let precision = 3
+    console.log(zoom)
+    if (zoom > 14) { precision = 5 }
+    else if ( zoom > 11 ) { precision = 4 }
+    this.setState({ precision: precision })
   }
   getCoordinates() {
-    if (this.state.type == 'mgrs'){
-      this.setState({ mgrs: toUSNG(this.props.lat, this.props.lng, this.state.precision) })
-    } else {
-      this.setState({ latlng: this.props.lat.toFixed(this.props.precision) + ', ' + this.props.lng.toFixed(this.props.precision) })
-    }
+    let mgrs = toUSNG(this.props.lat, this.props.lng, this.state.precision)
+    let lat = this.props.lat.toFixed(this.state.precision)
+    let lng = this.props.lng.toFixed(this.state.precision)
+    console.log(mgrs)
+    this.setState({ latlng: `${lat}, ${lng}`, mgrs: mgrs })
   }
   render() {
     const style = {
@@ -53,11 +60,18 @@ class Coordinates extends React.Component {
     );
     return (
       <ButtonToolbar style={ style }>
-        <OverlayTrigger placement="top" overlay={ tooltip }>
-          <SplitButton onClick={ this.handleClick.bind(this) } bsSize='small' bsStyle="primary" title={ value } id='coordinates' dropup pullRight onSelect={ this.handleSelect.bind(this) }>
-            <MenuItem eventKey={{ type: 'mgrs', precision: 5 }}>MGRS <small>(1m)</small></MenuItem>
-            <MenuItem eventKey={{ type: 'mgrs', precision: 4 }}>MGRS <small>(10m)</small></MenuItem>
-            <MenuItem eventKey={{ type: 'mgrs', precision: 3 }}>MGRS <small>(100m)</small></MenuItem>
+        <OverlayTrigger placement="left" overlay={ tooltip }>
+          <SplitButton
+            onClick={ this.handleClick.bind(this) }
+            bsSize='small'
+            bsStyle="primary"
+            title={ value }
+            id='coordinates'
+            dropup
+            pullRight
+            onSelect={ this.handleSelect.bind(this) }
+            >
+            <MenuItem eventKey={{ type: 'mgrs' }}>MGRS</MenuItem>
             <MenuItem eventKey={{ type: 'latlng' }}>Lat & Lng</MenuItem>
           </SplitButton>
         </OverlayTrigger>
@@ -65,13 +79,14 @@ class Coordinates extends React.Component {
     )
   }
 }
-
 Coordinates.propTypes = {
-  precision: React.PropTypes.number
- ,lat: React.PropTypes.number
+  lat: React.PropTypes.number
  ,lng: React.PropTypes.number
  ,type: React.PropTypes.string
+ ,zoom: React.PropTypes.number
 }
-Coordinates.defaultProps = { precision: 5, type: 'mgrs' }
-
+Coordinates.defaultProps = {
+  type: 'latlng'
+ ,precision: 5
+}
 export default Coordinates;
