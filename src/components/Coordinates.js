@@ -19,10 +19,12 @@ class Coordinates extends React.Component {
      ,lng: props.lng
      ,mgrs: toUSNG(props.lat, props.lng, props.precision)
      ,latlng: this.props.lat + ', ' + this.props.lng
+     ,message: this.props.message
     }
   }
   handleClick() {
     copy(this.state[this.state.type])
+    // this.setState({ message: 'Copied!' })
   }
   componentWillReceiveProps() {
     this.getCoordinates()
@@ -31,11 +33,14 @@ class Coordinates extends React.Component {
   handleSelect(event, eventKey) {
     this.setState( eventKey )
   }
+  handleOnExit() {
+    // this.setState({ message: this.props.message })
+  }
   getPrecision() {
     let zoom = this.props.zoom
     let precision = 3
     if (zoom > 14) { precision = 5 }
-    else if ( zoom > 11 ) { precision = 4 }
+    else if ( zoom > 10 ) { precision = 4 }
     this.setState({ precision: precision })
   }
   getCoordinates() {
@@ -54,15 +59,15 @@ class Coordinates extends React.Component {
     }
     let value = this.state[this.state.type]
     const tooltip = (
-      <Tooltip id='tooltip'><strong>Copy to Clipboard!</strong></Tooltip>
+      <Tooltip id='tooltip'><strong>{ this.state.message }</strong></Tooltip>
     );
     return (
       <ButtonToolbar style={ style }>
-        <OverlayTrigger placement="left" overlay={ tooltip }>
+        <OverlayTrigger onExit={ this.handleOnExit.bind(this) } placement='left' overlay={ tooltip }>
           <SplitButton
             onClick={ this.handleClick.bind(this) }
             bsSize='small'
-            bsStyle="primary"
+            bsStyle='primary'
             title={ value }
             id='coordinates'
             dropup
@@ -82,9 +87,11 @@ Coordinates.propTypes = {
  ,lng: React.PropTypes.number
  ,type: React.PropTypes.string
  ,zoom: React.PropTypes.number
+ ,message: React.PropTypes.string
 }
 Coordinates.defaultProps = {
   type: 'latlng'
  ,precision: 5
+ ,message: 'Copy to Clipboard'
 }
 export default Coordinates;
