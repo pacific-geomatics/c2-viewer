@@ -7,7 +7,10 @@ import { Input } from 'react-bootstrap';
 
 class Search extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
+  }
+  handleFocus(e) {
+    console.log('focus/search')
   }
   handleClick() {
     if (this.myTextInput !== null) {
@@ -23,7 +26,7 @@ class Search extends React.Component {
       'transition': 'all 1s'
     }
     return (
-      <div style={ style }>
+      <div onFocus={ this.handleFocus.bind(this) } style={ style }>
         <Input type="text" bsSize='large' placeholder='Search' ref={(ref) => this.myTextInput = ref} />
       </div>
     )

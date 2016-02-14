@@ -12,6 +12,8 @@ import Crosshair from './components/Crosshair'
 import Search from './components/Search'
 import NoClickZone from './components/NoClickZone'
 import RightClickOptions from './components/RightClickOptions'
+import NorthArrow from './components/NorthArrow'
+
 
 class App extends React.Component {
   constructor(props) {
@@ -40,9 +42,9 @@ class App extends React.Component {
     map.on('resize', this.handleResize.bind(this))
     map.on('mousedown', this.handleMouseDown.bind(this))
     map.on('mouseup', this.handleMouseUp.bind(this))
-    map.on('contextmenu', this.handleContextMenu.bind(this))
     map.on('moveend', this.handleMoveEnd.bind(this))
     map.on('zoom', this.handleZoom.bind(this))
+    map.on('contextmenu', this.handleContextMenu.bind(this))
     this._map = map;
     this.setState({
       left: this.mapboxMap.clientWidth / 2 + this.mapboxMap.offsetLeft
@@ -55,6 +57,7 @@ class App extends React.Component {
      **/
   }
   handleMove(e) {
+    this.reset('move/app')
     let center = this._map.getCenter()
     let timeStampDelta = Date.now() - this.state.timeStamp
     if ( timeStampDelta > 1000 ) {
@@ -76,40 +79,60 @@ class App extends React.Component {
     }
   }
   handleZoom(e) {
-    //console.dir(e)
+    this.reset('zoom/app')
   }
-
   handleMoveEnd(e) {
     //console.log(e)
   }
   handleResize(e) {
-    // console.log(e)
+    this.reset('resize/app')
   }
   handleContextMenu(e) {
-    this.handleClick(e)
+    this.reset('contextMenu/app')
     this.setState({
-      contextMenuLeft: e.point.x
-     ,contextMenuTop: e.point.y
-     ,contextMenuDisplay: ''
+      contextMenuLat: e.lngLat.lat
+     ,contextMenuLng: e.lngLat.lng
+     ,contextMenuX: e.point.x
+     ,contextMenuY: e.point.y
+     ,timeStamp: Date.now()
+     ,rightClick: true
+    })
+  }
+  reset(e) {
+    console.log(e)
+    this.setState({
+      rightClick: false
+     ,rightMouseHold: false
+     ,leftClick: false
+     ,leftMouseHold: false
     })
   }
   handleFocus(e) {
-    this.setState({ contextMenuDisplay: 'none' })
+    console.log('focus/app')
   }
   handleMouseUp(e) {
-    //console.log('mouseup')
+    this.setState({ mouseTimeStamp: Date.now() })
   }
   handleMouseDown(e) {
-    //console.log('mousedown')
+    this.setState({ mouseTimeStamp: Date.now() })
+    setTimeout(() => {
+      if (Date.now() - this.state.mouseTimeStamp > 1000) {
+        this.setState({
+          rightMouseHold: true
+         ,leftMouseHold: true
+        })
+      }
+    }, 1000)
   }
   handleClick(e) {
+    this.reset('click/app')
     this.setState({
-      lat: e.lngLat.lat
-     ,lng: e.lngLat.lng
-     ,crosshairLeft: e.point.x
-     ,crosshairTop: e.point.y
+      clickLat: e.lngLat.lat
+     ,clickLng: e.lngLat.lng
+     ,clickX: e.point.x
+     ,clickY: e.point.y
      ,timeStamp: Date.now()
-     ,contextMenuDisplay: 'none'
+     ,leftClick: true
     })
     //this._map.featuresAt(e.point, { radius: 5, includeGeometry: true }, function (err, features) {
     //  console.log(features);
@@ -125,12 +148,22 @@ class App extends React.Component {
      ,'overflow': 'hidden'
     }
     return (
-      <div onFocus={ this.handleFocus.bind(this) }>
-        <Search />
+      <div>
+        <Search onFocus={ this.handleFocus.bind(this) } />
         <Logo />
-        <RightClickOptions left={ this.state.contextMenuLeft } top={ this.state.contextMenuTop } display={ this.state.contextMenuDisplay } />
-        <Crosshair left={ this.state.crosshairLeft } top={ this.state.crosshairTop } />
-        <Coordinates lat={ this.state.lat } lng={ this.state.lng } zoom={ this.state.zoom } />
+        <NorthArrow top={ 40 } right={ 20 } />
+        <RightClickOptions
+          left={ this.state.contextMenuX }
+          top={ this.state.contextMenuY }
+          action={ this.state.rightClick || this.state.leftMouseHold } />
+        <Crosshair
+          left={ this.state.clickX }
+          top={ this.state.clickY } />
+        <Coordinates
+          onFocus={ this.handleFocus.bind(this) }
+          lat={ this.state.clickLat || this.state.lat }
+          lng={ this.state.clickLng || this.state.lng }
+          zoom={ this.state.zoom } />
         <NoClickZone right={ 0 } top={ 0 } bottom={ 0 } width={ 20 } />
         <NoClickZone right={ 20 } left={ 0 } bottom={ 0 } height={ 20 } />
         <div
@@ -147,12 +180,20 @@ App.propTypes = {
  ,lng: React.PropTypes.number
  ,zoom: React.PropTypes.number
  ,mapStyle: React.PropTypes.string
+ ,rightClick: React.PropTypes.bool
+ ,rightMouseHold: React.PropTypes.bool
+ ,leftClick: React.PropTypes.bool
+ ,leftMouseHold: React.PropTypes.bool
 }
 App.defaultProps = {
   lat: 36.32
  ,lng: 43.128
  ,zoom: 15
  ,mapStyle: mapStyles.hybrid
+ ,rightClick: false
+ ,rightMouseHold: false
+ ,leftClick: false
+ ,leftMouseHold: false
 }
 ReactDOM.render(
   <App />,
