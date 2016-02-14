@@ -14,6 +14,7 @@ class Logo extends React.Component {
      ,'left': 13
      ,'zIndex': 15
      ,'transition': 'all 1s'
+     ,'filter': 'drop-shadow(1.5px 1.5px 0px black) drop-shadow(1px 1px 10px black)'
      ,'WebkitFilter': 'drop-shadow(1.5px 1.5px 0px black) drop-shadow(1px 1px 10px black)'
      ,'pointerEvents': 'none'
     }
