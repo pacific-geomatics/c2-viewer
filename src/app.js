@@ -20,6 +20,7 @@ class App extends React.Component {
      ,lng: props.lng
      ,mapStyle: props.mapStyle
      ,zoom: props.zoom
+     ,timeStamp: Date.now()
     }
   }
   componentDidMount() {
@@ -36,6 +37,9 @@ class App extends React.Component {
     map.on('click', this.handleClick.bind(this))
     map.on('move', this.handleMove.bind(this))
     map.on('resize', this.handleResize.bind(this))
+    map.on('mousedown', this.handleMouseDown.bind(this))
+    map.on('mouseup', this.handleMouseUp.bind(this))
+    map.on('contextmenu', this.handleContextMenu.bind(this))
     this._map = map;
     this.setState({
       left: this.mapboxMap.clientWidth / 2 + this.mapboxMap.offsetLeft
@@ -47,31 +51,49 @@ class App extends React.Component {
   }
   handleMove(e) {
     let center = this._map.getCenter()
-    this.setState({
-      lat: center.lat
-     ,lng: center.lng
-     ,center: center
-     ,bearing: this._map.getBearing()
-     ,bounds: this._map.getBounds()
-     ,pitch: this._map.getPitch()
-     ,zoom: this._map.getZoom()
-     ,offsetTop: this.mapboxMap.offsetTop
-     ,offsetLeft: this.mapboxMap.offsetLeft
-     ,clientWidth: this.mapboxMap.clientWidth
-     ,clientHeight: this.mapboxMap.clientHeight
-     ,left: this.mapboxMap.clientWidth / 2 + this.mapboxMap.offsetLeft
-     ,top: this.mapboxMap.clientHeight / 2 + this.mapboxMap.offsetTop
-    })
+    let timeStampDelta = Date.now() - this.state.timeStamp
+    if ( timeStampDelta > 1000 ) {
+      console.log(timeStampDelta)
+      this.setState({
+        lat: center.lat
+        ,lng: center.lng
+        ,bearing: this._map.getBearing()
+        ,bounds: this._map.getBounds()
+        ,pitch: this._map.getPitch()
+        ,zoom: this._map.getZoom()
+        ,offsetTop: this.mapboxMap.offsetTop
+        ,offsetLeft: this.mapboxMap.offsetLeft
+        ,clientWidth: this.mapboxMap.clientWidth
+        ,clientHeight: this.mapboxMap.clientHeight
+        ,timeStamp: Date.now()
+        ,top: this.mapboxMap.clientHeight / 2 + this.mapboxMap.offsetTop
+        ,left: this.mapboxMap.clientWidth / 2 + this.mapboxMap.offsetLeft
+      })
+    }
   }
   handleResize(e) {
     // console.log(e)
   }
+  handleContextMenu(e) {
+    console.log('ContextMenu')
+    console.log(e)
+  }
+  handleMouseUp(e) {
+    console.log('MouseUp')
+    this.handleClick(e)
+  }
+  handleMouseDown(e) {
+    console.log('MouseDown')
+    this.handleClick(e)
+  }
   handleClick(e) {
+    console.log('MouseClick')
     this.setState({
       lat: e.lngLat.lat
      ,lng: e.lngLat.lng
      ,left: e.point.x
      ,top: e.point.y
+     ,timeStamp: Date.now()
     })
     //this._map.featuresAt(e.point, { radius: 5, includeGeometry: true }, function (err, features) {
     //  console.log(features);
@@ -94,7 +116,6 @@ class App extends React.Component {
         <NoClickZone right={ 0 } top={ 0 } bottom={ 0 } width={ 20 } />
         <NoClickZone right={ 20 } left={ 0 } bottom={ 0 } height={ 20 } />
         <div
-          onClick={ this.handleResize.bind(this) }
           ref={ (ref) => this.mapboxMap = ref }
           style={ style }>
         </div>
