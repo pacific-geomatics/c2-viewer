@@ -23,7 +23,7 @@ class Coordinates extends React.Component {
      ,lat: props.lat
      ,lng: props.lng
      ,mgrs: toUSNG(props.lat, props.lng, props.precision)
-     ,latlng: this.props.lat + ', ' + this.props.lng
+     ,latlng: `${this.props.lat}, ${this.props.lng}`
      ,message: this.props.message
     }
   }

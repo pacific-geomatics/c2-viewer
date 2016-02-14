@@ -37,14 +37,14 @@ class App extends React.Component {
     });
     //map.keyboard.disable()
     // Event Listeners
-    map.on('click', this.handleClick.bind(this))
+    map.on('click', this.handleClickLeft.bind(this))
+    map.on('contextmenu', this.handleClickRight.bind(this))
     map.on('move', this.handleMove.bind(this))
     map.on('resize', this.handleResize.bind(this))
     map.on('mousedown', this.handleMouseDown.bind(this))
     map.on('mouseup', this.handleMouseUp.bind(this))
     map.on('moveend', this.handleMoveEnd.bind(this))
     map.on('zoom', this.handleZoom.bind(this))
-    map.on('contextmenu', this.handleContextMenu.bind(this))
     this._map = map;
     this.setState({
       left: this.mapboxMap.clientWidth / 2 + this.mapboxMap.offsetLeft
@@ -78,61 +78,112 @@ class App extends React.Component {
       })
     }
   }
+  handleMoveEnd(e) {
+    console.log('moveEnd/app')
+  }
   handleZoom(e) {
     this.reset('zoom/app')
-  }
-  handleMoveEnd(e) {
-    //console.log(e)
   }
   handleResize(e) {
     this.reset('resize/app')
   }
-  handleContextMenu(e) {
-    this.reset('contextMenu/app')
-    this.setState({
-      contextMenuLat: e.lngLat.lat
-     ,contextMenuLng: e.lngLat.lng
-     ,contextMenuX: e.point.x
-     ,contextMenuY: e.point.y
-     ,timeStamp: Date.now()
-     ,rightClick: true
-    })
-  }
   reset(e) {
-    console.log(e)
+    console.log(`reset/${e}`)
     this.setState({
-      rightClick: false
-     ,rightMouseHold: false
-     ,leftClick: false
-     ,leftMouseHold: false
+      click: false
+     ,clickRight: false
+     ,clickLeft: false
+     ,mouseHold: false
+     ,mouseHoldRight: false
+     ,mouseHoldLeft: false
+     ,mouseUp: false
+     ,mouseUpLeft: false
+     ,mouseUpRight: false
+     ,mouseDown: false
+     ,mouseDownLeft: false
+     ,mouseDownRight: false
     })
   }
   handleFocus(e) {
     console.log('focus/app')
   }
   handleMouseUp(e) {
-    this.setState({ mouseTimeStamp: Date.now() })
+    console.log('mouseUp/app')
+    this.setState({
+      mouseUp: true
+     ,mouseDown: false
+     ,mouseHold: false || this.state.mouseHold
+     ,mouseUpLeft: true
+     ,mouseUpRight: true
+     ,mouseDownLeft: false
+     ,mouseDownRight: false
+     ,mouseUpX: e.point.x
+     ,mouseUpY: e.point.y
+     ,mouseUpTimeStamp: Date.now()
+    })
   }
   handleMouseDown(e) {
-    this.setState({ mouseTimeStamp: Date.now() })
+    console.log('mouseDown/app')
+    this.setState({
+      mouseDown: true
+     ,mouseUp: false
+     ,mouseHold: false
+     ,clickRight: false
+     ,clickLeft: false
+     ,mouseDownLeft: true
+     ,mouseDownRight: true
+     ,mouseUpLeft: false
+     ,mouseUpRight: false
+     ,mouseDownX: e.point.x
+     ,mouseDownY: e.point.y
+     ,mouseDownTimeStamp: Date.now()
+    })
     setTimeout(() => {
-      if (Date.now() - this.state.mouseTimeStamp > 1000) {
+      if (Date.now() - this.state.mouseUpTimeStamp > 1000) {
+        console.log('mouseHold/app')
         this.setState({
-          rightMouseHold: true
-         ,leftMouseHold: true
+          mouseHold: true
+         ,mouseHoldLeft: true
+         ,mouseHoldRight: true
+         ,mouseHoldX: e.point.x
+         ,mouseHoldY: e.point.y
+         ,mouseHoldTimeStamp: Date.now()
         })
       }
     }, 1000)
   }
-  handleClick(e) {
-    this.reset('click/app')
+  handleClickRight(e) {
+    console.log('clickRight/app')
     this.setState({
-      clickLat: e.lngLat.lat
-     ,clickLng: e.lngLat.lng
-     ,clickX: e.point.x
-     ,clickY: e.point.y
-     ,timeStamp: Date.now()
-     ,leftClick: true
+      click: true
+     ,clickLeft: false
+     ,clickRight: true
+     ,lat: e.lngLat.lat
+     ,lng: e.lngLat.lng
+     ,clickRightLat: e.lngLat.lat
+     ,clickRightLng: e.lngLat.lng
+     ,x: e.point.x
+     ,y: e.point.y
+     ,clickRightX: e.point.x
+     ,clickRightY: e.point.y
+     ,clickRightTimeStamp: Date.now()
+    })
+  }
+  handleClickLeft(e) {
+    console.log('click/app')
+    this.setState({
+      click: true
+     ,clickLeft: true
+     ,clickRight: false
+     ,lat: e.lngLat.lat
+     ,lng: e.lngLat.lng
+     ,clickLeftLat: e.lngLat.lat
+     ,clickLeftLng: e.lngLat.lng
+     ,x: e.point.x
+     ,y: e.point.y
+     ,clickLeftX: e.point.x
+     ,clickLeftY: e.point.y
+     ,clickLeftTimeStamp: Date.now()
     })
     //this._map.featuresAt(e.point, { radius: 5, includeGeometry: true }, function (err, features) {
     //  console.log(features);
@@ -153,16 +204,17 @@ class App extends React.Component {
         <Logo />
         <NorthArrow top={ 40 } right={ 20 } />
         <RightClickOptions
-          left={ this.state.contextMenuX }
-          top={ this.state.contextMenuY }
-          action={ this.state.rightClick || this.state.leftMouseHold } />
+          left={ this.state.mouseDownX }
+          top={ this.state.mouseDownY }
+          show={ this.state.clickRight || this.state.mouseHold } />
         <Crosshair
-          left={ this.state.clickX }
-          top={ this.state.clickY } />
+          left={ this.state.x }
+          top={ this.state.y }
+          fontSize={ 15 } />
         <Coordinates
           onFocus={ this.handleFocus.bind(this) }
-          lat={ this.state.clickLat || this.state.lat }
-          lng={ this.state.clickLng || this.state.lng }
+          lat={ this.state.lat }
+          lng={ this.state.lng }
           zoom={ this.state.zoom } />
         <NoClickZone right={ 0 } top={ 0 } bottom={ 0 } width={ 20 } />
         <NoClickZone right={ 20 } left={ 0 } bottom={ 0 } height={ 20 } />
@@ -180,20 +232,12 @@ App.propTypes = {
  ,lng: React.PropTypes.number
  ,zoom: React.PropTypes.number
  ,mapStyle: React.PropTypes.string
- ,rightClick: React.PropTypes.bool
- ,rightMouseHold: React.PropTypes.bool
- ,leftClick: React.PropTypes.bool
- ,leftMouseHold: React.PropTypes.bool
 }
 App.defaultProps = {
   lat: 36.32
  ,lng: 43.128
  ,zoom: 15
  ,mapStyle: mapStyles.hybrid
- ,rightClick: false
- ,rightMouseHold: false
- ,leftClick: false
- ,leftMouseHold: false
 }
 ReactDOM.render(
   <App />,
