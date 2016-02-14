@@ -14,7 +14,7 @@ class Crosshair extends React.Component {
      ,'top': this.props.top - this.props.fontSize / 2
      ,'left': this.props.left - this.props.fontSize / 2
      ,'zIndex': 10
-     ,'transition': 'all 0.15s'
+     ,'transition': 'all 0.3s'
      ,'fontSize': this.props.fontSize
      ,'color': 'white'
      ,'textShadow': ' 1px 1px 2px black, 0 0 25px black, 0 0 5px black'
@@ -29,8 +29,8 @@ Crosshair.propTypes = {
  ,fontSize: React.PropTypes.number
 }
 Crosshair.defaultProps = {
-  left: 0
- ,top: 0
+  left: window.innerWidth / 2
+ ,top: window.innerHeight / 2
  ,fontSize: 25
 }
 export default Crosshair;

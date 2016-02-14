@@ -11,6 +11,7 @@ import Logo from './components/Logo'
 import Crosshair from './components/Crosshair'
 import Search from './components/Search'
 import NoClickZone from './components/NoClickZone'
+import RightClickOptions from './components/RightClickOptions'
 
 class App extends React.Component {
   constructor(props) {
@@ -28,7 +29,7 @@ class App extends React.Component {
     var map = new mapboxgl.Map({
       container: this.mapboxMap,
       style: this.state.mapStyle,
-      center: [ this.state.lat, this.state.lng ],
+      center: [ this.state.lng, this.state.lat ],
       zoom: this.state.zoom,
       attributionControl: false
     });
@@ -40,10 +41,14 @@ class App extends React.Component {
     map.on('mousedown', this.handleMouseDown.bind(this))
     map.on('mouseup', this.handleMouseUp.bind(this))
     map.on('contextmenu', this.handleContextMenu.bind(this))
+    map.on('moveend', this.handleMoveEnd.bind(this))
+    map.on('zoom', this.handleZoom.bind(this))
     this._map = map;
     this.setState({
       left: this.mapboxMap.clientWidth / 2 + this.mapboxMap.offsetLeft
      ,top: this.mapboxMap.clientHeight / 2 + this.mapboxMap.offsetTop
+     ,width: this.mapboxMap.clientWidth
+     ,height: this.mapboxMap.clientHeight
     })
     /**
      * Add Shift Zoom + Shift Select for box selection.
@@ -53,47 +58,58 @@ class App extends React.Component {
     let center = this._map.getCenter()
     let timeStampDelta = Date.now() - this.state.timeStamp
     if ( timeStampDelta > 1000 ) {
-      console.log(timeStampDelta)
       this.setState({
         lat: center.lat
-        ,lng: center.lng
-        ,bearing: this._map.getBearing()
-        ,bounds: this._map.getBounds()
-        ,pitch: this._map.getPitch()
-        ,zoom: this._map.getZoom()
-        ,offsetTop: this.mapboxMap.offsetTop
-        ,offsetLeft: this.mapboxMap.offsetLeft
-        ,clientWidth: this.mapboxMap.clientWidth
-        ,clientHeight: this.mapboxMap.clientHeight
-        ,timeStamp: Date.now()
-        ,top: this.mapboxMap.clientHeight / 2 + this.mapboxMap.offsetTop
-        ,left: this.mapboxMap.clientWidth / 2 + this.mapboxMap.offsetLeft
+       ,lng: center.lng
+       ,bearing: this._map.getBearing()
+       ,bounds: this._map.getBounds()
+       ,pitch: this._map.getPitch()
+       ,zoom: this._map.getZoom()
+       ,offsetTop: this.mapboxMap.offsetTop
+       ,offsetLeft: this.mapboxMap.offsetLeft
+       ,width: this.mapboxMap.clientWidth
+       ,height: this.mapboxMap.clientHeight
+       ,timeStamp: Date.now()
+       ,crosshairTop: this.mapboxMap.clientHeight / 2 + this.mapboxMap.offsetTop
+       ,crosshairLeft: this.mapboxMap.clientWidth / 2 + this.mapboxMap.offsetLeft
       })
     }
+  }
+  handleZoom(e) {
+    //console.dir(e)
+  }
+
+  handleMoveEnd(e) {
+    //console.log(e)
   }
   handleResize(e) {
     // console.log(e)
   }
   handleContextMenu(e) {
-    console.log('ContextMenu')
-    console.log(e)
+    this.handleClick(e)
+    this.setState({
+      contextMenuLeft: e.point.x
+     ,contextMenuTop: e.point.y
+     ,contextMenuDisplay: ''
+    })
+  }
+  handleFocus(e) {
+    this.setState({ contextMenuDisplay: 'none' })
   }
   handleMouseUp(e) {
-    console.log('MouseUp')
-    this.handleClick(e)
+    //console.log('mouseup')
   }
   handleMouseDown(e) {
-    console.log('MouseDown')
-    this.handleClick(e)
+    //console.log('mousedown')
   }
   handleClick(e) {
-    console.log('MouseClick')
     this.setState({
       lat: e.lngLat.lat
      ,lng: e.lngLat.lng
-     ,left: e.point.x
-     ,top: e.point.y
+     ,crosshairLeft: e.point.x
+     ,crosshairTop: e.point.y
      ,timeStamp: Date.now()
+     ,contextMenuDisplay: 'none'
     })
     //this._map.featuresAt(e.point, { radius: 5, includeGeometry: true }, function (err, features) {
     //  console.log(features);
@@ -106,13 +122,15 @@ class App extends React.Component {
      ,'top': 0
      ,'width': '100%'
      ,'zIndex': 0
+     ,'overflow': 'hidden'
     }
     return (
-      <div>
+      <div onFocus={ this.handleFocus.bind(this) }>
         <Search />
         <Logo />
-        <Crosshair left={ this.state.left } top={ this.state.top }/>
-        <Coordinates lat={ this.state.lat } lng={ this.state.lng } zoom={ this.state.zoom }/>
+        <RightClickOptions left={ this.state.contextMenuLeft } top={ this.state.contextMenuTop } display={ this.state.contextMenuDisplay } />
+        <Crosshair left={ this.state.crosshairLeft } top={ this.state.crosshairTop } />
+        <Coordinates lat={ this.state.lat } lng={ this.state.lng } zoom={ this.state.zoom } />
         <NoClickZone right={ 0 } top={ 0 } bottom={ 0 } width={ 20 } />
         <NoClickZone right={ 20 } left={ 0 } bottom={ 0 } height={ 20 } />
         <div
@@ -131,8 +149,8 @@ App.propTypes = {
  ,mapStyle: React.PropTypes.string
 }
 App.defaultProps = {
-  lat: 43.128
- ,lng: 36.32
+  lat: 36.32
+ ,lng: 43.128
  ,zoom: 15
  ,mapStyle: mapStyles.hybrid
 }

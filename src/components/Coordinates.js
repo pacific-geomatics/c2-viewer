@@ -2,7 +2,12 @@
  * Coordinates
  */
 import React from 'react';
-import { Tooltip, OverlayTrigger, Button, ButtonToolbar, MenuItem, SplitButton } from 'react-bootstrap'
+import {
+  Tooltip
+ ,OverlayTrigger
+ ,ButtonToolbar
+ ,MenuItem
+ ,SplitButton } from 'react-bootstrap'
 import converter from 'coordinator'
 import copy from 'copy-to-clipboard'
 
@@ -26,28 +31,27 @@ class Coordinates extends React.Component {
     copy(this.state[this.state.type])
     // this.setState({ message: 'Copied!' })
   }
-  componentWillReceiveProps() {
-    this.getCoordinates()
-    this.getPrecision()
+  componentWillReceiveProps(nextProps) {
+    //Get Precision
+    let precision = 3
+    if ( nextProps.zoom > 14 ) { precision = 5 }
+    else if ( nextProps.zoom > 10 ) { precision = 4 }
+
+    //Get Coordinates
+    let mgrs = toUSNG(nextProps.lat, nextProps.lng, this.state.precision)
+    let lat = nextProps.lat.toFixed(this.state.precision)
+    let lng = nextProps.lng.toFixed(this.state.precision)
+    this.setState({
+      latlng: `${lat}, ${lng}`
+     ,mgrs: mgrs
+     ,zoom: nextProps.zoom
+     ,lat: nextProps.lat
+     ,lng: nextProps.lng
+     ,precision: precision
+    })
   }
   handleSelect(event, eventKey) {
     this.setState( eventKey )
-  }
-  handleOnExit() {
-    // this.setState({ message: this.props.message })
-  }
-  getPrecision() {
-    let zoom = this.props.zoom
-    let precision = 3
-    if (zoom > 14) { precision = 5 }
-    else if ( zoom > 10 ) { precision = 4 }
-    this.setState({ precision: precision })
-  }
-  getCoordinates() {
-    let mgrs = toUSNG(this.props.lat, this.props.lng, this.state.precision)
-    let lat = this.props.lat.toFixed(this.state.precision)
-    let lng = this.props.lng.toFixed(this.state.precision)
-    this.setState({ latlng: `${lat}, ${lng}`, mgrs: mgrs })
   }
   render() {
     const style = {
@@ -55,20 +59,19 @@ class Coordinates extends React.Component {
      ,'bottom': 15
      ,'right': 15
      ,'zIndex': 10
-     ,'transition': 'all 1s'
+     ,'transition': 'all 0.7s'
     }
-    let value = this.state[this.state.type]
     const tooltip = (
       <Tooltip id='tooltip'><strong>{ this.state.message }</strong></Tooltip>
-    );
+    )
     return (
       <ButtonToolbar style={ style }>
-        <OverlayTrigger onExit={ this.handleOnExit.bind(this) } placement='left' overlay={ tooltip }>
+        <OverlayTrigger placement='left' overlay={ tooltip }>
           <SplitButton
             onClick={ this.handleClick.bind(this) }
             bsSize='small'
             bsStyle='primary'
-            title={ value }
+            title={ this.state[this.state.type] }
             id='coordinates'
             dropup
             pullRight
