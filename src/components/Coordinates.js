@@ -45,18 +45,17 @@ class Coordinates extends React.Component {
     let lng = nextProps.lng.toFixed(this.state.precision)
 
     this.setState({
-      latlng: `${lat}, ${lng}`
-     ,mgrs: mgrs
-     ,zoom: nextProps.zoom
-     ,lat: nextProps.lat
-     ,lng: nextProps.lng
-     ,precision: precision
+      latlng: `${lat}, ${lng}`,
+      mgrs: mgrs,
+      zoom: nextProps.zoom,
+      lat: nextProps.lat,
+      lng: nextProps.lng,
+      precision: precision
     })
   }
 
   handleClick() {
     copy(this.state[this.state.type])
-    // this.setState({ message: 'Copied!' })
   }
 
   handleSelect(event, eventKey) {
@@ -66,17 +65,19 @@ class Coordinates extends React.Component {
   render() {
     const style = {
       position : 'absolute',
-      bottom: 15,
-      right: 15,
+      bottom: this.props.bottom,
+      right: this.props.right,
+      left: this.props.left,
+      top: this.props.top,
       zIndex: 10,
       transition: 'all 0.7s'
     }
     const tooltip = (
-      <Tooltip id='tooltip'><strong>{ this.state.message }</strong></Tooltip>
+      <Tooltip id='tooltip'><strong>Copied to Clipboard!</strong></Tooltip>
     )
     return (
       <ButtonToolbar style={ style }>
-        <OverlayTrigger placement='left' overlay={ tooltip }>
+        <OverlayTrigger rootClose trigger="click" placement='left' overlay={ tooltip }>
           <SplitButton
             onClick={ this.handleClick.bind(this) }
             bsSize='small'
@@ -101,13 +102,18 @@ Coordinates.propTypes = {
   lng: React.PropTypes.number,
   type: React.PropTypes.string,
   zoom: React.PropTypes.number,
-  message: React.PropTypes.string
+  message: React.PropTypes.string,
+  top: React.PropTypes.number,
+  bottom: React.PropTypes.number,
+  left: React.PropTypes.number,
+  right: React.PropTypes.number
 }
 
 Coordinates.defaultProps = {
   type: 'latlng',
   precision: 5,
-  message: 'Copy to Clipboard'
+  bottom: 15,
+  right: 15
 }
 
 export default Coordinates

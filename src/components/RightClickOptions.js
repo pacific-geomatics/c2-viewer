@@ -50,7 +50,6 @@ class RightClickOptions extends React.Component {
   }
 
   render() {
-    let display = { true: '', false: 'none' }
     const style = {
       position : 'absolute',
       top: this.state.top,
@@ -61,7 +60,7 @@ class RightClickOptions extends React.Component {
       width: 170,
       border: '2px solid #1d8893',
       boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.50)',
-      display: display[this.state.show]
+      display: (this.state.show) ? '' : 'none'
     }
 
     return (

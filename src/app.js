@@ -42,8 +42,8 @@ class App extends React.Component {
       attributionControl: false
     })
     // Disable
-    map.dragRotate.disable()
-    map.keyboard.disable()
+    //map.dragRotate.disable()
+    //map.keyboard.disable()
 
     // Event Listeners
     map.on('click', this.handleClickLeft.bind(this))
@@ -71,12 +71,14 @@ class App extends React.Component {
   handleKeyUp(e) {
     if (e.keyCode == 16) {
       this.setState({ shift: false })
+      this._map.dragRotate.disable()
     }
   }
 
   handleKeyDown(e) {
     if (e.keyCode == 16) {
       this.setState({ shift: true })
+      this._map.dragRotate.enable()
     }
   }
 
@@ -85,32 +87,21 @@ class App extends React.Component {
   }
 
   handleMove(e) {
-    this.reset('move/app')
-
-    let center = this._map.getCenter()
-    let timeStampDelta = Date.now() - this.state.timeStamp
-
-    if ( timeStampDelta > 1000 ) {
-      this.setState({
-        lat: center.lat,
-        lng: center.lng,
-        bearing: this._map.getBearing(),
-        bounds: this._map.getBounds(),
-        pitch: this._map.getPitch(),
-        zoom: this._map.getZoom(),
-        offsetTop: this.mapboxMap.offsetTop,
-        offsetLeft: this.mapboxMap.offsetLeft,
-        width: this.mapboxMap.clientWidth,
-        height: this.mapboxMap.clientHeight,
-        timeStamp: Date.now(),
-        crosshairTop: this.mapboxMap.clientHeight / 2 + this.mapboxMap.offsetTop,
-        crosshairLeft: this.mapboxMap.clientWidth / 2 + this.mapboxMap.offsetLeft
-      })
-    }
+    this.setState({
+      move: true,
+      bearing: this._map.getBearing(),
+      bounds: this._map.getBounds(),
+      pitch: this._map.getPitch(),
+      zoom: this._map.getZoom(),
+      moveTimeStmap: Date.now()
+    })
   }
 
   handleMoveEnd(e) {
     console.log('moveEnd/app')
+    this.setState({
+      move: false
+    })
   }
 
   handleZoom(e) {
@@ -146,15 +137,8 @@ class App extends React.Component {
 
   handleMouseUp(e) {
     console.log('mouseUp/app')
-
     this.setState({
       mouseUp: true,
-      mouseDown: false,
-      mouseHold: false || this.state.mouseHold,
-      mouseUpLeft: true,
-      mouseUpRight: true,
-      mouseDownLeft: false,
-      mouseDownRight: false,
       mouseUpX: e.point.x,
       mouseUpY: e.point.y,
       mouseUpTimeStamp: Date.now()
@@ -176,29 +160,32 @@ class App extends React.Component {
       mouseUpRight: false,
       mouseDownX: e.point.x,
       mouseDownY: e.point.y,
-      x: e.point.x,
-      y: e.point.y,
       mouseDownTimeStamp: Date.now()
     })
     setTimeout(() => { this.handleMouseHold(e) }, this.props.holdTimeout)
   }
 
   handleMouseHold(e) {
-    if (this.state.mouseDown && Date.now() - this.state.mouseUpTimeStamp > this.props.holdTimeout) {
-      console.log('mouseHold/app')
+    // Must not be moving the map
+    if (!this.state.move) {
 
-      this.setState({
-        mouseHold: true,
-        mouseHoldLeft: true,
-        mouseHoldRight: true,
-        mouseHoldX: e.point.x,
-        mouseHoldY: e.point.y,
-        x: e.point.x,
-        y: e.point.y,
-        clickRightX: null,
-        clickRightY: null,
-        mouseHoldTimeStamp: Date.now()
-      })
+      // Must have a delay of 1s to be considered a Map Hold
+      if (this.state.mouseDown && Date.now() - this.state.mouseUpTimeStamp > this.props.holdTimeout) {
+        console.log('mouseHold/app')
+
+        this.setState({
+          mouseHold: true,
+          mouseHoldLeft: true,
+          mouseHoldRight: true,
+          mouseHoldX: e.point.x,
+          mouseHoldY: e.point.y,
+          x: e.point.x,
+          y: e.point.y,
+          clickRightX: null,
+          clickRightY: null,
+          mouseHoldTimeStamp: Date.now()
+        })
+      }
     }
   }
 
@@ -263,7 +250,11 @@ class App extends React.Component {
       >
         <Search onFocus={ this.handleFocus.bind(this) } />
         <Logo />
-        <NorthArrow top={ 40 } right={ 20 } />
+        <NorthArrow
+          bottom={ 60 }
+          right={ 20 }
+          bearing={ this.state.bearing }
+        />
         <RightClickOptions
           left={ this.state.mouseHoldX || this.state.clickRightX }
           top={ this.state.mouseHoldY || this.state.clickRightY }
@@ -279,6 +270,8 @@ class App extends React.Component {
           lat={ this.state.lat }
           lng={ this.state.lng }
           zoom={ this.state.zoom }
+          bottom={ 15 }
+          right={ 15 }
         />
         <NoClickZone right={ 0 } top={ 0 } bottom={ 0 } width={ 10 } />
         <NoClickZone right={ 10 } left={ 0 } bottom={ 0 } height={ 10 } />
