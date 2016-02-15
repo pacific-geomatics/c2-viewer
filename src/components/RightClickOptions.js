@@ -28,40 +28,47 @@ class RightClickOptions extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(window.innerWidth, window.innerHeight)
-    console.log(nextProps.top, nextProps.left)
-    console.log(this.container.offsetWidth, this.container.offsetHeight)
+    if (nextProps.top && nextProps.left) {
+      let offsetTop = window.innerHeight - (nextProps.top + this.container.offsetHeight + this.props.buffer)
+      let offsetLeft = window.innerWidth - (nextProps.left + this.container.offsetWidth + this.props.buffer)
 
-    this.setState({
-      show: nextProps.show,
-      top: nextProps.top,
-      left: nextProps.left
-    })
+      if (offsetTop > 0) { offsetTop = 0 }
+      if (offsetLeft > 0) { offsetLeft = 0 }
+
+      this.setState({
+        show: nextProps.show,
+        offsetTop: offsetTop,
+        offsetLeft: offsetLeft,
+        top: nextProps.top + offsetTop,
+        left: nextProps.left + offsetLeft
+      })
+    }
   }
 
   handleSelect(selectedKey) {
-    console.log(selectedKey)
-    this.setState({ showModal: false })
+    this.setState({ show: false })
   }
 
   render() {
+    let display = { true: '', false: 'none' }
     const style = {
       position : 'absolute',
       top: this.state.top,
       left: this.state.left,
       backgroundColor: 'white',
+      zIndex: 15,
       borderRadius: 5,
+      width: 170,
       border: '2px solid #1d8893',
-      boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.50)'
+      boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.50)',
+      display: display[this.state.show]
     }
 
     return (
-      <Overlay
+      <div
         ref={ (ref) => this.container = ref }
-        show={ this.state.show }
-        onHide={() => this.setState({ show: false })}
-        container={ this }
         style={ style }
+        onBlur={ this.handleBlur }
       >
         <Nav
           bsStyle="pills"
@@ -73,7 +80,7 @@ class RightClickOptions extends React.Component {
           <NavItem eventKey={ 'whatsHere' }>What's here?</NavItem>
           <NavItem eventKey={ 'searchNearby' }>Search nearby</NavItem>
         </Nav>
-      </Overlay>
+      </div>
     )
   }
 }
@@ -81,12 +88,16 @@ class RightClickOptions extends React.Component {
 RightClickOptions.propTypes = {
   top: React.PropTypes.number,
   left: React.PropTypes.number,
-  show: React.PropTypes.bool
+  show: React.PropTypes.bool,
+  buffer: React.PropTypes.number
 }
 
 RightClickOptions.defaultProps = {
   top: 0,
   left: 0,
+  buffer: 5,
+  height: 170,
+  width: 170,
   show: false
 }
 
