@@ -65,11 +65,11 @@ class Coordinates extends React.Component {
 
   render() {
     const style = {
-      'position' : 'absolute',
-      'bottom': 15,
-      'right': 15,
-      'zIndex': 10,
-      'transition': 'all 0.7s'
+      position : 'absolute',
+      bottom: 15,
+      right: 15,
+      zIndex: 10,
+      transition: 'all 0.7s'
     }
     const tooltip = (
       <Tooltip id='tooltip'><strong>{ this.state.message }</strong></Tooltip>

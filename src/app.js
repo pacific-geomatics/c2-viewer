@@ -14,19 +14,20 @@ import NoClickZone from './components/NoClickZone'
 import RightClickOptions from './components/RightClickOptions'
 import NorthArrow from './components/NorthArrow'
 
+const keycodes = {
+  16: 'shift'
+}
+
 class App extends React.Component {
 
   constructor(props) {
     super(props)
 
-    this.handleFocus.bind(this)
-
     this.state = {
       lat: props.lat,
       lng: props.lng,
       mapStyle: props.mapStyle,
-      zoom: props.zoom,
-      timeStamp: Date.now()
+      zoom: props.zoom
     }
   }
 
@@ -40,6 +41,9 @@ class App extends React.Component {
       zoom: this.state.zoom,
       attributionControl: false
     })
+    // Disable
+    map.dragRotate.disable()
+    map.keyboard.disable()
 
     // Event Listeners
     map.on('click', this.handleClickLeft.bind(this))
@@ -56,11 +60,28 @@ class App extends React.Component {
       left: this.mapboxMap.clientWidth / 2 + this.mapboxMap.offsetLeft,
       top: this.mapboxMap.clientHeight / 2 + this.mapboxMap.offsetTop,
       width: this.mapboxMap.clientWidth,
-      height: this.mapboxMap.clientHeight
+      height: this.mapboxMap.clientHeight,
+      mouseUpTimeStamp: Date.now()
     })
     /**
      * Add Shift Zoom + Shift Select for box selection.
      **/
+  }
+
+  handleKeyUp(e) {
+    if (e.keyCode == 16) {
+      this.setState({ shift: false })
+    }
+  }
+
+  handleKeyDown(e) {
+    if (e.keyCode == 16) {
+      this.setState({ shift: true })
+    }
+  }
+
+  handleKeyPress(e) {
+    //console.dir(e.keyCode)
   }
 
   handleMove(e) {
@@ -155,23 +176,30 @@ class App extends React.Component {
       mouseUpRight: false,
       mouseDownX: e.point.x,
       mouseDownY: e.point.y,
+      x: e.point.x,
+      y: e.point.y,
       mouseDownTimeStamp: Date.now()
     })
+    setTimeout(() => { this.handleMouseHold(e) }, this.props.holdTimeout)
+  }
 
-    // Mouse Hold
-    setTimeout(() => {
-      if (Date.now() - this.state.mouseUpTimeStamp > 1000) {
-        console.log('mouseHold/app')
-        this.setState({
-          mouseHold: true,
-          mouseHoldLeft: true,
-          mouseHoldRight: true,
-          mouseHoldX: e.point.x,
-          mouseHoldY: e.point.y,
-          mouseHoldTimeStamp: Date.now()
-        })
-      }
-    }, 1000)
+  handleMouseHold(e) {
+    if (this.state.mouseDown && Date.now() - this.state.mouseUpTimeStamp > this.props.holdTimeout) {
+      console.log('mouseHold/app')
+
+      this.setState({
+        mouseHold: true,
+        mouseHoldLeft: true,
+        mouseHoldRight: true,
+        mouseHoldX: e.point.x,
+        mouseHoldY: e.point.y,
+        x: e.point.x,
+        y: e.point.y,
+        clickRightX: null,
+        clickRightY: null,
+        mouseHoldTimeStamp: Date.now()
+      })
+    }
   }
 
   handleClickRight(e) {
@@ -187,6 +215,8 @@ class App extends React.Component {
       clickRightLng: e.lngLat.lng,
       x: e.point.x,
       y: e.point.y,
+      mouseHoldX: null,
+      mouseHoldY: null,
       clickRightX: e.point.x,
       clickRightY: e.point.y,
       clickRightTimeStamp: Date.now()
@@ -226,14 +256,18 @@ class App extends React.Component {
     }
 
     return (
-      <div>
-        <Search onFocus={ this.handleFocus } />
+      <div
+        onKeyDown={ this.handleKeyDown.bind(this) }
+        onKeyUp={ this.handleKeyUp.bind(this) }
+        onKeyPress={ this.handleKeyPress.bind(this) }
+      >
+        <Search onFocus={ this.handleFocus.bind(this) } />
         <Logo />
         <NorthArrow top={ 40 } right={ 20 } />
         <RightClickOptions
-          left={ this.state.mouseDownX }
-          top={ this.state.mouseDownY }
-          show={ this.state.clickRight || this.state.mouseHold }
+          left={ this.state.mouseHoldX || this.state.clickRightX }
+          top={ this.state.mouseHoldY || this.state.clickRightY }
+          show={ this.state.mouseHold || this.state.clickRight }
         />
         <Crosshair
           left={ this.state.x }
@@ -241,13 +275,13 @@ class App extends React.Component {
           fontSize={ 15 }
         />
         <Coordinates
-          onFocus={ this.handleFocus }
+          onFocus={ this.handleFocus.bind(this) }
           lat={ this.state.lat }
           lng={ this.state.lng }
           zoom={ this.state.zoom }
         />
-        <NoClickZone right={ 0 } top={ 0 } bottom={ 0 } width={ 20 } />
-        <NoClickZone right={ 20 } left={ 0 } bottom={ 0 } height={ 20 } />
+        <NoClickZone right={ 0 } top={ 0 } bottom={ 0 } width={ 10 } />
+        <NoClickZone right={ 10 } left={ 0 } bottom={ 0 } height={ 10 } />
         <div
           ref={ (ref) => this.mapboxMap = ref }
           style={ style }>
@@ -261,6 +295,7 @@ App.propTypes = {
   lat: React.PropTypes.number,
   lng: React.PropTypes.number,
   zoom: React.PropTypes.number,
+  holdTimeout: React.PropTypes.number,
   mapStyle: React.PropTypes.string
 }
 
@@ -268,6 +303,7 @@ App.defaultProps = {
   lat: 36.32,
   lng: 43.128,
   zoom: 15,
+  holdTimeout: 1000,
   mapStyle: mapStyles.hybrid
 }
 

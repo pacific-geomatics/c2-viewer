@@ -1,37 +1,39 @@
-import path from 'path';
-import source from 'vinyl-source-stream';
-import buffer from 'vinyl-buffer';
-import watchify from 'watchify';
-import { assign } from 'lodash';
-import browserify from 'browserify';
-import gulp from 'gulp';
-import gutil from 'gulp-util';
-import clean from 'gulp-clean';
-import eslint from 'gulp-eslint';
-import rename from 'gulp-rename';
-import uglify from 'gulp-uglify';
-import nodemon from 'gulp-nodemon';
-import streamify from 'gulp-streamify';
-import sourcemaps from 'gulp-sourcemaps';
+import path from 'path'
+import source from 'vinyl-source-stream'
+import buffer from 'vinyl-buffer'
+import watchify from 'watchify'
+import { assign } from 'lodash'
+import browserify from 'browserify'
+import gulp from 'gulp'
+import gutil from 'gulp-util'
+import clean from 'gulp-clean'
+import concat from 'gulp-concat'
+import eslint from 'gulp-eslint'
+import rename from 'gulp-rename'
+import uglify from 'gulp-uglify'
+import nodemon from 'gulp-nodemon'
+import streamify from 'gulp-streamify'
+import sourcemaps from 'gulp-sourcemaps'
+import reactify from 'reactify'
 
 /**
  * Browserify
- * https://github.com/gulpjs/gulp/blob/master/docs/recipes/fast-browserify-builds-with-watchify.md
+ * https://www.codementor.io/reactjs/tutorial/react-js-browserify-workflow-part-1
  */
-var customOpts = {
+let customOpts = {
   entries: ['./src/app.js'],
   debug: true
-};
-var opts = assign({}, watchify.args, customOpts);
-var b = watchify(browserify(opts));
-b.transform('babelify', {presets: ['es2015', 'react']})
+}
+let opts = assign({}, watchify.args, customOpts);
+let bundler = watchify(browserify(customOpts));
+bundler.transform('babelify', {presets: ['es2015', 'react', 'stage-0']})
 
-gulp.task('browserify', bundle); // so you can run `gulp js` to build the file
-b.on('update', bundle); // on any dep update, runs the bundler
-b.on('log', gutil.log); // output build logs to terminal
+gulp.task('browserify', bundle)
+bundler.on('update', bundle)
+bundler.on('log', gutil.log)
 
 function bundle() {
-  return b.bundle()
+  return bundler.bundle()
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe(source('bundle.js'))
     //.pipe(streamify(uglify()))
@@ -40,6 +42,18 @@ function bundle() {
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./dist/javascript'));
 }
+
+/**
+ * CSS
+ * https://www.codementor.io/reactjs/tutorial/react-js-browserify-workflow-part-1
+ */
+gulp.task('css', function () {
+    gulp.watch('styles/**/*.css', function () {
+        return gulp.src('styles/**/*.css')
+        .pipe(concat('main.css'))
+        .pipe(gulp.dest('build/'));
+    });
+});
 
 /**
  * Clean

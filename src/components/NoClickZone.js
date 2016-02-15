@@ -8,17 +8,17 @@ class NoClickZone extends React.Component {
   constructor(props) {
     super(props)
   }
-  
+
   render() {
     const style = {
-      'position' : 'absolute',
-      'zIndex': 5,
-      'top': this.props.top,
-      'bottom': this.props.bottom,
-      'left': this.props.left,
-      'right': this.props.right,
-      'width': this.props.width,
-      'height': this.props.height
+      position : 'absolute',
+      zIndex: 5,
+      top: this.props.top,
+      bottom: this.props.bottom,
+      left: this.props.left,
+      right: this.props.right,
+      width: this.props.width,
+      height: this.props.height
     }
     return <div style={ style }></div>
   }

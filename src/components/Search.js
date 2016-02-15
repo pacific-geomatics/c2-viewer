@@ -8,7 +8,7 @@ class Search extends React.Component {
 
   constructor(props) {
     super(props)
-    
+
     this.handleFocus.bind(this)
     this.handleClick.bind(this)
   }
@@ -25,11 +25,12 @@ class Search extends React.Component {
 
   render() {
     const style = {
-      'position' : 'absolute',
-      'top': 15,
-      'left': 15,
-      'zIndex': 10,
-      'transition': 'all 1s'
+      position : 'absolute',
+      top: 15,
+      left: 15,
+      zIndex: 10,
+      transition: 'all 1s',
+      WebkitFilter: 'drop-shadow(1px 1px 10px rgba(0, 0, 0, 0.75))'
     }
     return (
       <div onFocus={ this.handleFocus } style={ style }>

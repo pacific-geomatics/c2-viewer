@@ -46,6 +46,8 @@
   },
   "homepage": "https://github.com/pacific-geomatics/c2-viewer#readme",
   "devDependencies": {
+    "reactify": "^1.1.1",
+    "gulp-concat": "^2.6.0",
     "babel-core": "^6.4.5",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",

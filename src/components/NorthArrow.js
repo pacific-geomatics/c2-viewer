@@ -11,15 +11,15 @@ class NorthArrow extends React.Component {
   render() {
     const styles = {
       container : {
-        'position' : 'absolute',
-        'top': this.props.top,
-        'bottom': this.props.bottom,
-        'right': this.props.right,
-        'left': this.props.left,
-        'zIndex': this.props.zIndex
+        position : 'absolute',
+        top: this.props.top,
+        bottom: this.props.bottom,
+        right: this.props.right,
+        left: this.props.left,
+        zIndex: this.props.zIndex
       },
       northArrow : {
-        'fontSize': this.props.fontSize
+        fontSize: this.props.fontSize
       }
     }
     return (
