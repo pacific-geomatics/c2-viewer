@@ -7,7 +7,6 @@ import browserify from 'browserify'
 import gulp from 'gulp'
 import gutil from 'gulp-util'
 import clean from 'gulp-clean'
-import concat from 'gulp-concat'
 import eslint from 'gulp-eslint'
 import rename from 'gulp-rename'
 import uglify from 'gulp-uglify'
@@ -42,18 +41,6 @@ function bundle() {
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./dist/javascript'));
 }
-
-/**
- * CSS
- * https://www.codementor.io/reactjs/tutorial/react-js-browserify-workflow-part-1
- */
-gulp.task('css', function () {
-    gulp.watch('styles/**/*.css', function () {
-        return gulp.src('styles/**/*.css')
-        .pipe(concat('main.css'))
-        .pipe(gulp.dest('build/'));
-    });
-});
 
 /**
  * Clean
