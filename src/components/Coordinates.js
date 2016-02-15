@@ -1,36 +1,38 @@
 /**
  * Coordinates
  */
-import React from 'react';
-import {
-  Tooltip
- ,OverlayTrigger
- ,ButtonToolbar
- ,MenuItem
- ,SplitButton } from 'react-bootstrap'
+import React from 'react'
 import converter from 'coordinator'
 import copy from 'copy-to-clipboard'
+import {
+  Tooltip,
+  OverlayTrigger,
+  ButtonToolbar,
+  MenuItem,
+  SplitButton } from 'react-bootstrap'
 
 const toUSNG = converter('latlong', 'usng')
 const toLatLng = converter('usng', 'latlong')
 
 class Coordinates extends React.Component {
+
   constructor(props) {
-    super(props);
+    super(props)
+
+    this.handleClick.bind(this)
+    this.handleSelect.bind(this)
+
     this.state = {
-      precision: props.precision
-     ,type: props.type
-     ,lat: props.lat
-     ,lng: props.lng
-     ,mgrs: toUSNG(props.lat, props.lng, props.precision)
-     ,latlng: `${this.props.lat}, ${this.props.lng}`
-     ,message: this.props.message
+      precision: props.precision,
+      type: props.type,
+      lat: props.lat,
+      lng: props.lng,
+      mgrs: toUSNG(props.lat, props.lng, props.precision),
+      latlng: `${this.props.lat}, ${this.props.lng}`,
+      message: this.props.message
     }
   }
-  handleClick() {
-    copy(this.state[this.state.type])
-    // this.setState({ message: 'Copied!' })
-  }
+
   componentWillReceiveProps(nextProps) {
     //Get Precision
     let precision = 3
@@ -41,6 +43,7 @@ class Coordinates extends React.Component {
     let mgrs = toUSNG(nextProps.lat, nextProps.lng, this.state.precision)
     let lat = nextProps.lat.toFixed(this.state.precision)
     let lng = nextProps.lng.toFixed(this.state.precision)
+
     this.setState({
       latlng: `${lat}, ${lng}`
      ,mgrs: mgrs
@@ -50,16 +53,23 @@ class Coordinates extends React.Component {
      ,precision: precision
     })
   }
+
+  handleClick() {
+    copy(this.state[this.state.type])
+    // this.setState({ message: 'Copied!' })
+  }
+
   handleSelect(event, eventKey) {
     this.setState( eventKey )
   }
+
   render() {
     const style = {
-      'position' : 'absolute'
-     ,'bottom': 15
-     ,'right': 15
-     ,'zIndex': 10
-     ,'transition': 'all 0.7s'
+      'position' : 'absolute',
+      'bottom': 15,
+      'right': 15,
+      'zIndex': 10,
+      'transition': 'all 0.7s'
     }
     const tooltip = (
       <Tooltip id='tooltip'><strong>{ this.state.message }</strong></Tooltip>
@@ -76,7 +86,7 @@ class Coordinates extends React.Component {
             dropup
             pullRight
             onSelect={ this.handleSelect.bind(this) }
-            >
+          >
             <MenuItem eventKey={{ type: 'mgrs' }}>MGRS</MenuItem>
             <MenuItem eventKey={{ type: 'latlng' }}>Lat & Lng</MenuItem>
           </SplitButton>
@@ -85,16 +95,19 @@ class Coordinates extends React.Component {
     )
   }
 }
+
 Coordinates.propTypes = {
-  lat: React.PropTypes.number
- ,lng: React.PropTypes.number
- ,type: React.PropTypes.string
- ,zoom: React.PropTypes.number
- ,message: React.PropTypes.string
+  lat: React.PropTypes.number,
+  lng: React.PropTypes.number,
+  type: React.PropTypes.string,
+  zoom: React.PropTypes.number,
+  message: React.PropTypes.string
 }
+
 Coordinates.defaultProps = {
-  type: 'latlng'
- ,precision: 5
- ,message: 'Copy to Clipboard'
+  type: 'latlng',
+  precision: 5,
+  message: 'Copy to Clipboard'
 }
-export default Coordinates;
+
+export default Coordinates

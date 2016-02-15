@@ -14,28 +14,33 @@ import NoClickZone from './components/NoClickZone'
 import RightClickOptions from './components/RightClickOptions'
 import NorthArrow from './components/NorthArrow'
 
-
 class App extends React.Component {
+
   constructor(props) {
     super(props)
+
+    this.handleFocus.bind(this)
+
     this.state = {
-      lat: props.lat
-     ,lng: props.lng
-     ,mapStyle: props.mapStyle
-     ,zoom: props.zoom
-     ,timeStamp: Date.now()
+      lat: props.lat,
+      lng: props.lng,
+      mapStyle: props.mapStyle,
+      zoom: props.zoom,
+      timeStamp: Date.now()
     }
   }
+
   componentDidMount() {
-    mapboxgl.accessToken = accessToken;
+    mapboxgl.accessToken = accessToken
+
     var map = new mapboxgl.Map({
       container: this.mapboxMap,
       style: this.state.mapStyle,
       center: [ this.state.lng, this.state.lat ],
       zoom: this.state.zoom,
       attributionControl: false
-    });
-    //map.keyboard.disable()
+    })
+
     // Event Listeners
     map.on('click', this.handleClickLeft.bind(this))
     map.on('contextmenu', this.handleClickRight.bind(this))
@@ -45,177 +50,202 @@ class App extends React.Component {
     map.on('mouseup', this.handleMouseUp.bind(this))
     map.on('moveend', this.handleMoveEnd.bind(this))
     map.on('zoom', this.handleZoom.bind(this))
-    this._map = map;
+    this._map = map
+
     this.setState({
-      left: this.mapboxMap.clientWidth / 2 + this.mapboxMap.offsetLeft
-     ,top: this.mapboxMap.clientHeight / 2 + this.mapboxMap.offsetTop
-     ,width: this.mapboxMap.clientWidth
-     ,height: this.mapboxMap.clientHeight
+      left: this.mapboxMap.clientWidth / 2 + this.mapboxMap.offsetLeft,
+      top: this.mapboxMap.clientHeight / 2 + this.mapboxMap.offsetTop,
+      width: this.mapboxMap.clientWidth,
+      height: this.mapboxMap.clientHeight
     })
     /**
      * Add Shift Zoom + Shift Select for box selection.
      **/
   }
+
   handleMove(e) {
     this.reset('move/app')
+
     let center = this._map.getCenter()
     let timeStampDelta = Date.now() - this.state.timeStamp
+
     if ( timeStampDelta > 1000 ) {
       this.setState({
-        lat: center.lat
-       ,lng: center.lng
-       ,bearing: this._map.getBearing()
-       ,bounds: this._map.getBounds()
-       ,pitch: this._map.getPitch()
-       ,zoom: this._map.getZoom()
-       ,offsetTop: this.mapboxMap.offsetTop
-       ,offsetLeft: this.mapboxMap.offsetLeft
-       ,width: this.mapboxMap.clientWidth
-       ,height: this.mapboxMap.clientHeight
-       ,timeStamp: Date.now()
-       ,crosshairTop: this.mapboxMap.clientHeight / 2 + this.mapboxMap.offsetTop
-       ,crosshairLeft: this.mapboxMap.clientWidth / 2 + this.mapboxMap.offsetLeft
+        lat: center.lat,
+        lng: center.lng,
+        bearing: this._map.getBearing(),
+        bounds: this._map.getBounds(),
+        pitch: this._map.getPitch(),
+        zoom: this._map.getZoom(),
+        offsetTop: this.mapboxMap.offsetTop,
+        offsetLeft: this.mapboxMap.offsetLeft,
+        width: this.mapboxMap.clientWidth,
+        height: this.mapboxMap.clientHeight,
+        timeStamp: Date.now(),
+        crosshairTop: this.mapboxMap.clientHeight / 2 + this.mapboxMap.offsetTop,
+        crosshairLeft: this.mapboxMap.clientWidth / 2 + this.mapboxMap.offsetLeft
       })
     }
   }
+
   handleMoveEnd(e) {
     console.log('moveEnd/app')
   }
+
   handleZoom(e) {
     this.reset('zoom/app')
   }
+
   handleResize(e) {
     this.reset('resize/app')
   }
+
   reset(e) {
     console.log(`reset/${e}`)
+
     this.setState({
-      click: false
-     ,clickRight: false
-     ,clickLeft: false
-     ,mouseHold: false
-     ,mouseHoldRight: false
-     ,mouseHoldLeft: false
-     ,mouseUp: false
-     ,mouseUpLeft: false
-     ,mouseUpRight: false
-     ,mouseDown: false
-     ,mouseDownLeft: false
-     ,mouseDownRight: false
+      click: false,
+      clickRight: false,
+      clickLeft: false,
+      mouseHold: false,
+      mouseHoldRight: false,
+      mouseHoldLeft: false,
+      mouseUp: false,
+      mouseUpLeft: false,
+      mouseUpRight: false,
+      mouseDown: false,
+      mouseDownLeft: false,
+      mouseDownRight: false
     })
   }
+
   handleFocus(e) {
     console.log('focus/app')
   }
+
   handleMouseUp(e) {
     console.log('mouseUp/app')
+
     this.setState({
-      mouseUp: true
-     ,mouseDown: false
-     ,mouseHold: false || this.state.mouseHold
-     ,mouseUpLeft: true
-     ,mouseUpRight: true
-     ,mouseDownLeft: false
-     ,mouseDownRight: false
-     ,mouseUpX: e.point.x
-     ,mouseUpY: e.point.y
-     ,mouseUpTimeStamp: Date.now()
+      mouseUp: true,
+      mouseDown: false,
+      mouseHold: false || this.state.mouseHold,
+      mouseUpLeft: true,
+      mouseUpRight: true,
+      mouseDownLeft: false,
+      mouseDownRight: false,
+      mouseUpX: e.point.x,
+      mouseUpY: e.point.y,
+      mouseUpTimeStamp: Date.now()
     })
   }
+
   handleMouseDown(e) {
     console.log('mouseDown/app')
+
     this.setState({
-      mouseDown: true
-     ,mouseUp: false
-     ,mouseHold: false
-     ,clickRight: false
-     ,clickLeft: false
-     ,mouseDownLeft: true
-     ,mouseDownRight: true
-     ,mouseUpLeft: false
-     ,mouseUpRight: false
-     ,mouseDownX: e.point.x
-     ,mouseDownY: e.point.y
-     ,mouseDownTimeStamp: Date.now()
+      mouseDown: true,
+      mouseUp: false,
+      mouseHold: false,
+      clickRight: false,
+      clickLeft: false,
+      mouseDownLeft: true,
+      mouseDownRight: true,
+      mouseUpLeft: false,
+      mouseUpRight: false,
+      mouseDownX: e.point.x,
+      mouseDownY: e.point.y,
+      mouseDownTimeStamp: Date.now()
     })
+
+    // Mouse Hold
     setTimeout(() => {
       if (Date.now() - this.state.mouseUpTimeStamp > 1000) {
         console.log('mouseHold/app')
         this.setState({
-          mouseHold: true
-         ,mouseHoldLeft: true
-         ,mouseHoldRight: true
-         ,mouseHoldX: e.point.x
-         ,mouseHoldY: e.point.y
-         ,mouseHoldTimeStamp: Date.now()
+          mouseHold: true,
+          mouseHoldLeft: true,
+          mouseHoldRight: true,
+          mouseHoldX: e.point.x,
+          mouseHoldY: e.point.y,
+          mouseHoldTimeStamp: Date.now()
         })
       }
     }, 1000)
   }
+
   handleClickRight(e) {
     console.log('clickRight/app')
+
     this.setState({
-      click: true
-     ,clickLeft: false
-     ,clickRight: true
-     ,lat: e.lngLat.lat
-     ,lng: e.lngLat.lng
-     ,clickRightLat: e.lngLat.lat
-     ,clickRightLng: e.lngLat.lng
-     ,x: e.point.x
-     ,y: e.point.y
-     ,clickRightX: e.point.x
-     ,clickRightY: e.point.y
-     ,clickRightTimeStamp: Date.now()
+      click: true,
+      clickLeft: false,
+      clickRight: true,
+      lat: e.lngLat.lat,
+      lng: e.lngLat.lng,
+      clickRightLat: e.lngLat.lat,
+      clickRightLng: e.lngLat.lng,
+      x: e.point.x,
+      y: e.point.y,
+      clickRightX: e.point.x,
+      clickRightY: e.point.y,
+      clickRightTimeStamp: Date.now()
     })
   }
+
   handleClickLeft(e) {
     console.log('click/app')
+
     this.setState({
-      click: true
-     ,clickLeft: true
-     ,clickRight: false
-     ,lat: e.lngLat.lat
-     ,lng: e.lngLat.lng
-     ,clickLeftLat: e.lngLat.lat
-     ,clickLeftLng: e.lngLat.lng
-     ,x: e.point.x
-     ,y: e.point.y
-     ,clickLeftX: e.point.x
-     ,clickLeftY: e.point.y
-     ,clickLeftTimeStamp: Date.now()
+      click: true,
+      clickLeft: true,
+      clickRight: false,
+      lat: e.lngLat.lat,
+      lng: e.lngLat.lng,
+      clickLeftLat: e.lngLat.lat,
+      clickLeftLng: e.lngLat.lng,
+      x: e.point.x,
+      y: e.point.y,
+      clickLeftX: e.point.x,
+      clickLeftY: e.point.y,
+      clickLeftTimeStamp: Date.now()
     })
     //this._map.featuresAt(e.point, { radius: 5, includeGeometry: true }, function (err, features) {
     //  console.log(features);
     //});
   }
+
   render() {
     const style = {
-      'position' : 'absolute'
-     ,'bottom': 0
-     ,'top': 0
-     ,'width': '100%'
-     ,'zIndex': 0
-     ,'overflow': 'hidden'
+      'position' : 'absolute',
+      'bottom': 0,
+      'top': 0,
+      'width': '100%',
+      'zIndex': 0,
+      'overflow': 'hidden'
     }
+
     return (
       <div>
-        <Search onFocus={ this.handleFocus.bind(this) } />
+        <Search onFocus={ this.handleFocus } />
         <Logo />
         <NorthArrow top={ 40 } right={ 20 } />
         <RightClickOptions
           left={ this.state.mouseDownX }
           top={ this.state.mouseDownY }
-          show={ this.state.clickRight || this.state.mouseHold } />
+          show={ this.state.clickRight || this.state.mouseHold }
+        />
         <Crosshair
           left={ this.state.x }
           top={ this.state.y }
-          fontSize={ 15 } />
+          fontSize={ 15 }
+        />
         <Coordinates
-          onFocus={ this.handleFocus.bind(this) }
+          onFocus={ this.handleFocus }
           lat={ this.state.lat }
           lng={ this.state.lng }
-          zoom={ this.state.zoom } />
+          zoom={ this.state.zoom }
+        />
         <NoClickZone right={ 0 } top={ 0 } bottom={ 0 } width={ 20 } />
         <NoClickZone right={ 20 } left={ 0 } bottom={ 0 } height={ 20 } />
         <div
@@ -228,18 +258,20 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-  lat: React.PropTypes.number
- ,lng: React.PropTypes.number
- ,zoom: React.PropTypes.number
- ,mapStyle: React.PropTypes.string
+  lat: React.PropTypes.number,
+  lng: React.PropTypes.number,
+  zoom: React.PropTypes.number,
+  mapStyle: React.PropTypes.string
 }
+
 App.defaultProps = {
-  lat: 36.32
- ,lng: 43.128
- ,zoom: 15
- ,mapStyle: mapStyles.hybrid
+  lat: 36.32,
+  lng: 43.128,
+  zoom: 15,
+  mapStyle: mapStyles.hybrid
 }
+
 ReactDOM.render(
   <App />,
   document.getElementById('app')
-);
+)

@@ -10,6 +10,7 @@
  *   style: classicStyles('pacgeo.p054nodi'),
  * });
  */
+
 module.exports = function(mapID) {
   var sources = {}
   sources[mapID] = {
@@ -27,5 +28,5 @@ module.exports = function(mapID) {
       'source': mapID,
       'source-layer': mapID + '-layer'
     }]
-  };
+  }
 }
