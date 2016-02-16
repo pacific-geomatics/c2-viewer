@@ -1,6 +1,10 @@
 /**
- * Logo
+ * CompareSwiper
+ *
+ * This component was inspired by @fallsemo (Tristen) at Mapbox
+ * https://github.com/mapbox/mapbox-gl-compare
  */
+ 
 import React from 'react'
 
 class CompareSwiper extends React.Component {
