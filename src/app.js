@@ -4,6 +4,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import mapboxgl from 'mapbox-gl'
+import Compare from 'mapbox-gl-compare'
 import { accessToken } from './modules/accessToken'
 import { mapStyles } from './modules/mapStyles'
 import Coordinates from './components/Coordinates'
@@ -13,6 +14,7 @@ import Search from './components/Search'
 import NoClickZone from './components/NoClickZone'
 import RightClickOptions from './components/RightClickOptions'
 import NorthArrow from './components/NorthArrow'
+import CompareSwiper from './components/CompareSwiper'
 
 const keycodes = {
   16: 'shift'
@@ -28,28 +30,40 @@ class App extends React.Component {
       lng: props.lng,
       mapStyle: props.mapStyle,
       mapStyleSwipe: props.mapStyleSwipe,
-      zoom: props.zoom
+      zoom: props.zoom,
+      mapSwipeLeft: props.mapSwipeLeft
     }
   }
 
   componentDidMount() {
     mapboxgl.accessToken = accessToken
 
-    var map = new mapboxgl.Map({
-      container: this.mapboxMap,
+    const map = new mapboxgl.Map({
+      container: this.map,
       style: this.state.mapStyle,
       center: [ this.state.lng, this.state.lat ],
       zoom: this.state.zoom,
       attributionControl: false
     })
 
-    var mapSwipe = new mapboxgl.Map({
-      container: this.mapboxMapSwipe,
+    const mapSwipe = new mapboxgl.Map({
+      container: this.mapSwipe,
       style: this.state.mapStyleSwipe,
       center: [ this.state.lng, this.state.lat ],
       zoom: this.state.zoom,
       attributionControl: false
     })
+
+    // Define Globals
+    window._map = map
+    window._mapSwipe = mapSwipe
+    window._mapboxgl = mapboxgl
+    window.map = this.map
+    window.mapSwipe = this.mapSwipe
+    this._map = map
+    this._mapSwipe = mapSwipe
+    this._mapboxgl = mapboxgl
+
     // Disable
     //map.dragRotate.disable()
     //map.keyboard.disable()
@@ -73,13 +87,12 @@ class App extends React.Component {
     mapSwipe.on('movestart', this.handleMoveStart.bind(this))
     mapSwipe.on('moveend', this.handleMoveEnd.bind(this))
     mapSwipe.on('zoom', this.handleZoom.bind(this))
-    this._map = map
 
     this.setState({
-      left: this.mapboxMap.clientWidth / 2 + this.mapboxMap.offsetLeft,
-      top: this.mapboxMap.clientHeight / 2 + this.mapboxMap.offsetTop,
-      width: this.mapboxMap.clientWidth,
-      height: this.mapboxMap.clientHeight,
+      left: this.map.clientWidth / 2 + this.map.offsetLeft,
+      top: this.map.clientHeight / 2 + this.map.offsetTop,
+      width: this.map.clientWidth,
+      height: this.map.clientHeight,
       mouseUpTimeStamp: Date.now()
     })
     /**
@@ -266,15 +279,15 @@ class App extends React.Component {
         top: 0,
         width: '100%',
         overflow: 'hidden',
-        clip: 'rect(0px 999em 904px 525px)',
-        zIndex: 1
+        zIndex: 0
       },
       mapSwipe: {
         position : 'absolute',
         bottom: 0,
         top: 0,
-        zIndex: 0,
+        zIndex: 1,
         width: '100%',
+        clip: `rect(0px 999em 904px ${ this.state.mapSwipeLeft }px)`,
         overflow: 'hidden'
       }
     }
@@ -287,6 +300,11 @@ class App extends React.Component {
       >
         <Search onFocus={ this.handleFocus.bind(this) } />
         <Logo />
+        <CompareSwiper
+          before={ this.map }
+          after={ this.mapSwipe }
+          left={ this.state.mapSwipeLeft }
+        />
         <NorthArrow
           bottom={ 60 }
           right={ 20 }
@@ -313,11 +331,11 @@ class App extends React.Component {
         <NoClickZone right={ 0 } top={ 0 } bottom={ 0 } width={ 10 } />
         <NoClickZone right={ 10 } left={ 0 } bottom={ 0 } height={ 10 } />
         <div
-          ref={ (ref) => this.mapboxMap = ref }
+          ref={ (ref) => this.map = ref }
           style={ style.map }>
         </div>
         <div
-          ref={ (ref) => this.mapboxMapSwipe = ref }
+          ref={ (ref) => this.mapSwipe = ref }
           style={ style.mapSwipe }>
         </div>
       </div>
@@ -337,10 +355,11 @@ App.propTypes = {
 App.defaultProps = {
   lat: 36.32,
   lng: 43.128,
-  zoom: 15,
+  zoom: 14,
   holdTimeout: 1000,
-  mapStyle: mapStyles.pacgeo,
-  mapStyleSwipe: mapStyles.hybrid
+  mapStyle: mapStyles.hybrid,
+  mapStyleSwipe: mapStyles.hybrid,
+  mapSwipeLeft: window.innerWidth / 2
 }
 
 ReactDOM.render(
