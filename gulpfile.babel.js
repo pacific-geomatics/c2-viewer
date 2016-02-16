@@ -13,7 +13,6 @@ import uglify from 'gulp-uglify'
 import nodemon from 'gulp-nodemon'
 import streamify from 'gulp-streamify'
 import sourcemaps from 'gulp-sourcemaps'
-import reactify from 'reactify'
 
 /**
  * Browserify

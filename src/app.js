@@ -27,6 +27,7 @@ class App extends React.Component {
       lat: props.lat,
       lng: props.lng,
       mapStyle: props.mapStyle,
+      mapStyleSwipe: props.mapStyleSwipe,
       zoom: props.zoom
     }
   }
@@ -41,6 +42,14 @@ class App extends React.Component {
       zoom: this.state.zoom,
       attributionControl: false
     })
+
+    var mapSwipe = new mapboxgl.Map({
+      container: this.mapboxMapSwipe,
+      style: this.state.mapStyleSwipe,
+      center: [ this.state.lng, this.state.lat ],
+      zoom: this.state.zoom,
+      attributionControl: false
+    })
     // Disable
     //map.dragRotate.disable()
     //map.keyboard.disable()
@@ -48,12 +57,22 @@ class App extends React.Component {
     // Event Listeners
     map.on('click', this.handleClickLeft.bind(this))
     map.on('contextmenu', this.handleClickRight.bind(this))
-    map.on('move', this.handleMove.bind(this))
+    //map.on('move', this.handleMove.bind(this))
     map.on('resize', this.handleResize.bind(this))
     map.on('mousedown', this.handleMouseDown.bind(this))
     map.on('mouseup', this.handleMouseUp.bind(this))
+    map.on('movestart', this.handleMoveStart.bind(this))
     map.on('moveend', this.handleMoveEnd.bind(this))
     map.on('zoom', this.handleZoom.bind(this))
+    mapSwipe.on('click', this.handleClickLeft.bind(this))
+    mapSwipe.on('contextmenu', this.handleClickRight.bind(this))
+    //mapSwipe.on('move', this.handleMove.bind(this))
+    mapSwipe.on('resize', this.handleResize.bind(this))
+    mapSwipe.on('mousedown', this.handleMouseDown.bind(this))
+    mapSwipe.on('mouseup', this.handleMouseUp.bind(this))
+    mapSwipe.on('movestart', this.handleMoveStart.bind(this))
+    mapSwipe.on('moveend', this.handleMoveEnd.bind(this))
+    mapSwipe.on('zoom', this.handleZoom.bind(this))
     this._map = map
 
     this.setState({
@@ -94,6 +113,13 @@ class App extends React.Component {
       pitch: this._map.getPitch(),
       zoom: this._map.getZoom(),
       moveTimeStmap: Date.now()
+    })
+  }
+
+  handleMoveStart(e) {
+    console.log('moveStart/app')
+    this.setState({
+      move: true
     })
   }
 
@@ -234,12 +260,23 @@ class App extends React.Component {
 
   render() {
     const style = {
-      'position' : 'absolute',
-      'bottom': 0,
-      'top': 0,
-      'width': '100%',
-      'zIndex': 0,
-      'overflow': 'hidden'
+      map: {
+        position : 'absolute',
+        bottom: 0,
+        top: 0,
+        width: '100%',
+        overflow: 'hidden',
+        clip: 'rect(0px 999em 904px 525px)',
+        zIndex: 1
+      },
+      mapSwipe: {
+        position : 'absolute',
+        bottom: 0,
+        top: 0,
+        zIndex: 0,
+        width: '100%',
+        overflow: 'hidden'
+      }
     }
 
     return (
@@ -277,7 +314,11 @@ class App extends React.Component {
         <NoClickZone right={ 10 } left={ 0 } bottom={ 0 } height={ 10 } />
         <div
           ref={ (ref) => this.mapboxMap = ref }
-          style={ style }>
+          style={ style.map }>
+        </div>
+        <div
+          ref={ (ref) => this.mapboxMapSwipe = ref }
+          style={ style.mapSwipe }>
         </div>
       </div>
     )
@@ -289,7 +330,8 @@ App.propTypes = {
   lng: React.PropTypes.number,
   zoom: React.PropTypes.number,
   holdTimeout: React.PropTypes.number,
-  mapStyle: React.PropTypes.string
+  mapStyle: React.PropTypes.string,
+  mapStyleSwipe: React.PropTypes.string
 }
 
 App.defaultProps = {
@@ -297,7 +339,8 @@ App.defaultProps = {
   lng: 43.128,
   zoom: 15,
   holdTimeout: 1000,
-  mapStyle: mapStyles.hybrid
+  mapStyle: mapStyles.pacgeo,
+  mapStyleSwipe: mapStyles.hybrid
 }
 
 ReactDOM.render(
