@@ -34,12 +34,8 @@ class RightClickOptions extends React.Component {
     }
   }
 
-  handleBlur(e) {
-    console.log('blur/RightClickOptions')
-    this.setState({ show: false })
-  }
-
   handleSelect(selectedKey) {
+    console.log(selectedKey)
     this.setState({ show: false })
   }
 
@@ -65,7 +61,6 @@ class RightClickOptions extends React.Component {
         <Nav
           bsStyle="pills"
           stacked
-          onBlur={ this.handleBlur.bind(this) }
           onSelect={ this.handleSelect.bind(this) }
           >
           <NavItem eventKey={ 'directionsFrom' }>Directions from here</NavItem>

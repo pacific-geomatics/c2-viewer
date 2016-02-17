@@ -26,6 +26,10 @@ class CompareSwiper extends React.Component {
     window.addEventListener('resize', this.handleResize.bind(this) )
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ left: nextProps.left })
+  }
+
   handleMouseDown(e) {
     this.setState({ dragging: true })
   }
@@ -38,12 +42,12 @@ class CompareSwiper extends React.Component {
     let x = this.state.left
     let clientWidth = window.innerWidth
     if (x > clientWidth) x = clientWidth
-    this.setState({ left: x })
+    this.props.setLeft(x)
   }
 
   handleMouseMove(e) {
     if (this.state.dragging) {
-      this.setState({ left: this.getX(e) })
+      this.props.setLeft(this.getX(e))
     }
   }
 

@@ -43,16 +43,16 @@ body * {
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ';
 var before = new mapboxgl.Map({
     container: 'before',
-    style: 'mapbox://styles/pacgeo/cik67f0kv008onykoyvznp1nq',
-    center: [43.137266055416205, 36.31657953643028],
-    zoom: 16
+    style: 'mapbox://styles/mapbox/light-v8',
+    center: [0, 0],
+    zoom: 0
 });
 
 var after = new mapboxgl.Map({
     container: 'after',
-    style: 'mapbox://styles/mapbox/satellite-hybrid-v8',
-    center: [43.137266055416205, 36.31657953643028],
-    zoom: 16
+    style: 'mapbox://styles/mapbox/dark-v8',
+    center: [0, 0],
+    zoom: 0
 });
 
 new mapboxgl.Compare(before, after);

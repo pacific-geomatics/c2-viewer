@@ -20,6 +20,18 @@ const keycodes = {
   16: 'shift'
 }
 
+function getPosition(map) {
+  return {
+    center: map.getCenter(),
+    zoom: map.getZoom(),
+    bearing: map.getBearing(),
+    pitch: map.getPitch()
+  }
+}
+
+var map
+var mapRight
+
 class App extends React.Component {
 
   constructor(props) {
@@ -29,16 +41,16 @@ class App extends React.Component {
       lat: props.lat,
       lng: props.lng,
       mapStyle: props.mapStyle,
-      mapStyleSwipe: props.mapStyleSwipe,
+      mapStyleRight: props.mapStyleRight,
       zoom: props.zoom,
-      mapSwipeLeft: props.mapSwipeLeft
+      left: props.left
     }
   }
 
   componentDidMount() {
     mapboxgl.accessToken = accessToken
 
-    const map = new mapboxgl.Map({
+    map = new mapboxgl.Map({
       container: this.map,
       style: this.state.mapStyle,
       center: [ this.state.lng, this.state.lat ],
@@ -46,9 +58,9 @@ class App extends React.Component {
       attributionControl: false
     })
 
-    const mapSwipe = new mapboxgl.Map({
-      container: this.mapSwipe,
-      style: this.state.mapStyleSwipe,
+    mapRight = new mapboxgl.Map({
+      container: this.mapRight,
+      style: this.state.mapStyleRight,
       center: [ this.state.lng, this.state.lat ],
       zoom: this.state.zoom,
       attributionControl: false
@@ -56,12 +68,12 @@ class App extends React.Component {
 
     // Define Globals
     window._map = map
-    window._mapSwipe = mapSwipe
+    window._mapRight = mapRight
     window._mapboxgl = mapboxgl
     window.map = this.map
-    window.mapSwipe = this.mapSwipe
+    window.mapRight = this.mapRight
     this._map = map
-    this._mapSwipe = mapSwipe
+    this._mapRight = mapRight
     this._mapboxgl = mapboxgl
 
     // Disable
@@ -77,14 +89,17 @@ class App extends React.Component {
     map.on('movestart', this.handleMoveStart.bind(this))
     map.on('moveend', this.handleMoveEnd.bind(this))
     map.on('zoom', this.handleZoom.bind(this))
-    mapSwipe.on('click', this.handleClickLeft.bind(this))
-    mapSwipe.on('contextmenu', this.handleClickRight.bind(this))
-    mapSwipe.on('resize', this.handleResize.bind(this))
-    mapSwipe.on('mousedown', this.handleMouseDown.bind(this))
-    mapSwipe.on('mouseup', this.handleMouseUp.bind(this))
-    mapSwipe.on('movestart', this.handleMoveStart.bind(this))
-    mapSwipe.on('moveend', this.handleMoveEnd.bind(this))
-    mapSwipe.on('zoom', this.handleZoom.bind(this))
+    mapRight.on('click', this.handleClickLeft.bind(this))
+    mapRight.on('contextmenu', this.handleClickRight.bind(this))
+    mapRight.on('resize', this.handleResize.bind(this))
+    mapRight.on('mousedown', this.handleMouseDown.bind(this))
+    mapRight.on('mouseup', this.handleMouseUp.bind(this))
+    mapRight.on('movestart', this.handleMoveStart.bind(this))
+    mapRight.on('moveend', this.handleMoveEnd.bind(this))
+    mapRight.on('zoom', this.handleZoom.bind(this))
+
+    map.on('move', this.handleMoveLeft.bind(this) )
+    mapRight.on('move', this.handleMoveRight.bind(this) )
 
     this.setState({
       left: this.map.clientWidth / 2 + this.map.offsetLeft,
@@ -96,6 +111,26 @@ class App extends React.Component {
     /**
      * Add Shift Zoom + Shift Select for box selection.
      **/
+  }
+
+  handleMoveLeft() {
+    let left = JSON.stringify(getPosition(this._map))
+    let right = JSON.stringify(getPosition(this._mapRight))
+
+    if (left != right) {
+      this._mapRight.jumpTo(getPosition(this._map))
+      this.setState({ move: true })
+    }
+  }
+
+  handleMoveRight() {
+    let left = JSON.stringify(getPosition(this._map))
+    let right = JSON.stringify(getPosition(this._mapRight))
+
+    if (left != right) {
+      this._map.jumpTo(getPosition(this._mapRight))
+      this.setState({ move: true })
+    }
   }
 
   handleKeyUp(e) {
@@ -121,7 +156,11 @@ class App extends React.Component {
   }
 
   handleMoveEnd(e) {
-    this.setState({ move: false })
+    this.setState({
+      move: false,
+      moveRight: false,
+      moveLeft: false
+    })
   }
 
   handleZoom(e) {
@@ -143,6 +182,7 @@ class App extends React.Component {
 
   handleMouseDown(e) {
     this.setState({
+      rightClick: false,
       mouseHold: false,
       mouseDown: true,
       mouseDownX: e.point.x,
@@ -192,6 +232,7 @@ class App extends React.Component {
     console.log('click/app')
 
     this.setState({
+      clickRight: false,
       lat: e.lngLat.lat,
       lng: e.lngLat.lng,
       x: e.point.x,
@@ -200,6 +241,19 @@ class App extends React.Component {
     //this._map.featuresAt(e.point, { radius: 5, includeGeometry: true }, function (err, features) {
     //  console.log(features);
     //});
+  }
+
+  getChildContext() {
+    return { left: this.state.left }
+  }
+
+  setLeft(item) {
+    console.log('hello')
+    this.setState({ left: item })
+  }
+
+  componentWillReceiveProps() {
+    console.log(this.props.children)
   }
 
   render() {
@@ -212,13 +266,13 @@ class App extends React.Component {
         overflow: 'hidden',
         zIndex: 0
       },
-      mapSwipe: {
+      mapRight: {
         position : 'absolute',
         bottom: 0,
         top: 0,
         zIndex: 1,
         width: '100%',
-        clip: `rect(0px 999em 904px ${ this.state.mapSwipeLeft }px)`,
+        clip: `rect(0px 999em ${ window.innerHeight }px ${ this.state.left }px)`,
         overflow: 'hidden'
       }
     }
@@ -232,8 +286,9 @@ class App extends React.Component {
         <Logo />
         <CompareSwiper
           before={ this.map }
-          after={ this.mapSwipe }
-          left={ this.state.mapSwipeLeft }
+          after={ this.mapRight }
+          setLeft={ this.setLeft.bind(this) }
+          left={ this.state.left }
         />
         <NorthArrow
           bottom={ 60 }
@@ -244,7 +299,6 @@ class App extends React.Component {
           left={ this.state.mouseHoldX || this.state.clickRightX }
           top={ this.state.mouseHoldY || this.state.clickRightY }
           show={ this.state.mouseHold || this.state.clickRight }
-          onBlur={ this.handleBlur.bind(this) }
         />
         <Crosshair
           left={ this.state.x }
@@ -258,19 +312,21 @@ class App extends React.Component {
           bottom={ 15 }
           right={ 15 }
         />
-        <NoClickZone right={ 0 } top={ 0 } bottom={ 0 } width={ 10 } />
-        <NoClickZone right={ 10 } left={ 0 } bottom={ 0 } height={ 10 } />
+        <div
+          ref={ (ref) => this.mapRight = ref }
+          style={ style.mapRight }>
+        </div>
         <div
           ref={ (ref) => this.map = ref }
           style={ style.map }>
         </div>
-        <div
-          ref={ (ref) => this.mapSwipe = ref }
-          style={ style.mapSwipe }>
-        </div>
       </div>
     )
   }
+}
+
+App.childContextTypes = {
+  left: React.PropTypes.any
 }
 
 App.propTypes = {
@@ -279,7 +335,8 @@ App.propTypes = {
   zoom: React.PropTypes.number,
   holdTimeout: React.PropTypes.number,
   mapStyle: React.PropTypes.string,
-  mapStyleSwipe: React.PropTypes.string
+  mapRightStyle: React.PropTypes.string,
+  left: React.PropTypes.number
 }
 
 App.defaultProps = {
@@ -288,8 +345,8 @@ App.defaultProps = {
   zoom: 14,
   holdTimeout: 1000,
   mapStyle: mapStyles.hybrid,
-  mapStyleSwipe: mapStyles.hybrid,
-  mapSwipeLeft: window.innerWidth / 2
+  mapStyleRight: mapStyles.streets,
+  left: window.innerWidth / 2
 }
 
 ReactDOM.render(
