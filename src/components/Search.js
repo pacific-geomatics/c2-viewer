@@ -28,9 +28,10 @@ class Search extends React.Component {
       position : 'absolute',
       top: 15,
       left: 15,
-      zIndex: 10,
+      zIndex: 20,
       transition: 'all 1s',
-      WebkitFilter: 'drop-shadow(1px 1px 10px rgba(0, 0, 0, 0.75))'
+      WebkitFilter: 'drop-shadow(1px 1px 10px rgba(0, 0, 0, 0.75))',
+      WebkitUserSelect: 'none'
     }
     return (
       <div onFocus={ this.handleFocus } style={ style }>

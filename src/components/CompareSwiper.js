@@ -4,7 +4,7 @@
  * This component was inspired by @fallsemo (Tristen) at Mapbox
  * https://github.com/mapbox/mapbox-gl-compare
  */
- 
+
 import React from 'react'
 
 class CompareSwiper extends React.Component {
@@ -13,35 +13,46 @@ class CompareSwiper extends React.Component {
     super(props)
 
     this.state = {
-      left: this.props.left
+      left: this.props.left,
+      dragging: this.props.dragging
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.before){
-      this.setState({
-        after: {
-          clientHeight: this.props.after.clientHeight,
-          clientLeft: this.props.after.clientLeft,
-          clientTop: this.props.after.clientTop,
-          clientWidth: this.props.after.clientWidth
-        },
-        before: {
-          clientHeight: this.props.before.clientHeight,
-          clientLeft: this.props.before.clientLeft,
-          clientTop: this.props.before.clientTop,
-          clientWidth: this.props.before.clientWidth
-        }
-      })
-    }
+  componentDidMount() {
+    document.addEventListener('mousemove', this.handleMouseMove.bind(this) )
+    document.addEventListener('mouseup', this.handleMouseUp.bind(this) )
+    document.addEventListener('touchmove', this.handleMouseMove.bind(this) )
+    document.addEventListener('touchend', this.handleMouseUp.bind(this) )
+    window.addEventListener('resize', this.handleResize.bind(this) )
   }
 
   handleMouseDown(e) {
-    console.log('mouseDown/CompareSwiper')
+    this.setState({ dragging: true })
   }
 
-  handleTouchStart(e) {
-    console.log('touchStart/CompareSwiper')
+  handleMouseUp(e) {
+    this.setState({ dragging: false })
+  }
+
+  handleResize(e) {
+    let x = this.state.left
+    let clientWidth = document.body.clientWidth
+    if (x > clientWidth) x = clientWidth
+    this.setState({ left: x })
+  }
+
+  handleMouseMove(e) {
+    if (this.state.dragging) {
+      this.setState({ left: this.getX(e) })
+    }
+  }
+
+  getX(e) {
+    let x = e.clientX
+    let clientWidth = document.body.clientWidth
+    if (x < 0) x = 0
+    if (x > clientWidth) x = clientWidth
+    return x
   }
 
   render() {
@@ -52,7 +63,8 @@ class CompareSwiper extends React.Component {
         width: '2px',
         height: '100%',
         transform: `translate(${ this.state.left }px, 0px)`,
-        zIndex: 15
+        zIndex: 15,
+        userSelect: 'none'
       },
       compareSwiper : {
         backgroundColor: '#3887be',
@@ -75,7 +87,7 @@ class CompareSwiper extends React.Component {
         <div
           style={ styles.compareSwiper }
           onMouseDown={ this.handleMouseDown.bind(this) }
-          onTouchStart={ this.handleTouchStart.bind(this) }
+          onTouchStart={ this.handleMouseDown.bind(this) }
         ></div>
       </div>
     )
@@ -85,11 +97,13 @@ class CompareSwiper extends React.Component {
 CompareSwiper.propTypes = {
   //before: React.PropTypes.obj,
   //after: React.PropTypes.obj
-  left: React.PropTypes.number
+  left: React.PropTypes.number,
+  dragging: React.PropTypes.bool
 }
 
 CompareSwiper.defaultProps = {
-  left: window.innerWidth / 2
+  left: window.innerWidth / 2,
+  dragging: false
 }
 
 export default CompareSwiper
