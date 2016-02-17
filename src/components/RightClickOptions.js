@@ -2,23 +2,12 @@
  * Right Click Options
  */
 import React from 'react'
-import {
-  ButtonGroup,
-  Button,
-  MenuItem,
-  OverlayTrigger,
-  Overlay,
-  Popover,
-  NavItem,
-  Nav,
-  Modal } from 'react-bootstrap'
+import { NavItem, Nav } from 'react-bootstrap'
 
 class RightClickOptions extends React.Component {
 
   constructor(props) {
     super(props)
-
-    this.handleSelect = this.handleSelect.bind(this)
 
     this.state = {
       top: props.top,
@@ -29,8 +18,8 @@ class RightClickOptions extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.top && nextProps.left) {
-      let offsetTop = window.innerHeight - (nextProps.top + this.container.offsetHeight + this.props.buffer)
-      let offsetLeft = window.innerWidth - (nextProps.left + this.container.offsetWidth + this.props.buffer)
+      let offsetTop = window.innerHeight - (nextProps.top + this.RightClickOptions.offsetHeight + this.props.buffer)
+      let offsetLeft = window.innerWidth - (nextProps.left + this.RightClickOptions.offsetWidth + this.props.buffer)
 
       if (offsetTop > 0) { offsetTop = 0 }
       if (offsetLeft > 0) { offsetLeft = 0 }
@@ -43,6 +32,11 @@ class RightClickOptions extends React.Component {
         left: nextProps.left + offsetLeft
       })
     }
+  }
+
+  handleBlur(e) {
+    console.log('blur/RightClickOptions')
+    this.setState({ show: false })
   }
 
   handleSelect(selectedKey) {
@@ -65,15 +59,15 @@ class RightClickOptions extends React.Component {
 
     return (
       <div
-        ref={ (ref) => this.container = ref }
+        ref={ (ref) => this.RightClickOptions = ref }
         style={ style }
-        onBlur={ this.handleBlur }
-      >
+        >
         <Nav
           bsStyle="pills"
           stacked
-          onSelect={ this.handleSelect }
-        >
+          onBlur={ this.handleBlur.bind(this) }
+          onSelect={ this.handleSelect.bind(this) }
+          >
           <NavItem eventKey={ 'directionsFrom' }>Directions from here</NavItem>
           <NavItem eventKey={ 'directionsTo' }>Directions to here</NavItem>
           <NavItem eventKey={ 'whatsHere' }>What's here?</NavItem>

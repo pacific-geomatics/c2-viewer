@@ -19,10 +19,10 @@ class CompareSwiper extends React.Component {
   }
 
   componentDidMount() {
-    document.addEventListener('mousemove', this.handleMouseMove.bind(this) )
-    document.addEventListener('mouseup', this.handleMouseUp.bind(this) )
-    document.addEventListener('touchmove', this.handleMouseMove.bind(this) )
-    document.addEventListener('touchend', this.handleMouseUp.bind(this) )
+    window.addEventListener('mousemove', this.handleMouseMove.bind(this) )
+    window.addEventListener('mouseup', this.handleMouseUp.bind(this) )
+    window.addEventListener('touchmove', this.handleMouseMove.bind(this) )
+    window.addEventListener('touchend', this.handleMouseUp.bind(this) )
     window.addEventListener('resize', this.handleResize.bind(this) )
   }
 
@@ -36,7 +36,7 @@ class CompareSwiper extends React.Component {
 
   handleResize(e) {
     let x = this.state.left
-    let clientWidth = document.body.clientWidth
+    let clientWidth = window.innerWidth
     if (x > clientWidth) x = clientWidth
     this.setState({ left: x })
   }
@@ -49,7 +49,7 @@ class CompareSwiper extends React.Component {
 
   getX(e) {
     let x = e.clientX
-    let clientWidth = document.body.clientWidth
+    let clientWidth = window.innerWidth
     if (x < 0) x = 0
     if (x > clientWidth) x = clientWidth
     return x
@@ -63,7 +63,7 @@ class CompareSwiper extends React.Component {
         width: '2px',
         height: '100%',
         transform: `translate(${ this.state.left }px, 0px)`,
-        zIndex: 15,
+        zIndex: 10,
         userSelect: 'none'
       },
       compareSwiper : {
@@ -88,6 +88,9 @@ class CompareSwiper extends React.Component {
           style={ styles.compareSwiper }
           onMouseDown={ this.handleMouseDown.bind(this) }
           onTouchStart={ this.handleMouseDown.bind(this) }
+          onMouseMove={ this.state.dragging ? this.handleMouseDown.bind(this) : null }
+          onTouchEnd={ this.handleMouseUp.bind(this) }
+          onMouseUp={ this.handleMouseUp.bind(this) }
         ></div>
       </div>
     )

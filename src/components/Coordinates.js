@@ -70,9 +70,8 @@ class Coordinates extends React.Component {
       right: this.props.right,
       left: this.props.left,
       top: this.props.top,
-      zIndex: 10,
-      transition: 'all 0.7s',
-      WebkitUserSelect: 'none'
+      zIndex: 20,
+      transition: 'all 0.7s'
     }
     const tooltip = (
       <Tooltip id='tooltip'><strong>Copied to Clipboard!</strong></Tooltip>
@@ -86,7 +85,6 @@ class Coordinates extends React.Component {
             bsStyle='primary'
             title={ this.state[this.state.type] }
             id='coordinates'
-            dataClipboardText='Hello'
             dropup
             pullRight
             onSelect={ this.handleSelect.bind(this) }

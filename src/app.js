@@ -71,7 +71,6 @@ class App extends React.Component {
     // Event Listeners
     map.on('click', this.handleClickLeft.bind(this))
     map.on('contextmenu', this.handleClickRight.bind(this))
-    //map.on('move', this.handleMove.bind(this))
     map.on('resize', this.handleResize.bind(this))
     map.on('mousedown', this.handleMouseDown.bind(this))
     map.on('mouseup', this.handleMouseUp.bind(this))
@@ -80,7 +79,6 @@ class App extends React.Component {
     map.on('zoom', this.handleZoom.bind(this))
     mapSwipe.on('click', this.handleClickLeft.bind(this))
     mapSwipe.on('contextmenu', this.handleClickRight.bind(this))
-    //mapSwipe.on('move', this.handleMove.bind(this))
     mapSwipe.on('resize', this.handleResize.bind(this))
     mapSwipe.on('mousedown', this.handleMouseDown.bind(this))
     mapSwipe.on('mouseup', this.handleMouseUp.bind(this))
@@ -114,89 +112,39 @@ class App extends React.Component {
     }
   }
 
-  handleKeyPress(e) {
-    //console.dir(e.keyCode)
-  }
-
-  handleMove(e) {
-    this.setState({
-      move: true,
-      bearing: this._map.getBearing(),
-      bounds: this._map.getBounds(),
-      pitch: this._map.getPitch(),
-      zoom: this._map.getZoom(),
-      moveTimeStmap: Date.now()
-    })
+  handleResize(e) {
+    //
   }
 
   handleMoveStart(e) {
-    console.log('moveStart/app')
-    this.setState({
-      move: true
-    })
+    this.setState({ move: true })
   }
 
   handleMoveEnd(e) {
-    console.log('moveEnd/app')
-    this.setState({
-      move: false
-    })
+    this.setState({ move: false })
   }
 
   handleZoom(e) {
-    this.reset('zoom/app')
-  }
-
-  handleResize(e) {
-    this.reset('resize/app')
-  }
-
-  reset(e) {
-    console.log(`reset/${e}`)
-
-    this.setState({
-      click: false,
-      clickRight: false,
-      clickLeft: false,
-      mouseHold: false,
-      mouseHoldRight: false,
-      mouseHoldLeft: false,
-      mouseUp: false,
-      mouseUpLeft: false,
-      mouseUpRight: false,
-      mouseDown: false,
-      mouseDownLeft: false,
-      mouseDownRight: false
-    })
-  }
-
-  handleFocus(e) {
-    console.log('focus/app')
+    this.setState({ zoom: this._map.getZoom()} )
   }
 
   handleMouseUp(e) {
-    console.log('mouseUp/app')
     this.setState({
-      mouseUp: true,
+      mouseDown: false,
       mouseUpX: e.point.x,
       mouseUpY: e.point.y,
       mouseUpTimeStamp: Date.now()
     })
   }
 
-  handleMouseDown(e) {
-    console.log('mouseDown/app')
+  handleBlur(e) {
+    this.setState({ show: false })
+  }
 
+  handleMouseDown(e) {
     this.setState({
-      mouseDown: true,
-      mouseUp: false,
       mouseHold: false,
-      clickRight: false,
-      clickLeft: false,
-      mouseDownLeft: true,
-      mouseDownRight: true,
-      mouseUpLeft: false,
-      mouseUpRight: false,
+      mouseDown: true,
       mouseDownX: e.point.x,
       mouseDownY: e.point.y,
       mouseDownTimeStamp: Date.now()
@@ -210,19 +158,15 @@ class App extends React.Component {
 
       // Must have a delay of 1s to be considered a Map Hold
       if (this.state.mouseDown && Date.now() - this.state.mouseUpTimeStamp > this.props.holdTimeout) {
-        console.log('mouseHold/app')
 
         this.setState({
           mouseHold: true,
-          mouseHoldLeft: true,
-          mouseHoldRight: true,
           mouseHoldX: e.point.x,
           mouseHoldY: e.point.y,
           x: e.point.x,
           y: e.point.y,
           clickRightX: null,
-          clickRightY: null,
-          mouseHoldTimeStamp: Date.now()
+          clickRightY: null
         })
       }
     }
@@ -232,20 +176,15 @@ class App extends React.Component {
     console.log('clickRight/app')
 
     this.setState({
-      click: true,
-      clickLeft: false,
       clickRight: true,
       lat: e.lngLat.lat,
       lng: e.lngLat.lng,
-      clickRightLat: e.lngLat.lat,
-      clickRightLng: e.lngLat.lng,
       x: e.point.x,
       y: e.point.y,
       mouseHoldX: null,
       mouseHoldY: null,
       clickRightX: e.point.x,
-      clickRightY: e.point.y,
-      clickRightTimeStamp: Date.now()
+      clickRightY: e.point.y
     })
   }
 
@@ -253,18 +192,10 @@ class App extends React.Component {
     console.log('click/app')
 
     this.setState({
-      click: true,
-      clickLeft: true,
-      clickRight: false,
       lat: e.lngLat.lat,
       lng: e.lngLat.lng,
-      clickLeftLat: e.lngLat.lat,
-      clickLeftLng: e.lngLat.lng,
       x: e.point.x,
-      y: e.point.y,
-      clickLeftX: e.point.x,
-      clickLeftY: e.point.y,
-      clickLeftTimeStamp: Date.now()
+      y: e.point.y
     })
     //this._map.featuresAt(e.point, { radius: 5, includeGeometry: true }, function (err, features) {
     //  console.log(features);
@@ -296,9 +227,8 @@ class App extends React.Component {
       <div
         onKeyDown={ this.handleKeyDown.bind(this) }
         onKeyUp={ this.handleKeyUp.bind(this) }
-        onKeyPress={ this.handleKeyPress.bind(this) }
       >
-        <Search onFocus={ this.handleFocus.bind(this) } />
+        <Search />
         <Logo />
         <CompareSwiper
           before={ this.map }
@@ -314,6 +244,7 @@ class App extends React.Component {
           left={ this.state.mouseHoldX || this.state.clickRightX }
           top={ this.state.mouseHoldY || this.state.clickRightY }
           show={ this.state.mouseHold || this.state.clickRight }
+          onBlur={ this.handleBlur.bind(this) }
         />
         <Crosshair
           left={ this.state.x }
@@ -321,7 +252,6 @@ class App extends React.Component {
           fontSize={ 15 }
         />
         <Coordinates
-          onFocus={ this.handleFocus.bind(this) }
           lat={ this.state.lat }
           lng={ this.state.lng }
           zoom={ this.state.zoom }
