@@ -9,7 +9,7 @@ class Crosshair extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {}
+    this.state = { }
   }
 
   render() {
@@ -22,7 +22,8 @@ class Crosshair extends React.Component {
       fontSize: this.props.fontSize,
       color: 'white',
       textShadow: ' 1px 1px 2px black, 0 0 25px black, 0 0 5px black',
-      pointerEvents: 'none'
+      pointerEvents: 'none',
+      opacity: (this.props.accuracy == 'click') ? 1 : 0
     }
 
     return <Glyphicon style={ style } glyph="screenshot" />

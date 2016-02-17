@@ -5,8 +5,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import mapboxgl from 'mapbox-gl'
 import Compare from 'mapbox-gl-compare'
-import { accessToken } from './modules/accessToken'
-import { mapStyles } from './modules/mapStyles'
+import { accessToken } from './utils/accessToken'
+import { mapStyles } from './utils/mapStyles'
 import Coordinates from './components/Coordinates'
 import Logo from './components/Logo'
 import Crosshair from './components/Crosshair'
@@ -15,6 +15,7 @@ import NoClickZone from './components/NoClickZone'
 import RightClickOptions from './components/RightClickOptions'
 import NorthArrow from './components/NorthArrow'
 import CompareSwiper from './components/CompareSwiper'
+import Attribution from './components/Attribution'
 
 const keycodes = {
   16: 'shift'
@@ -28,9 +29,6 @@ function getPosition(map) {
     pitch: map.getPitch()
   }
 }
-
-var map
-var mapRight
 
 class App extends React.Component {
 
@@ -50,7 +48,7 @@ class App extends React.Component {
   componentDidMount() {
     mapboxgl.accessToken = accessToken
 
-    map = new mapboxgl.Map({
+    var map = new mapboxgl.Map({
       container: this.map,
       style: this.state.mapStyle,
       center: [ this.state.lng, this.state.lat ],
@@ -58,7 +56,7 @@ class App extends React.Component {
       attributionControl: false
     })
 
-    mapRight = new mapboxgl.Map({
+    var mapRight = new mapboxgl.Map({
       container: this.mapRight,
       style: this.state.mapStyleRight,
       center: [ this.state.lng, this.state.lat ],
@@ -98,7 +96,7 @@ class App extends React.Component {
     mapRight.on('moveend', this.handleMoveEnd.bind(this))
     mapRight.on('zoom', this.handleZoom.bind(this))
 
-    map.on('move', this.handleMoveLeft.bind(this) )
+    map.on('move', this.handleMove.bind(this) )
     mapRight.on('move', this.handleMoveRight.bind(this) )
 
     this.setState({
@@ -113,37 +111,49 @@ class App extends React.Component {
      **/
   }
 
-  handleMoveLeft() {
-    let left = JSON.stringify(getPosition(this._map))
-    let right = JSON.stringify(getPosition(this._mapRight))
+  handleMove() {
+    let left = getPosition(this._map)
+    let right = getPosition(this._mapRight)
 
-    if (left != right) {
+    if (JSON.stringify(left) != JSON.stringify(right)) {
       this._mapRight.jumpTo(getPosition(this._map))
-      this.setState({ move: true })
+      this.setState({
+        lat: left.center.lat,
+        lng: left.center.lng,
+        zoom: left.zoom,
+        accuracy: 'center',
+        move: true
+      })
     }
   }
 
   handleMoveRight() {
-    let left = JSON.stringify(getPosition(this._map))
-    let right = JSON.stringify(getPosition(this._mapRight))
+    let left = getPosition(this._map)
+    let right = getPosition(this._mapRight)
 
-    if (left != right) {
+    if (JSON.stringify(left) != JSON.stringify(right)) {
       this._map.jumpTo(getPosition(this._mapRight))
-      this.setState({ move: true })
+      this.setState({
+        lat: right.center.lat,
+        lng: right.center.lng,
+        zoom: right.zoom,
+        accuracy: 'center',
+        move: true
+      })
     }
   }
 
   handleKeyUp(e) {
     if (e.keyCode == 16) {
       this.setState({ shift: false })
-      this._map.dragRotate.disable()
+      //this._map.dragRotate.disable()
     }
   }
 
   handleKeyDown(e) {
     if (e.keyCode == 16) {
       this.setState({ shift: true })
-      this._map.dragRotate.enable()
+      //this._map.dragRotate.enable()
     }
   }
 
@@ -224,7 +234,8 @@ class App extends React.Component {
       mouseHoldX: null,
       mouseHoldY: null,
       clickRightX: e.point.x,
-      clickRightY: e.point.y
+      clickRightY: e.point.y,
+      accuracy: 'click'
     })
   }
 
@@ -236,7 +247,8 @@ class App extends React.Component {
       lat: e.lngLat.lat,
       lng: e.lngLat.lng,
       x: e.point.x,
-      y: e.point.y
+      y: e.point.y,
+      accuracy: 'click'
     })
     //this._map.featuresAt(e.point, { radius: 5, includeGeometry: true }, function (err, features) {
     //  console.log(features);
@@ -248,7 +260,6 @@ class App extends React.Component {
   }
 
   setLeft(item) {
-    console.log('hello')
     this.setState({ left: item })
   }
 
@@ -281,37 +292,44 @@ class App extends React.Component {
       <div
         onKeyDown={ this.handleKeyDown.bind(this) }
         onKeyUp={ this.handleKeyUp.bind(this) }
-      >
+        >
         <Search />
+        <Attribution
+          lat={ this.state.lat }
+          lng={ this.state.lng }
+          zoom={ this.state.zoom }
+          />
         <Logo />
         <CompareSwiper
           before={ this.map }
           after={ this.mapRight }
           setLeft={ this.setLeft.bind(this) }
           left={ this.state.left }
-        />
+          />
         <NorthArrow
           bottom={ 60 }
           right={ 20 }
           bearing={ this.state.bearing }
-        />
+          />
         <RightClickOptions
           left={ this.state.mouseHoldX || this.state.clickRightX }
           top={ this.state.mouseHoldY || this.state.clickRightY }
           show={ this.state.mouseHold || this.state.clickRight }
-        />
+          />
         <Crosshair
           left={ this.state.x }
           top={ this.state.y }
           fontSize={ 15 }
-        />
+          accuracy={ this.state.accuracy }
+          />
         <Coordinates
           lat={ this.state.lat }
           lng={ this.state.lng }
           zoom={ this.state.zoom }
           bottom={ 15 }
           right={ 15 }
-        />
+          accuracy={ this.state.accuracy }
+          />
         <div
           ref={ (ref) => this.mapRight = ref }
           style={ style.mapRight }>
@@ -344,8 +362,8 @@ App.defaultProps = {
   lng: 43.128,
   zoom: 14,
   holdTimeout: 1000,
-  mapStyle: mapStyles.hybrid,
-  mapStyleRight: mapStyles.streets,
+  mapStyle: mapStyles.streets,
+  mapStyleRight: mapStyles.hybrid,
   left: window.innerWidth / 2
 }
 

@@ -34,24 +34,36 @@ class Coordinates extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    //Get Precision
-    let precision = 3
-    if ( nextProps.zoom > 14 ) { precision = 5 }
-    else if ( nextProps.zoom > 10 ) { precision = 4 }
-
-    //Get Coordinates
-    let mgrs = toUSNG(nextProps.lat, nextProps.lng, this.state.precision)
-    let lat = nextProps.lat.toFixed(this.state.precision)
-    let lng = nextProps.lng.toFixed(this.state.precision)
-
+    let precision = this.getPrecision(nextProps)
     this.setState({
-      latlng: `${lat}, ${lng}`,
-      mgrs: mgrs,
+      latlng: this.getLatLng(nextProps, precision),
+      mgrs: this.getMGRS(nextProps, precision),
       zoom: nextProps.zoom,
       lat: nextProps.lat,
       lng: nextProps.lng,
       precision: precision
     })
+  }
+
+  getMGRS(nextProps, precision) {
+    return toUSNG(nextProps.lat, nextProps.lng, precision)
+  }
+
+  getLatLng(nextProps, precision) {
+    let lat = nextProps.lat.toFixed(precision)
+    let lng = nextProps.lng.toFixed(precision)
+
+    return `${lat}, ${lng}`
+  }
+
+  getPrecision(nextProps) {
+    let precision = 3
+
+    if ( nextProps.accuracy == 'center' ) { precision = 3 }
+    else if ( nextProps.zoom > 14 ) { precision = 5 }
+    else if ( nextProps.zoom > 10 ) { precision = 4 }
+
+    return precision
   }
 
   handleClick() {
@@ -114,7 +126,8 @@ Coordinates.defaultProps = {
   type: 'latlng',
   precision: 5,
   bottom: 15,
-  right: 15
+  right: 15,
+  accuracy: 'center'
 }
 
 export default Coordinates

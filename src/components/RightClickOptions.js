@@ -3,6 +3,7 @@
  */
 import React from 'react'
 import { NavItem, Nav } from 'react-bootstrap'
+import { getSize } from 'react-bootstrap'
 
 class RightClickOptions extends React.Component {
 

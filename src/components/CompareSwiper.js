@@ -19,15 +19,31 @@ class CompareSwiper extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener('mousemove', this.handleMouseMove.bind(this) )
-    window.addEventListener('mouseup', this.handleMouseUp.bind(this) )
-    window.addEventListener('touchmove', this.handleMouseMove.bind(this) )
-    window.addEventListener('touchend', this.handleMouseUp.bind(this) )
-    window.addEventListener('resize', this.handleResize.bind(this) )
+    window.addEventListener('mousemove', this.handleMouseMove.bind(this), false)
+    window.addEventListener('mouseup', this.handleMouseUp.bind(this), false)
+    window.addEventListener('resize', this.handleResize.bind(this), false)
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({ left: nextProps.left })
+  }
+
+  handleTouchStart(e) {
+    this.setState({ dragging: true })
+  }
+
+  handleTouchMove(e) {
+    if (this.state.dragging) {
+      this.props.setLeft(e.touches[0].clientX)
+    }
+  }
+
+  handleTouchEnd(e) {
+    this.setState({ dragging: false })
+  }
+
+  handleTouchCancel(e) {
+    this.setState({ dragging: false })
   }
 
   handleMouseDown(e) {
@@ -91,10 +107,10 @@ class CompareSwiper extends React.Component {
         <div
           style={ styles.compareSwiper }
           onMouseDown={ this.handleMouseDown.bind(this) }
-          onTouchStart={ this.handleMouseDown.bind(this) }
-          onMouseMove={ this.state.dragging ? this.handleMouseDown.bind(this) : null }
-          onTouchEnd={ this.handleMouseUp.bind(this) }
-          onMouseUp={ this.handleMouseUp.bind(this) }
+          onTouchStart={ this.handleTouchStart.bind(this) }
+          onTouchMove={ this.handleTouchMove.bind(this) }
+          onTouchEnd={ this.handleTouchEnd.bind(this) }
+          onTouchCancel={ this.handleTouchCancel.bind(this) }
         ></div>
       </div>
     )
