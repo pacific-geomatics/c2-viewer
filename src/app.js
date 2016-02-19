@@ -1,5 +1,11 @@
 /**
  * C2 Viewer App
+ * References:
+ * https://facebook.github.io/react/docs/perf.html
+ * https://github.com/hgoebl/mobile-detect.js
+ * http://csstriggers.com/
+ * https://github.com/joshwcomeau/react-flip-move/blob/master/docs/how-it-works.md
+ * http://www.w3schools.com/cssref/css3_pr_perspective.asp
  */
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -79,25 +85,25 @@ class App extends React.Component {
     //map.keyboard.disable()
 
     // Event Listeners
-    map.on('click', this.handleClickLeft.bind(this))
-    map.on('contextmenu', this.handleClickRight.bind(this))
-    map.on('resize', this.handleResize.bind(this))
-    map.on('mousedown', this.handleMouseDown.bind(this))
-    map.on('mouseup', this.handleMouseUp.bind(this))
-    map.on('movestart', this.handleMoveStart.bind(this))
-    map.on('moveend', this.handleMoveEnd.bind(this))
-    map.on('zoom', this.handleZoom.bind(this))
-    mapRight.on('click', this.handleClickLeft.bind(this))
-    mapRight.on('contextmenu', this.handleClickRight.bind(this))
-    mapRight.on('resize', this.handleResize.bind(this))
-    mapRight.on('mousedown', this.handleMouseDown.bind(this))
-    mapRight.on('mouseup', this.handleMouseUp.bind(this))
-    mapRight.on('movestart', this.handleMoveStart.bind(this))
-    mapRight.on('moveend', this.handleMoveEnd.bind(this))
-    mapRight.on('zoom', this.handleZoom.bind(this))
+    //map.on('click', this.handleClickLeft.bind(this))
+    //map.on('contextmenu', this.handleClickRight.bind(this))
+    //map.on('resize', this.handleResize.bind(this))
+    //map.on('mousedown', this.handleMouseDown.bind(this))
+    //map.on('mouseup', this.handleMouseUp.bind(this))
+    //map.on('movestart', this.handleMoveStart.bind(this))
+    //map.on('moveend', this.handleMoveEnd.bind(this))
+    //map.on('zoom', this.handleZoom.bind(this))
+    //mapRight.on('click', this.handleClickLeft.bind(this))
+    //mapRight.on('contextmenu', this.handleClickRight.bind(this))
+    //mapRight.on('resize', this.handleResize.bind(this))
+    //mapRight.on('mousedown', this.handleMouseDown.bind(this))
+    //mapRight.on('mouseup', this.handleMouseUp.bind(this))
+    //mapRight.on('movestart', this.handleMoveStart.bind(this))
+    //mapRight.on('moveend', this.handleMoveEnd.bind(this))
+    //mapRight.on('zoom', this.handleZoom.bind(this))
 
-    map.on('move', this.handleMove.bind(this) )
-    mapRight.on('move', this.handleMoveRight.bind(this) )
+    map.on('move', this.syncMaps.bind(this, _map, _mapRight))
+    mapRight.on('move', this.syncMaps.bind(this, _mapRight, _map))
 
     this.setState({
       left: this.map.clientWidth / 2 + this.map.offsetLeft,
@@ -111,35 +117,11 @@ class App extends React.Component {
      **/
   }
 
-  handleMove() {
-    let left = getPosition(this._map)
-    let right = getPosition(this._mapRight)
-
-    if (JSON.stringify(left) != JSON.stringify(right)) {
-      this._mapRight.jumpTo(getPosition(this._map))
-      this.setState({
-        lat: left.center.lat,
-        lng: left.center.lng,
-        zoom: left.zoom,
-        accuracy: 'center',
-        move: true
-      })
-    }
-  }
-
-  handleMoveRight() {
-    let left = getPosition(this._map)
-    let right = getPosition(this._mapRight)
-
-    if (JSON.stringify(left) != JSON.stringify(right)) {
-      this._map.jumpTo(getPosition(this._mapRight))
-      this.setState({
-        lat: right.center.lat,
-        lng: right.center.lng,
-        zoom: right.zoom,
-        accuracy: 'center',
-        move: true
-      })
+  syncMaps(source, target) {
+    if (!this.move) {
+      this.move = true
+      target.jumpTo(getPosition(source))
+      this.move = false
     }
   }
 
@@ -301,8 +283,8 @@ class App extends React.Component {
           />
         <Logo />
         <CompareSwiper
-          before={ this.map }
-          after={ this.mapRight }
+          left={ this._map }
+          right={ this._mapRight }
           setLeft={ this.setLeft.bind(this) }
           left={ this.state.left }
           />
