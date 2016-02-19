@@ -85,22 +85,22 @@ class App extends React.Component {
     //map.keyboard.disable()
 
     // Event Listeners
-    //map.on('click', this.handleClickLeft.bind(this))
-    //map.on('contextmenu', this.handleClickRight.bind(this))
-    //map.on('resize', this.handleResize.bind(this))
-    //map.on('mousedown', this.handleMouseDown.bind(this))
-    //map.on('mouseup', this.handleMouseUp.bind(this))
-    //map.on('movestart', this.handleMoveStart.bind(this))
-    //map.on('moveend', this.handleMoveEnd.bind(this))
-    //map.on('zoom', this.handleZoom.bind(this))
-    //mapRight.on('click', this.handleClickLeft.bind(this))
-    //mapRight.on('contextmenu', this.handleClickRight.bind(this))
-    //mapRight.on('resize', this.handleResize.bind(this))
-    //mapRight.on('mousedown', this.handleMouseDown.bind(this))
-    //mapRight.on('mouseup', this.handleMouseUp.bind(this))
-    //mapRight.on('movestart', this.handleMoveStart.bind(this))
-    //mapRight.on('moveend', this.handleMoveEnd.bind(this))
-    //mapRight.on('zoom', this.handleZoom.bind(this))
+    map.on('click', this.handleClickLeft.bind(this))
+    map.on('contextmenu', this.handleClickRight.bind(this))
+    map.on('resize', this.handleResize.bind(this))
+    map.on('mousedown', this.handleMouseDown.bind(this))
+    map.on('mouseup', this.handleMouseUp.bind(this))
+    map.on('movestart', this.handleMoveStart.bind(this))
+    map.on('moveend', this.handleMoveEnd.bind(this))
+    map.on('zoom', this.handleZoom.bind(this))
+    mapRight.on('click', this.handleClickLeft.bind(this))
+    mapRight.on('contextmenu', this.handleClickRight.bind(this))
+    mapRight.on('resize', this.handleResize.bind(this))
+    mapRight.on('mousedown', this.handleMouseDown.bind(this))
+    mapRight.on('mouseup', this.handleMouseUp.bind(this))
+    mapRight.on('movestart', this.handleMoveStart.bind(this))
+    mapRight.on('moveend', this.handleMoveEnd.bind(this))
+    mapRight.on('zoom', this.handleZoom.bind(this))
 
     map.on('move', this.syncMaps.bind(this, _map, _mapRight))
     mapRight.on('move', this.syncMaps.bind(this, _mapRight, _map))
@@ -296,7 +296,7 @@ class App extends React.Component {
         <RightClickOptions
           left={ this.state.mouseHoldX || this.state.clickRightX }
           top={ this.state.mouseHoldY || this.state.clickRightY }
-          show={ this.state.mouseHold || this.state.clickRight }
+          show={ this.state.clickRight }
           />
         <Crosshair
           left={ this.state.x }
@@ -340,11 +340,11 @@ App.propTypes = {
 }
 
 App.defaultProps = {
-  lat: 36.32,
-  lng: 43.128,
-  zoom: 14,
+  lat: 36.31545,
+  lng: 43.14998,
+  zoom: 16,
   holdTimeout: 1000,
-  mapStyle: mapStyles.streets,
+  mapStyle: mapStyles.pacgeo,
   mapStyleRight: mapStyles.hybrid,
   left: window.innerWidth / 2
 }

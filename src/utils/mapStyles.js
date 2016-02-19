@@ -1,5 +1,5 @@
 export const mapStyles = {
-  pacgeo: 'mapbox://styles/pacgeo/cik67f0kv008onykoyvznp1nq',
+  pacgeo: 'mapbox://styles/pacgeo/ciku5bvet009992klw8frjcyp',
   ski: 'mapbox://styles/pacgeo/cik68r1ds00bs96kpiidveijr',
   hybrid: 'mapbox://styles/mapbox/satellite-hybrid-v8',
   streets: 'mapbox://styles/mapbox/streets-v8',
