@@ -13,10 +13,12 @@ class Crosshair extends React.Component {
   }
 
   render() {
+    let left = this.props.left - this.props.fontSize / 2
+    let top = this.props.top - this.props.fontSize / 2
+
     const style = {
       position : 'absolute',
-      top: this.props.top - this.props.fontSize / 2,
-      left: this.props.left - this.props.fontSize / 2,
+      transform: `translate(${ left }px,${ top }px)`,
       zIndex: 5,
       transition: 'all 0.3s',
       fontSize: this.props.fontSize,

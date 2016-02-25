@@ -27,15 +27,6 @@ const keycodes = {
   16: 'shift'
 }
 
-function getPosition(map) {
-  return {
-    center: map.getCenter(),
-    zoom: map.getZoom(),
-    bearing: map.getBearing(),
-    pitch: map.getPitch()
-  }
-}
-
 class App extends React.Component {
 
   constructor(props) {
@@ -49,6 +40,7 @@ class App extends React.Component {
       zoom: props.zoom,
       left: props.left
     }
+    this.moveTimeStamp = Date.now()
   }
 
   componentDidMount() {
@@ -87,31 +79,24 @@ class App extends React.Component {
     // Event Listeners
     map.on('click', this.handleClickLeft.bind(this))
     map.on('contextmenu', this.handleClickRight.bind(this))
-    map.on('resize', this.handleResize.bind(this))
     map.on('mousedown', this.handleMouseDown.bind(this))
     map.on('mouseup', this.handleMouseUp.bind(this))
+    map.on('zoom', this.handleZoom.bind(this))
     map.on('movestart', this.handleMoveStart.bind(this))
     map.on('moveend', this.handleMoveEnd.bind(this))
-    map.on('zoom', this.handleZoom.bind(this))
     mapRight.on('click', this.handleClickLeft.bind(this))
     mapRight.on('contextmenu', this.handleClickRight.bind(this))
-    mapRight.on('resize', this.handleResize.bind(this))
     mapRight.on('mousedown', this.handleMouseDown.bind(this))
     mapRight.on('mouseup', this.handleMouseUp.bind(this))
+    mapRight.on('zoom', this.handleZoom.bind(this))
     mapRight.on('movestart', this.handleMoveStart.bind(this))
     mapRight.on('moveend', this.handleMoveEnd.bind(this))
-    mapRight.on('zoom', this.handleZoom.bind(this))
 
-    map.on('move', this.syncMaps.bind(this, _map, _mapRight))
-    mapRight.on('move', this.syncMaps.bind(this, _mapRight, _map))
+    // Syncing Map
+    map.on('move', this.syncMaps.bind(this, map, mapRight))
+    mapRight.on('move', this.syncMaps.bind(this, mapRight, map))
 
-    this.setState({
-      left: this.map.clientWidth / 2 + this.map.offsetLeft,
-      top: this.map.clientHeight / 2 + this.map.offsetTop,
-      width: this.map.clientWidth,
-      height: this.map.clientHeight,
-      mouseUpTimeStamp: Date.now()
-    })
+
     /**
      * Add Shift Zoom + Shift Select for box selection.
      **/
@@ -119,40 +104,39 @@ class App extends React.Component {
 
   syncMaps(source, target) {
     if (!this.move) {
+      this.moveTimeStamp = Date.now()
       this.move = true
-      target.jumpTo(getPosition(source))
+      target.jumpTo(this.getPosition(source))
       this.move = false
     }
   }
 
-  handleKeyUp(e) {
-    if (e.keyCode == 16) {
-      this.setState({ shift: false })
-      //this._map.dragRotate.disable()
+  getPosition(map) {
+    return {
+      center: map.getCenter(),
+      zoom: map.getZoom(),
+      bearing: map.getBearing(),
+      pitch: map.getPitch()
     }
-  }
-
-  handleKeyDown(e) {
-    if (e.keyCode == 16) {
-      this.setState({ shift: true })
-      //this._map.dragRotate.enable()
-    }
-  }
-
-  handleResize(e) {
-    //
-  }
-
-  handleMoveStart(e) {
-    this.setState({ move: true })
   }
 
   handleMoveEnd(e) {
-    this.setState({
-      move: false,
-      moveRight: false,
-      moveLeft: false
-    })
+    if (!this.move) {
+      this.setState({
+        move: false,
+        moveRight: false,
+        moveLeft: false
+      })
+    }
+  }
+
+  handleMoveStart(e) {
+    if (!this.move) {
+      this.setState({
+        move: true,
+        accuracy: 'center'
+      })
+    }
   }
 
   handleZoom(e) {
@@ -168,10 +152,6 @@ class App extends React.Component {
     })
   }
 
-  handleBlur(e) {
-    this.setState({ show: false })
-  }
-
   handleMouseDown(e) {
     this.setState({
       rightClick: false,
@@ -181,26 +161,23 @@ class App extends React.Component {
       mouseDownY: e.point.y,
       mouseDownTimeStamp: Date.now()
     })
+    this.moveTimeStamp = Date.now() - 25
     setTimeout(() => { this.handleMouseHold(e) }, this.props.holdTimeout)
   }
 
   handleMouseHold(e) {
-    // Must not be moving the map
-    if (!this.state.move) {
+    // Must have a delay of 1s to be considered a Map Hold
+    if (this.state.mouseDown && Date.now() - this.moveTimeStamp > this.props.holdTimeout) {
 
-      // Must have a delay of 1s to be considered a Map Hold
-      if (this.state.mouseDown && Date.now() - this.state.mouseUpTimeStamp > this.props.holdTimeout) {
-
-        this.setState({
-          mouseHold: true,
-          mouseHoldX: e.point.x,
-          mouseHoldY: e.point.y,
-          x: e.point.x,
-          y: e.point.y,
-          clickRightX: null,
-          clickRightY: null
-        })
-      }
+      this.setState({
+        mouseHold: true,
+        mouseHoldX: e.point.x,
+        mouseHoldY: e.point.y,
+        x: e.point.x,
+        y: e.point.y,
+        clickRightX: null,
+        clickRightY: null
+      })
     }
   }
 
@@ -237,18 +214,6 @@ class App extends React.Component {
     //});
   }
 
-  getChildContext() {
-    return { left: this.state.left }
-  }
-
-  setLeft(item) {
-    this.setState({ left: item })
-  }
-
-  componentWillReceiveProps() {
-    console.log(this.props.children)
-  }
-
   render() {
     const style = {
       map: {
@@ -265,16 +230,18 @@ class App extends React.Component {
         top: 0,
         zIndex: 1,
         width: '100%',
-        clip: `rect(0px 999em ${ window.innerHeight }px ${ this.state.left }px)`,
+        clip: `rect(0px 999em ${ window.innerHeight }px ${ window.innerWidth / 2 }px)`,
         overflow: 'hidden'
       }
     }
 
     return (
-      <div
-        onKeyDown={ this.handleKeyDown.bind(this) }
-        onKeyUp={ this.handleKeyUp.bind(this) }
-        >
+      <div>
+        <RightClickOptions
+          left={ this.state.mouseHoldX || this.state.clickRightX }
+          top={ this.state.mouseHoldY || this.state.clickRightY }
+          show={ this.state.mouseHold || this.state.clickRight }
+          />
         <Search />
         <Attribution
           lat={ this.state.lat }
@@ -282,21 +249,11 @@ class App extends React.Component {
           zoom={ this.state.zoom }
           />
         <Logo />
-        <CompareSwiper
-          left={ this._map }
-          right={ this._mapRight }
-          setLeft={ this.setLeft.bind(this) }
-          left={ this.state.left }
-          />
+        <CompareSwiper />
         <NorthArrow
           bottom={ 60 }
           right={ 20 }
           bearing={ this.state.bearing }
-          />
-        <RightClickOptions
-          left={ this.state.mouseHoldX || this.state.clickRightX }
-          top={ this.state.mouseHoldY || this.state.clickRightY }
-          show={ this.state.clickRight }
           />
         <Crosshair
           left={ this.state.x }
@@ -325,10 +282,6 @@ class App extends React.Component {
   }
 }
 
-App.childContextTypes = {
-  left: React.PropTypes.any
-}
-
 App.propTypes = {
   lat: React.PropTypes.number,
   lng: React.PropTypes.number,
@@ -336,7 +289,7 @@ App.propTypes = {
   holdTimeout: React.PropTypes.number,
   mapStyle: React.PropTypes.string,
   mapRightStyle: React.PropTypes.string,
-  left: React.PropTypes.number
+  accuracy: React.PropTypes.string
 }
 
 App.defaultProps = {
@@ -345,8 +298,8 @@ App.defaultProps = {
   zoom: 16,
   holdTimeout: 1000,
   mapStyle: mapStyles.pacgeo,
-  mapStyleRight: mapStyles.hybrid,
-  left: window.innerWidth / 2
+  mapStyleRight: mapStyles.streets,
+  accuracy: 'center'
 }
 
 ReactDOM.render(

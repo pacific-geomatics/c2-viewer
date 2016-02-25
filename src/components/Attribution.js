@@ -45,7 +45,7 @@ class Attribution extends React.Component {
             <Button
               bsSize='small'
               bsStyle='link'
-              href={ `http://www.openstreetmap.org/edit?pk_campaign=pacgeo-edit#map=${ this.props.zoom }/${ this.props.lat }/${ this.props.lng }` }
+              href={ `https://www.mapbox.com/map-feedback/#mapbox.streets/${ this.props.lng }/${ this.props.lat }/${ this.props.zoom }` }
               target='_blank'
               >
               <b>Improve this map</b>
