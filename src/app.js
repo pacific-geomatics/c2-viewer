@@ -265,8 +265,6 @@ class App extends React.Component {
           lat={ this.state.lat }
           lng={ this.state.lng }
           zoom={ this.state.zoom }
-          bottom={ 15 }
-          right={ 15 }
           accuracy={ this.state.accuracy }
           />
         <div

@@ -18,8 +18,10 @@ class Attribution extends React.Component {
     const md = new MobileDetect(window.navigator.userAgent)
     const style = {
       position: 'absolute',
-      bottom: 0,
-      left: 0,
+      bottom: this.props.bottom,
+      right: this.props.right,
+      left: this.props.left,
+      top: this.props.top,
       zIndex: 15
     }
     return (
@@ -60,11 +62,16 @@ class Attribution extends React.Component {
 Attribution.propTypes = {
   lat: React.PropTypes.number,
   lng: React.PropTypes.number,
-  zoom: React.PropTypes.number
+  zoom: React.PropTypes.number,
+  left: React.PropTypes.number,
+  right: React.PropTypes.number,
+  bottom: React.PropTypes.number,
+  top: React.PropTypes.number
 }
 
 Attribution.defaultProps = {
-
+  bottom: 0,
+  right: 3
 }
 
 export default Attribution

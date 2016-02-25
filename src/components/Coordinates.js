@@ -125,7 +125,7 @@ Coordinates.propTypes = {
 Coordinates.defaultProps = {
   type: 'latlng',
   precision: 5,
-  bottom: 15,
+  bottom: 30,
   right: 15,
   accuracy: 'center'
 }
