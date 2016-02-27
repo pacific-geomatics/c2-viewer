@@ -26,7 +26,13 @@ class NorthArrow extends React.Component {
   }
 
   handleClick() {
-    window._map.flyTo({ bearing: 0 })
+    let setBearing = {
+      0: 90,
+      90: 180,
+      180: 270,
+      270: 0
+    }
+    window._map.flyTo({ bearing: setBearing[this.state.bearing] || 0 })
   }
 
   handleMouseOver() {

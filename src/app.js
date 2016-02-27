@@ -20,6 +20,7 @@ import Search from './components/Search'
 import NoClickZone from './components/NoClickZone'
 import RightClickOptions from './components/RightClickOptions'
 import NorthArrow from './components/NorthArrow'
+import TiltView from './components/TiltView'
 import CompareSwiper from './components/CompareSwiper'
 import Attribution from './components/Attribution'
 
@@ -242,10 +243,9 @@ class App extends React.Component {
 
     return (
       <div>
-        {
-          this.state.active &&
-          <NorthArrow />
-        }
+        { this.state.active && <NorthArrow /> }
+        { this.state.active && <TiltView /> }
+        
         <RightClickOptions
           left={ this.state.mouseHoldX || this.state.clickRightX }
           top={ this.state.mouseHoldY || this.state.clickRightY }
