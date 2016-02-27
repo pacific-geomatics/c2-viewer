@@ -82,7 +82,7 @@ class Coordinates extends React.Component {
       right: this.props.right,
       left: this.props.left,
       top: this.props.top,
-      zIndex: 20,
+      zIndex: this.props.zIndex,
       transition: 'all 0.7s'
     }
     const tooltip = (
@@ -119,7 +119,8 @@ Coordinates.propTypes = {
   top: React.PropTypes.number,
   bottom: React.PropTypes.number,
   left: React.PropTypes.number,
-  right: React.PropTypes.number
+  right: React.PropTypes.number,
+  zIndex: React.PropTypes.number
 }
 
 Coordinates.defaultProps = {
@@ -127,6 +128,7 @@ Coordinates.defaultProps = {
   precision: 5,
   bottom: 30,
   right: 15,
+  zIndex: 20,
   accuracy: 'center'
 }
 

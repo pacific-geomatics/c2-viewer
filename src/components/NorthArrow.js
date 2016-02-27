@@ -9,48 +9,73 @@ class NorthArrow extends React.Component {
     super(props)
 
     this.state = {
-      display: this.props.display,
-      opacity: this.props.opacity
+      bearing: 0,
+      hover: false,
+      active: false
     }
   }
 
+  componentDidMount() {
+    window._map.on('move', this.getBearing.bind(this))
+    this.setState({ active: true })
+  }
+
+  getBearing(e) {
+    let bearing = window._map.getBearing()
+    this.setState({ bearing: bearing })
+  }
+
   handleClick() {
-    console.log('Clicked North Arrow')
+    window._map.flyTo({ bearing: 0 })
+  }
+
+  handleMouseOver() {
+    this.setState({ hover: true })
+  }
+
+  handleMouseOut() {
+    this.setState({ hover: false })
   }
 
   render() {
     const styles = {
       container : {
         position : 'absolute',
+        cursor: `pointer`,
         top: this.props.top,
         bottom: this.props.bottom,
         right: this.props.right,
         left: this.props.left,
         zIndex: this.props.zIndex,
-        textAlign: 'center',
-        verticalAlign: 'middle',
-        width: 25,
-        height: 25,
-        opacity: (this.props.bearing) ? 1 : 0,
-        cursor: 'pointer',
-        borderRadius: '100%',
-        transition: 'all 1s',
-        backgroundColor: 'white',
-        WebkitFilter: 'drop-shadow(1.5px 1.5px 1px black)',
+        width: this.props.width,
+        height: this.props.height
       },
       northArrow : {
-        fontSize: this.props.fontSize,
-        color: 'rgb(165, 30, 30)',
-        top: 3,
-        transform: `rotate(${ this.props.bearing }deg)`
+        position : 'absolute',
+        width: this.props.width,
+        height: this.props.height,
+        transform: `rotate(${ this.state.bearing }deg)`,
+        WebkitFilter: (!this.state.bearing) ? `grayscale(1)` : ``,
+        backgroundImage: 'url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJ5ZXMiPz4KCjxzdmcgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwLjAgMC4wIDUzMy4zMzMzMzMzMzMzMzM0IDUzMy4zMzMzMzMzMzMzMzM0IiBmaWxsPSJub25lIiBzdHJva2U9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGNsaXBQYXRoIGlkPSJwLjAiPjxwYXRoIGQ9Im0wIDBsNTMzLjMzMzMgMGwwIDUzMy4zMzMzbC01MzMuMzMzMyAwbDAgLTUzMy4zMzMzeiIgY2xpcC1ydWxlPSJub256ZXJvIj48L3BhdGg+PC9jbGlwUGF0aD48ZyBjbGlwLXBhdGg9InVybCgjcC4wKSI+PHBhdGggZmlsbD0iIzAwMDAwMCIgZmlsbC1vcGFjaXR5PSIwLjAiIGQ9Im0wIDBsNTMzLjMzMzMgMGwwIDUzMy4zMzMzbC01MzMuMzMzMyAweiIgZmlsbC1ydWxlPSJub256ZXJvIj48L3BhdGg+PHBhdGggZmlsbD0iI2ZmMDAwMCIgZD0ibTIwNy40OTQ0NiAyNzUuMzYzOGw1My4xODExMDcgLTE2NS41NDMzbDUzLjE4MTA5IDE2NS41NDMzeiIgZmlsbC1ydWxlPSJub256ZXJvIj48L3BhdGg+PHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0ibTIwNy40OTQ0NiAyNzUuMzY0NDRsNTMuMTgxMTA3IDE2NS41NDMzM2w1My4xODEwOSAtMTY1LjU0MzMzeiIgZmlsbC1ydWxlPSJub256ZXJvIj48L3BhdGg+PC9nPjwvc3ZnPgoK)'
+      },
+      background : {
+        position : 'absolute',
+        width: this.props.width,
+        height: this.props.height,
+        transition: 'all 0.3s',
+        WebkitFilter: (this.state.hover) ? `invert(0.2)` : ``,
+        backgroundImage: 'url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJ5ZXMiPz4KCjxzdmcgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwLjAgMC4wIDUzMy4zMzMzMzMzMzMzMzM0IDUzMy4zMzMzMzMzMzMzMzM0IiBmaWxsPSJub25lIiBzdHJva2U9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGNsaXBQYXRoIGlkPSJwLjAiPjxwYXRoIGQ9Im0wIDBsNTMzLjMzMzMgMGwwIDUzMy4zMzMzbC01MzMuMzMzMyAwbDAgLTUzMy4zMzMzeiIgY2xpcC1ydWxlPSJub256ZXJvIj48L3BhdGg+PC9jbGlwUGF0aD48ZyBjbGlwLXBhdGg9InVybCgjcC4wKSI+PHBhdGggZmlsbD0iIzAwMDAwMCIgZmlsbC1vcGFjaXR5PSIwLjAiIGQ9Im0wIDBsNTMzLjMzMzMgMGwwIDUzMy4zMzMzbC01MzMuMzMzMyAweiIgZmlsbC1ydWxlPSJub256ZXJvIj48L3BhdGg+PHBhdGggZmlsbD0iIzAwMDAwMCIgZD0ibTguOTg0MjUyIDI2Ni42NjkyOGwwIDBjMCAtMTQyLjMxNTUgMTE1LjM2OTUyIC0yNTcuNjg1MDMgMjU3LjY4NTAzIC0yNTcuNjg1MDNsMCAwYzY4LjM0MjM1IDAgMTMzLjg4NTUzIDI3LjE0ODg4IDE4Mi4yMTA4NSA3NS40NzQyYzQ4LjMyNTMxNyA0OC4zMjUzMTcgNzUuNDc0MTggMTEzLjg2ODUxNSA3NS40NzQxOCAxODIuMjEwODNsMCAwYzAgMTQyLjMxNTUyIC0xMTUuMzY5NTEgMjU3LjY4NTAzIC0yNTcuNjg1MDMgMjU3LjY4NTAzbDAgMGMtMTQyLjMxNTUgMCAtMjU3LjY4NTAzIC0xMTUuMzY5NTEgLTI1Ny42ODUwMyAtMjU3LjY4NTAzeiIgZmlsbC1ydWxlPSJub256ZXJvIj48L3BhdGg+PHBhdGggZmlsbD0iIzQzNDM0MyIgZD0ibTE1Mi40OTUxMiAyNzEuNDQ2MzJsMCAwYzAgLTYyLjUxNjg5IDUxLjExNzA5NiAtMTEzLjE5Njg1IDExNC4xNzMyMiAtMTEzLjE5Njg1bDAgMGMzMC4yODA2NCAwIDU5LjMyMTA0NSAxMS45MjYwNTYgODAuNzMyNjY2IDMzLjE1NDU4N2MyMS40MTE2MjEgMjEuMjI4NTMgMzMuNDQwNTUgNTAuMDIwNTg0IDMzLjQ0MDU1IDgwLjA0MjI3bDAgMGMwIDYyLjUxNjg3NiAtNTEuMTE3MDk2IDExMy4xOTY4NCAtMTE0LjE3MzIyIDExMy4xOTY4NGwwIDBjLTYzLjA1NjEyIDAgLTExNC4xNzMyMiAtNTAuNjc5OTYyIC0xMTQuMTczMjIgLTExMy4xOTY4NHoiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPjxwYXRoIGZpbGw9IiMwMDAwMDAiIGZpbGwtb3BhY2l0eT0iMC4wIiBkPSJtNDE3LjIzMzU4IDE2OC40ODI5NGM2LjExNzI0ODUgMTUuNjA1ODY1NSAzNS43MDQ3NDIgNjIuNjczNjYgMzYuNzAzNDMgOTMuNjM1MTZjMC45OTg2ODc3NCAzMC45NjE1MTcgLTI1LjU5Mjc0MyA3Ni43NzgyMyAtMzAuNzExMzA0IDkyLjEzMzg4IiBmaWxsLXJ1bGU9Im5vbnplcm8iPjwvcGF0aD48cGF0aCBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMjQuMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im00MTcuMjMzNTggMTY4LjQ4Mjk0YzYuMTE3MjQ4NSAxNS42MDU4NjU1IDM1LjcwNDc0MiA2Mi42NzM2NiAzNi43MDM0MyA5My42MzUxNmMwLjk5ODY4Nzc0IDMwLjk2MTUxNyAtMjUuNTkyNzQzIDc2Ljc3ODIzIC0zMC43MTEzMDQgOTIuMTMzODgiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPjxwYXRoIGZpbGw9IiNmZmZmZmYiIGQ9Im00MTEuOTg5MDQgMzAwLjMxODZsMjUuNDY3MTYzIDIxLjcyNDQyNmwzNS45NTUzODMgMTEuMjM2MjA2bC03MS45MDgxMSA1My4xODExMnoiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPjxwYXRoIGZpbGw9IiMwMDAwMDAiIGZpbGwtb3BhY2l0eT0iMC4wIiBkPSJtMTA0LjExNDU0IDE2Mi40NTgwMWMtNi4xMTcyMzMzIDE1LjYwNTg2NTUgLTM1LjcwNDcyIDYyLjY3MzY2IC0zNi43MDM0MDcgOTMuNjM1MTZjLTAuOTk4Njg3NzQgMzAuOTYxNTE3IDI1LjU5MjczNSA3Ni43NzgyMyAzMC43MTEyOCA5Mi4xMzM4NSIgZmlsbC1ydWxlPSJub256ZXJvIj48L3BhdGg+PHBhdGggc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjI0LjAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtMTA0LjExNDU0IDE2Mi40NTgwMWMtNi4xMTcyMzMzIDE1LjYwNTg2NTUgLTM1LjcwNDcyIDYyLjY3MzY2IC0zNi43MDM0MDcgOTMuNjM1MTZjLTAuOTk4Njg3NzQgMzAuOTYxNTE3IDI1LjU5MjczNSA3Ni43NzgyMyAzMC43MTEyOCA5Mi4xMzM4NSIgZmlsbC1ydWxlPSJub256ZXJvIj48L3BhdGg+PHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0ibTEwOS4zNTkxMSAyOTQuMjkzNjdsLTI1LjQ2NzE5NCAyMS43MjQ0MjZsLTM1Ljk1NTM4IDExLjIzNjIwNmw3MS45MDgxNCA1My4xODExMnoiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPjwvZz48L3N2Zz4KCg==)'
       }
     }
     return (
       <div
         style={ styles.container }
         onClick={ this.handleClick.bind(this) }
-      >
-        <Glyphicon style={ styles.northArrow } glyph={ this.props.glyph } />
+        onMouseOver={ this.handleMouseOver.bind(this) }
+        onMouseOut={ this.handleMouseOut.bind(this) }
+        >
+        <div style={ styles.background }></div>
+        <div style={ styles.northArrow }></div>
       </div>
     )
   }
@@ -61,20 +86,17 @@ NorthArrow.propTypes = {
   bottom: React.PropTypes.number,
   left: React.PropTypes.number,
   top: React.PropTypes.number,
-  fontSize: React.PropTypes.number,
-  glyph: React.PropTypes.string,
-  bearing: React.PropTypes.number,
   zIndex: React.PropTypes.number,
-  opacity: React.PropTypes.number,
-  display: React.PropTypes.string
+  height: React.PropTypes.number,
+  width: React.PropTypes.number
 }
 
 NorthArrow.defaultProps = {
-  glyph: 'arrow-up',
-  zIndex: 10,
-  bearing: 0,
-  opacity: 1,
-  display: ''
+  zIndex: 15,
+  bottom: 65,
+  right: 10,
+  width: 60,
+  height: 60
 }
 
 export default NorthArrow

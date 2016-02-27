@@ -38,7 +38,8 @@ class App extends React.Component {
       mapStyle: props.mapStyle,
       mapStyleRight: props.mapStyleRight,
       zoom: props.zoom,
-      left: props.left
+      left: props.left,
+      active: false
     }
     this.moveTimeStamp = Date.now()
   }
@@ -96,7 +97,7 @@ class App extends React.Component {
     map.on('move', this.syncMaps.bind(this, map, mapRight))
     mapRight.on('move', this.syncMaps.bind(this, mapRight, map))
 
-
+    this.setState({ active: true })
     /**
      * Add Shift Zoom + Shift Select for box selection.
      **/
@@ -121,11 +122,15 @@ class App extends React.Component {
   }
 
   handleMoveEnd(e) {
+    let center = this._map.getCenter()
+
     if (!this.move) {
       this.setState({
         move: false,
         moveRight: false,
-        moveLeft: false
+        moveLeft: false,
+        lat: center.lat,
+        lng: center.lng
       })
     }
   }
@@ -237,6 +242,10 @@ class App extends React.Component {
 
     return (
       <div>
+        {
+          this.state.active &&
+          <NorthArrow />
+        }
         <RightClickOptions
           left={ this.state.mouseHoldX || this.state.clickRightX }
           top={ this.state.mouseHoldY || this.state.clickRightY }
@@ -250,11 +259,6 @@ class App extends React.Component {
           />
         <Logo />
         <CompareSwiper />
-        <NorthArrow
-          bottom={ 60 }
-          right={ 20 }
-          bearing={ this.state.bearing }
-          />
         <Crosshair
           left={ this.state.x }
           top={ this.state.y }
@@ -295,7 +299,7 @@ App.defaultProps = {
   lng: 43.14998,
   zoom: 16,
   holdTimeout: 1000,
-  mapStyle: mapStyles.pacgeo,
+  mapStyle: mapStyles.hybrid,
   mapStyleRight: mapStyles.streets,
   accuracy: 'center'
 }
