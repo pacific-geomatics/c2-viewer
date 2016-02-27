@@ -79,6 +79,10 @@ class NorthArrow extends React.Component {
         onClick={ this.handleClick.bind(this) }
         onMouseOver={ this.handleMouseOver.bind(this) }
         onMouseOut={ this.handleMouseOut.bind(this) }
+
+        onTouchStart={ this.handleMouseOver.bind(this) }
+        onTouchCancel={ this.handleMouseOut.bind(this) }
+        onTouchEnd={ this.handleMouseOut.bind(this) }
         >
         <div style={ styles.background }></div>
         <div style={ styles.northArrow }></div>
