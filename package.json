@@ -32,7 +32,8 @@
     "react-dom": "^0.14.6",
     "react-router": "^1.0.3",
     "robots.txt": "^1.1.0",
-    "serve-favicon": "^2.3.0"
+    "serve-favicon": "^2.3.0",
+    "turf": "^2.0.2"
   },
   "main": "app.js",
   "repository": {

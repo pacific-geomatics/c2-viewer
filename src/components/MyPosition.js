@@ -1,39 +1,81 @@
 /**
- * TiltView
+ * My Position
  */
 import React from 'react'
 import { Glyphicon } from 'react-bootstrap'
+import turf from 'turf'
 
-class TiltView extends React.Component {
+class MyPosition extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      pitch: 0,
       hover: false,
       active: false
     }
   }
 
   componentDidMount() {
-    window._map.on('move', this.getPitch.bind(this))
+    let options = {
+      enableHighAccuracy: false,
+      timeout: 5000,
+      maximumAge: 0
+    }
     this.setState({ active: true })
   }
 
-  getPitch(e) {
-    let pitch = window._map.getPitch()
-    this.setState({ pitch: pitch })
+  geolocationSuccess(position) {
+    let coords = position.coords
+    this.setState({
+      lat: coords.latitude,
+      lng: coords.longitude,
+      accuracy: coords.accuracy,
+      heading: coords.heading
+    })
+  }
+
+  geolocationError(error) {
+    console.warn(`ERROR(${ error.code }): ${ error.message }`)
+  }
+
+  addAccuracy(polygon, map) {
+    if (!map.getSource('accuracy')) {
+      map.addSource('accuracy', {
+        type: 'geojson',
+        data: polygon
+      })
+    }
+
+    if (!map.getLayer('accuracy')) {
+      map.addLayer({
+        id: 'accuracy',
+        type: 'line',
+        source: 'accuracy',
+        layout: {},
+        paint: {
+          'line-color': '#1269c3',
+          'line-opacity': 0.5,
+          'line-width': 3
+        }
+      })
+    }
   }
 
   handleClick() {
-    let setPitch = {
-      0: 45,
-      45: 90,
-      90: 0
-    }
-    window._map.flyTo({
-      pitch: setPitch[this.state.pitch] || 0
-    })
+    // Get Current position
+    navigator.geolocation.getCurrentPosition(this.geolocationSuccess)
+
+    // Create Bounding Box Geometry based on Location + Accuracy
+    let point = turf.point([this.state.lng, this.state.lat])
+    let buffer = turf.buffer(point, this.state.accuracy, 'meters')
+    let extent = turf.extent(buffer)
+
+    // Set Map to Bounding Box
+    window._map.fitBounds(extent)
+
+    // Add Accuracy Polygon
+    this.addAccuracy(buffer, window._map)
+    this.addAccuracy(buffer, window._mapRight)
   }
 
   handleMouseOver() {
@@ -81,13 +123,13 @@ class TiltView extends React.Component {
         onTouchCancel={ this.handleMouseOut.bind(this) }
         onTouchEnd={ this.handleMouseOut.bind(this) }
         >
-        <Glyphicon style={ styles.glyph } glyph='th' />
+        <Glyphicon style={ styles.glyph } glyph='map-marker' />
       </div>
     )
   }
 }
 
-TiltView.propTypes = {
+MyPosition.propTypes = {
   right: React.PropTypes.number,
   bottom: React.PropTypes.number,
   left: React.PropTypes.number,
@@ -98,13 +140,13 @@ TiltView.propTypes = {
   fontSize: React.PropTypes.number
 }
 
-TiltView.defaultProps = {
+MyPosition.defaultProps = {
   zIndex: 15,
-  bottom: 132,
+  bottom: 170,
   right: 22,
   width: 35,
   height: 35,
   fontSize: 18
 }
 
-export default TiltView
+export default MyPosition

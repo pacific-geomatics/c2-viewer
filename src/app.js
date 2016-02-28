@@ -23,6 +23,7 @@ import NorthArrow from './components/NorthArrow'
 import TiltView from './components/TiltView'
 import CompareSwiper from './components/CompareSwiper'
 import Attribution from './components/Attribution'
+import MyPosition from './components/MyPosition'
 
 const keycodes = {
   16: 'shift'
@@ -245,7 +246,8 @@ class App extends React.Component {
       <div>
         { this.state.active && <NorthArrow /> }
         { this.state.active && <TiltView /> }
-        
+        { this.state.active && <MyPosition /> }
+
         <RightClickOptions
           left={ this.state.mouseHoldX || this.state.clickRightX }
           top={ this.state.mouseHoldY || this.state.clickRightY }
