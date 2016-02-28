@@ -9,8 +9,6 @@
  */
 import React from 'react'
 import ReactDOM from 'react-dom'
-import mapboxgl from 'mapbox-gl'
-import Compare from 'mapbox-gl-compare'
 import { accessToken } from './utils/accessToken'
 import { mapStyles } from './utils/mapStyles'
 import Coordinates from './components/Coordinates'

@@ -90,15 +90,13 @@ class Coordinates extends React.Component {
     )
     return (
       <ButtonToolbar style={ style }>
-        <OverlayTrigger rootClose trigger="click" placement='left' overlay={ tooltip }>
+        <OverlayTrigger rootClose trigger="click" placement='right' overlay={ tooltip }>
           <SplitButton
             onClick={ this.handleClick.bind(this) }
             bsSize='small'
-            bsStyle='primary'
+            bsStyle='default'
             title={ this.state[this.state.type] }
             id='coordinates'
-            dropup
-            pullRight
             onSelect={ this.handleSelect.bind(this) }
           >
             <MenuItem eventKey={{ type: 'mgrs' }}>MGRS</MenuItem>
@@ -126,8 +124,8 @@ Coordinates.propTypes = {
 Coordinates.defaultProps = {
   type: 'latlng',
   precision: 5,
-  bottom: 30,
-  right: 15,
+  top: 65,
+  left: 15,
   zIndex: 20,
   accuracy: 'center'
 }

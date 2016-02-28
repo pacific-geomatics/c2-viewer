@@ -3,7 +3,6 @@
  */
 import React from 'react'
 import { Glyphicon } from 'react-bootstrap'
-import turf from 'turf'
 
 class MyPosition extends React.Component {
   constructor(props) {
@@ -22,16 +21,6 @@ class MyPosition extends React.Component {
       maximumAge: 0
     }
     this.setState({ active: true })
-  }
-
-  geolocationSuccess(position) {
-    let coords = position.coords
-    this.setState({
-      lat: coords.latitude,
-      lng: coords.longitude,
-      accuracy: coords.accuracy,
-      heading: coords.heading
-    })
   }
 
   geolocationError(error) {
@@ -62,20 +51,31 @@ class MyPosition extends React.Component {
   }
 
   handleClick() {
-    // Get Current position
-    navigator.geolocation.getCurrentPosition(this.geolocationSuccess)
+    navigator.geolocation.getCurrentPosition((position) => {
+      // Create Bounding Box Geometry based on Location + Accuracy
+      let coords = position.coords
+      let lat = coords.latitude
+      let lng = coords.longitude
+      let accuracy = coords.accuracy
 
-    // Create Bounding Box Geometry based on Location + Accuracy
-    let point = turf.point([this.state.lng, this.state.lat])
-    let buffer = turf.buffer(point, this.state.accuracy, 'meters')
-    let extent = turf.extent(buffer)
+      let point = turf.point([lng, lat])
+      let buffer = turf.buffer(point, accuracy, 'meters')
+      let extent = turf.extent(buffer)
 
-    // Set Map to Bounding Box
-    window._map.fitBounds(extent)
+      // Set Map to Bounding Box
+      window._map.fitBounds(extent)
 
-    // Add Accuracy Polygon
-    this.addAccuracy(buffer, window._map)
-    this.addAccuracy(buffer, window._mapRight)
+      // Add Accuracy Polygon
+      this.addAccuracy(buffer, window._map)
+      this.addAccuracy(buffer, window._mapRight)
+
+      this.setState({
+        lat: lat,
+        lng: lng,
+        accuracy: accuracy
+      })
+    })
+
   }
 
   handleMouseOver() {
@@ -142,7 +142,7 @@ MyPosition.propTypes = {
 
 MyPosition.defaultProps = {
   zIndex: 15,
-  bottom: 170,
+  bottom: 70,
   right: 22,
   width: 35,
   height: 35,
