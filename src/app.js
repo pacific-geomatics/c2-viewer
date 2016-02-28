@@ -25,10 +25,12 @@ import MyPosition from './components/MyPosition'
 import ZoomOut from './components/ZoomOut'
 import ZoomIn from './components/ZoomIn'
 import Settings from './components/Settings'
+import MobileDetect from 'mobile-detect'
 
 const keycodes = {
   16: 'shift'
 }
+const md = new MobileDetect(window.navigator.userAgent)
 
 class App extends React.Component {
 
@@ -40,6 +42,7 @@ class App extends React.Component {
       lng: props.lng,
       mapStyle: props.mapStyle,
       mapStyleRight: props.mapStyleRight,
+      mapStyleMini: props.mapStyleMini,
       zoom: props.zoom,
       left: props.left,
       active: false
@@ -66,14 +69,25 @@ class App extends React.Component {
       attributionControl: false
     })
 
+    var mapMini = new mapboxgl.Map({
+      container: this.mapMini,
+      style: this.state.mapStyleMini,
+      center: [ this.state.lng, this.state.lat ],
+      zoom: this.state.zoom + this.props.mapMiniOffset,
+      attributionControl: false
+    })
+
     // Define Globals
     window._map = map
     window._mapRight = mapRight
+    window._mapMini = mapMini
     window._mapboxgl = mapboxgl
     window.map = this.map
     window.mapRight = this.mapRight
+    window.mapMini = this.mapMini
     this._map = map
     this._mapRight = mapRight
+    this._mapMini = mapMini
     this._mapboxgl = mapboxgl
 
     // Disable
@@ -97,8 +111,10 @@ class App extends React.Component {
     mapRight.on('moveend', this.handleMoveEnd.bind(this))
 
     // Syncing Map
-    map.on('move', this.syncMaps.bind(this, map, mapRight))
-    mapRight.on('move', this.syncMaps.bind(this, mapRight, map))
+    map.on('move', this.syncMaps.bind(this, map, mapRight, 0))
+    map.on('move', this.syncMaps.bind(this, map, mapMini, this.props.mapMiniOffset))
+    mapRight.on('move', this.syncMaps.bind(this, mapRight, map, 0))
+    mapRight.on('move', this.syncMaps.bind(this, mapRight, mapMini, this.props.mapMiniOffset))
 
     this.setState({ active: true })
     /**
@@ -106,19 +122,19 @@ class App extends React.Component {
      **/
   }
 
-  syncMaps(source, target) {
+  syncMaps(source, target, zoomOffset) {
     if (!this.move) {
       this.moveTimeStamp = Date.now()
       this.move = true
-      target.jumpTo(this.getPosition(source))
+      target.jumpTo(this.getPosition(source, zoomOffset))
       this.move = false
     }
   }
 
-  getPosition(map) {
+  getPosition(map, zoomOffset) {
     return {
       center: map.getCenter(),
-      zoom: map.getZoom(),
+      zoom: map.getZoom() + zoomOffset,
       bearing: map.getBearing(),
       pitch: map.getPitch()
     }
@@ -241,6 +257,17 @@ class App extends React.Component {
         width: '100%',
         clip: `rect(0px, 999em, ${ window.innerHeight }px, ${ window.innerWidth / 2 }px)`,
         overflow: 'hidden'
+      },
+      mapMini: {
+        position : 'absolute',
+        bottom: 65,
+        left: 10,
+        zIndex: 2,
+        overflow: 'hidden',
+        boxShadow: '5px 5px 15px rgba(100, 100, 100, 0.7)',
+        borderRadius: '50%',
+        width: (window.innerWidth > 750) ? 250: window.innerWidth / 3,
+        height: (window.innerWidth > 750) ? 250: window.innerWidth / 3,
       }
     }
 
@@ -284,6 +311,10 @@ class App extends React.Component {
           ref={ (ref) => this.map = ref }
           style={ style.map }>
         </div>
+        <div
+          ref={ (ref) => this.mapMini = ref }
+          style={ style.mapMini }>
+        </div>
       </div>
     )
   }
@@ -296,7 +327,8 @@ App.propTypes = {
   holdTimeout: React.PropTypes.number,
   mapStyle: React.PropTypes.string,
   mapRightStyle: React.PropTypes.string,
-  accuracy: React.PropTypes.string
+  accuracy: React.PropTypes.string,
+  mapMiniOffset: React.PropTypes.number
 }
 
 App.defaultProps = {
@@ -304,7 +336,9 @@ App.defaultProps = {
   lng: 43.14998,
   zoom: 13,
   holdTimeout: 1000,
+  mapMiniOffset: -4,
   mapStyle: mapStyles.hybrid,
+  mapStyleMini: mapStyles.streets,
   mapStyleRight: classicStyles('mapbox.outdoors'),
   accuracy: 'center'
 }
