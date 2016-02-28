@@ -31,6 +31,7 @@ const keycodes = {
   16: 'shift'
 }
 const md = new MobileDetect(window.navigator.userAgent)
+window.md = md
 
 class App extends React.Component {
 
@@ -266,8 +267,8 @@ class App extends React.Component {
         overflow: 'hidden',
         boxShadow: '5px 5px 15px rgba(100, 100, 100, 0.7)',
         borderRadius: '50%',
-        width: (window.innerWidth > 750) ? 250: window.innerWidth / 3,
-        height: (window.innerWidth > 750) ? 250: window.innerWidth / 3,
+        width: (window.innerWidth > 768) ? 250: window.innerWidth / 3,
+        height: (window.innerWidth > 768) ? 250: window.innerWidth / 3,
       }
     }
 

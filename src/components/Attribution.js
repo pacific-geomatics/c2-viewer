@@ -43,7 +43,7 @@ class Attribution extends React.Component {
             >
             © OpenStreetMap
           </Button>
-          { !md.phone() &&
+          { (window.innerWidth > 450) &&
             <Button
               bsSize='small'
               bsStyle='link'
