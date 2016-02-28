@@ -3,7 +3,11 @@
  */
 import React from 'react'
 import { NavItem, Nav } from 'react-bootstrap'
-import { getSize } from 'react-bootstrap'
+import converter from 'coordinator'
+import copy from 'copy-to-clipboard'
+
+const toUSNG = converter('latlong', 'usng')
+const toLatLng = converter('usng', 'latlong')
 
 class RightClickOptions extends React.Component {
 
@@ -25,19 +29,48 @@ class RightClickOptions extends React.Component {
       if (offsetTop > 0) { offsetTop = 0 }
       if (offsetLeft > 0) { offsetLeft = 0 }
 
+      let precision = this.getPrecision(nextProps)
+
       this.setState({
         show: nextProps.show,
         offsetTop: offsetTop,
         offsetLeft: offsetLeft,
         top: nextProps.top + offsetTop,
-        left: nextProps.left + offsetLeft
+        left: nextProps.left + offsetLeft,
+        mgrs: this.getMGRS(nextProps, precision),
+        latlng: this.getLatLng(nextProps, precision)
       })
     }
   }
 
+  getMGRS(nextProps, precision) {
+    return toUSNG(nextProps.lat, nextProps.lng, precision)
+  }
+
+  getLatLng(nextProps, precision) {
+    let lat = nextProps.lat.toFixed(precision)
+    let lng = nextProps.lng.toFixed(precision)
+
+    return `${lat}, ${lng}`
+  }
+
+  getPrecision(nextProps) {
+    let precision = 3
+
+    if ( nextProps.accuracy == 'center' ) { precision = 3 }
+    else if ( nextProps.zoom > 14 ) { precision = 5 }
+    else if ( nextProps.zoom > 10 ) { precision = 4 }
+
+    return precision
+  }
+
   handleSelect(selectedKey) {
-    console.log(selectedKey)
     this.setState({ show: false })
+
+    if (selectedKey.match('mgrs|latlng')) {
+      console.log(`Copied to Clipboard! ${ this.state[selectedKey]}`)
+      copy(this.state[selectedKey])
+    }
   }
 
   render() {
@@ -64,10 +97,10 @@ class RightClickOptions extends React.Component {
           stacked
           onSelect={ this.handleSelect.bind(this) }
           >
-          <NavItem eventKey={ 'directionsFrom' }>Directions from here</NavItem>
-          <NavItem eventKey={ 'directionsTo' }>Directions to here</NavItem>
           <NavItem eventKey={ 'whatsHere' }>What's here?</NavItem>
           <NavItem eventKey={ 'searchNearby' }>Search nearby</NavItem>
+          <NavItem eventKey={ 'mgrs' }>{ this.state.mgrs }</NavItem>
+          <NavItem eventKey={ 'latlng' }>{ this.state.latlng }</NavItem>
         </Nav>
       </div>
     )
@@ -75,6 +108,11 @@ class RightClickOptions extends React.Component {
 }
 
 RightClickOptions.propTypes = {
+  lat: React.PropTypes.number,
+  lng: React.PropTypes.number,
+  type: React.PropTypes.string,
+  zoom: React.PropTypes.number,
+  accuracy: React.PropTypes.string,
   top: React.PropTypes.number,
   left: React.PropTypes.number,
   show: React.PropTypes.bool,
@@ -87,7 +125,8 @@ RightClickOptions.defaultProps = {
   buffer: 5,
   height: 170,
   width: 170,
-  show: false
+  show: false,
+  accuracy: 'center'
 }
 
 export default RightClickOptions;

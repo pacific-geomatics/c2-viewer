@@ -1,5 +1,5 @@
 /**
- * Zoom Out
+ * Zoom In
  */
 import React from 'react'
 import { Glyphicon } from 'react-bootstrap'
@@ -17,7 +17,7 @@ class ZoomOut extends React.Component {
     let zoom = window._map.getZoom()
 
     window._map.flyTo({
-      zoom: zoom + 1
+      zoom: Math.ceil(zoom) + 1
     })
   }
 

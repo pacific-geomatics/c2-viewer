@@ -1,10 +1,10 @@
 /**
- * Zoom Out
+ * Settings
  */
 import React from 'react'
 import { Glyphicon } from 'react-bootstrap'
 
-class ZoomOut extends React.Component {
+class Settings extends React.Component {
   constructor(props) {
     super(props)
 
@@ -14,11 +14,7 @@ class ZoomOut extends React.Component {
   }
 
   handleClick() {
-    let zoom = window._map.getZoom()
-
-    window._map.flyTo({
-      zoom: Math.floor(zoom) - 1
-    })
+    console.log('settings')
   }
 
   handleMouseOver() {
@@ -65,13 +61,13 @@ class ZoomOut extends React.Component {
         onTouchCancel={ this.handleMouseOut.bind(this) }
         onTouchEnd={ this.handleMouseOut.bind(this) }
         >
-        <Glyphicon style={ styles.glyph } glyph='minus' />
+        <Glyphicon style={ styles.glyph } glyph='cog' />
       </div>
     )
   }
 }
 
-ZoomOut.propTypes = {
+Settings.propTypes = {
   right: React.PropTypes.number,
   bottom: React.PropTypes.number,
   left: React.PropTypes.number,
@@ -82,13 +78,13 @@ ZoomOut.propTypes = {
   fontSize: React.PropTypes.number
 }
 
-ZoomOut.defaultProps = {
+Settings.defaultProps = {
   zIndex: 15,
-  bottom: 30,
-  right: 22,
-  width: 35,
-  height: 35,
-  fontSize: 18
+  top: 70,
+  left: 16,
+  width: 40,
+  height: 40,
+  fontSize: 25
 }
 
-export default ZoomOut
+export default Settings

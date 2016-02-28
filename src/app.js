@@ -11,7 +11,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { accessToken } from './utils/accessToken'
 import { mapStyles } from './utils/mapStyles'
-import Coordinates from './components/Coordinates'
+import classicStyles from './utils/classicStyles'
 import Logo from './components/Logo'
 import Crosshair from './components/Crosshair'
 import Search from './components/Search'
@@ -24,6 +24,7 @@ import Attribution from './components/Attribution'
 import MyPosition from './components/MyPosition'
 import ZoomOut from './components/ZoomOut'
 import ZoomIn from './components/ZoomIn'
+import Settings from './components/Settings'
 
 const keycodes = {
   16: 'shift'
@@ -229,7 +230,8 @@ class App extends React.Component {
         top: 0,
         width: '100%',
         overflow: 'hidden',
-        zIndex: 0
+        zIndex: 0,
+        clip: `rect(0px, ${ window.innerWidth / 2 }px, 999em, 0px)`,
       },
       mapRight: {
         position : 'absolute',
@@ -237,7 +239,7 @@ class App extends React.Component {
         top: 0,
         zIndex: 1,
         width: '100%',
-        clip: `rect(0px 999em ${ window.innerHeight }px ${ window.innerWidth / 2 }px)`,
+        clip: `rect(0px, 999em, ${ window.innerHeight }px, ${ window.innerWidth / 2 }px)`,
         overflow: 'hidden'
       }
     }
@@ -249,11 +251,16 @@ class App extends React.Component {
         { this.state.active && <MyPosition /> }
         { this.state.active && <ZoomOut /> }
         { this.state.active && <ZoomIn /> }
+        { this.state.active && <Settings /> }
 
         <RightClickOptions
           left={ this.state.mouseHoldX || this.state.clickRightX }
           top={ this.state.mouseHoldY || this.state.clickRightY }
           show={ this.state.mouseHold || this.state.clickRight }
+          lat={ this.state.lat }
+          lng={ this.state.lng }
+          zoom={ this.state.zoom }
+          accuracy={ this.state.accuracy }
           />
         <Search />
         <Attribution
@@ -267,12 +274,6 @@ class App extends React.Component {
           left={ this.state.x }
           top={ this.state.y }
           fontSize={ 15 }
-          accuracy={ this.state.accuracy }
-          />
-        <Coordinates
-          lat={ this.state.lat }
-          lng={ this.state.lng }
-          zoom={ this.state.zoom }
           accuracy={ this.state.accuracy }
           />
         <div
@@ -301,10 +302,10 @@ App.propTypes = {
 App.defaultProps = {
   lat: 36.31545,
   lng: 43.14998,
-  zoom: 16,
+  zoom: 13,
   holdTimeout: 1000,
   mapStyle: mapStyles.hybrid,
-  mapStyleRight: mapStyles.streets,
+  mapStyleRight: classicStyles('mapbox.outdoors'),
   accuracy: 'center'
 }
 

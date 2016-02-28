@@ -79,7 +79,10 @@ class CompareSwiper extends React.Component {
       }
     }
     if (window.mapRight) {
-      window.mapRight.style['clip'] = `rect(0px 999em ${ window.innerHeight }px ${ this.state.left }px)`
+      window.mapRight.style['clip'] = `rect(0px, 999em, ${ window.innerHeight }px, ${ this.state.left }px)`
+    }
+    if (window.map) {
+      window.map.style['clip'] = `rect(0px, ${ this.state.left }px, 999em, 0px)`
     }
 
     return (

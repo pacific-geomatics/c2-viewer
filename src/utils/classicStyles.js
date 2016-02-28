@@ -9,6 +9,10 @@
  *   container: 'map',
  *   style: classicStyles('pacgeo.p054nodi'),
  * });
+ * Mapbox Baselayers
+ * - streets
+ * - outdoors
+ * - satellite
  */
 
 module.exports = function(mapID) {

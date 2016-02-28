@@ -66,8 +66,8 @@ class MyPosition extends React.Component {
       window._map.fitBounds(extent)
 
       // Add Accuracy Polygon
-      this.addAccuracy(buffer, window._map)
-      this.addAccuracy(buffer, window._mapRight)
+      //this.addAccuracy(buffer, window._map)
+      //this.addAccuracy(buffer, window._mapRight)
 
       this.setState({
         lat: lat,
