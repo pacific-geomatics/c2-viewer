@@ -47,7 +47,7 @@ class Attribution extends React.Component {
             <Button
               bsSize='small'
               bsStyle='link'
-              href={ `https://www.mapbox.com/map-feedback/#mapbox.streets/${ this.props.lng }/${ this.props.lat }/${ this.props.zoom }` }
+              href={ `https://www.mapbox.com/map-feedback/#mapbox.streets/${ this.props.lng }/${ this.props.lat }/${ Math.floor(this.props.zoom) }` }
               target='_blank'
               >
               <b>Improve this map</b>
