@@ -103,7 +103,7 @@ NorthArrow.propTypes = {
 
 NorthArrow.defaultProps = {
   zIndex: 15,
-  bottom: 120,
+  bottom: 190,
   right: 10,
   width: 60,
   height: 60

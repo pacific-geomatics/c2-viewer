@@ -100,7 +100,7 @@ TiltView.propTypes = {
 
 TiltView.defaultProps = {
   zIndex: 15,
-  bottom: 30,
+  bottom: 110,
   right: 22,
   width: 35,
   height: 35,

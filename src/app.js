@@ -22,6 +22,8 @@ import TiltView from './components/TiltView'
 import CompareSwiper from './components/CompareSwiper'
 import Attribution from './components/Attribution'
 import MyPosition from './components/MyPosition'
+import ZoomOut from './components/ZoomOut'
+import ZoomIn from './components/ZoomIn'
 
 const keycodes = {
   16: 'shift'
@@ -245,6 +247,8 @@ class App extends React.Component {
         { this.state.active && <NorthArrow /> }
         { this.state.active && <TiltView /> }
         { this.state.active && <MyPosition /> }
+        { this.state.active && <ZoomOut /> }
+        { this.state.active && <ZoomIn /> }
 
         <RightClickOptions
           left={ this.state.mouseHoldX || this.state.clickRightX }
