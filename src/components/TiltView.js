@@ -16,24 +16,20 @@ class TiltView extends React.Component {
   }
 
   componentDidMount() {
-    window._map.on('move', this.getPitch.bind(this))
     this.setState({ active: true })
   }
 
-  getPitch(e) {
-    let pitch = window._map.getPitch()
-    this.setState({ pitch: pitch })
-  }
-
   handleClick() {
-    let setPitch = {
+    let pitchCurrent = window._map.getPitch()
+    let pitchSwitch = {
       0: 45,
       45: 90,
       90: 0
     }
-    window._map.flyTo({
-      pitch: setPitch[this.state.pitch] || 0
-    })
+    let pitch = pitchSwitch[pitchCurrent] || 0
+
+    window._map.flyTo({ pitch: pitch })
+    this.setState({ pitch: pitch })
   }
 
   handleMouseOver() {
@@ -63,8 +59,9 @@ class TiltView extends React.Component {
       },
       glyph: {
         position: 'relative',
+        transition: 'all 0.5s',
         top: this.props.height / 2 - (this.props.fontSize / 2),
-        WebkitTransform: `rotateX(${ this.state.pitch }deg)`,
+        WebkitTransform: `rotateX(${ this.state.pitch / 1.3 }deg)`,
         fontSize: this.props.fontSize,
         textShadow: (this.state.hover) ? `0 0 7px white` : ``,
         color: (this.state.hover) ? `rgb(255, 255, 255)` : `rgb(190, 190, 190)`

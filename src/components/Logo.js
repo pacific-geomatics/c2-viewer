@@ -12,15 +12,14 @@ class Logo extends React.Component {
   }
 
   render() {
-    let black = 'rgba(0, 0, 0, 0.60)'
     let style = {
       position: 'absolute',
       bottom: this.props.bottom,
       left: this.props.left,
-      zIndex: 15,
+      zIndex: 25,
       transition: 'all 1s',
-      filter: `drop-shadow(1.5px 1.5px 0px black) drop-shadow(1px 1px 10px ${ black })`,
-      WebkitFilter: `drop-shadow(1.5px 1.5px 0px black) drop-shadow(1px 1px 10px ${ black })`,
+      filter: `drop-shadow(1.5px 1.5px 0px black) drop-shadow(1px 1px 10px rgba(0, 0, 0, 0.60))`,
+      WebkitFilter: `drop-shadow(1.5px 1.5px 0px black) drop-shadow(1px 1px 10px rgba(0, 0, 0, 0.60))`,
       WebkitUserSelect: 'none'
     }
     return (

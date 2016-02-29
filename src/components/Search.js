@@ -26,11 +26,12 @@ class Search extends React.Component {
   render() {
     const style = {
       position : 'absolute',
-      top: 15,
-      left: 15,
-      zIndex: 20,
-      transition: 'all 1s',
-      WebkitFilter: 'drop-shadow(1px 1px 10px rgba(0, 0, 0, 0.75))',
+      top: this.props.top,
+      bottom: this.props.bottom,
+      right: this.props.right,
+      left: this.props.left,
+      zIndex: this.props.zIndex,
+      WebkitFilter: 'drop-shadow(1px 1px 10px rgba(0, 0, 0, 0.50))',
       WebkitUserSelect: 'none'
     }
     return (
@@ -41,8 +42,18 @@ class Search extends React.Component {
   }
 }
 
-Search.propTypes = { }
+Search.propTypes = {
+  top: React.PropTypes.number,
+  bottom: React.PropTypes.number,
+  left: React.PropTypes.number,
+  right: React.PropTypes.number,
+  zIndex: React.PropTypes.number
+}
 
-Search.defaultProps = { }
+Search.defaultProps = {
+  zIndex: 15,
+  top: 10,
+  left: 70
+}
 
 export default Search

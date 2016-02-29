@@ -14,14 +14,19 @@ class CompareSwiper extends React.Component {
 
     this.state = {
       dragging: this.props.dragging,
-      left: this.props.left
+      left: this.props.left,
+      windowWidth: window.innerWidth
     }
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.handleResize.bind(this), false)
+    window.addEventListener('resize', this.handleResize.bind(this))
     window.addEventListener('mousemove', this.handleMouseMove.bind(this), false)
     window.addEventListener('mouseup', () => this.setState({ dragging: false }), false)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize.bind(this))
   }
 
   handleResize(e) {

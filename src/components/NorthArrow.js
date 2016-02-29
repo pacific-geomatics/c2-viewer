@@ -16,23 +16,22 @@ class NorthArrow extends React.Component {
   }
 
   componentDidMount() {
-    window._map.on('move', this.getBearing.bind(this))
+    window._map.on('rotate', this.getBearing.bind(this))
     this.setState({ active: true })
   }
 
   getBearing(e) {
-    let bearing = window._map.getBearing()
-    this.setState({ bearing: bearing })
+    this.setState({ bearing: window._map.getBearing() })
   }
 
   handleClick() {
-    let setBearing = {
+    let bearingSwitch = {
       0: 90,
       90: 180,
       180: 270,
       270: 0
     }
-    window._map.flyTo({ bearing: setBearing[this.state.bearing] || 0 })
+    window._map.flyTo({ bearing: bearingSwitch[this.state.bearing] || 0 })
   }
 
   handleMouseOver() {

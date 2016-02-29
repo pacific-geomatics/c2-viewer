@@ -48,6 +48,9 @@ class App extends React.Component {
       left: props.left,
       active: false
     }
+    this.windowWidth = window.innerWidth
+    this.windowHeight = window.innerHeight
+    this.windowTotal = window.innerWidth + window.innerHeight
     this.moveTimeStamp = Date.now()
   }
 
@@ -95,21 +98,15 @@ class App extends React.Component {
     //map.dragRotate.disable()
     //map.keyboard.disable()
 
-    // Event Listeners
+    // Map Listeners
     map.on('click', this.handleClickLeft.bind(this))
     map.on('contextmenu', this.handleClickRight.bind(this))
     map.on('mousedown', this.handleMouseDown.bind(this))
     map.on('mouseup', this.handleMouseUp.bind(this))
-    map.on('zoom', this.handleZoom.bind(this))
-    map.on('movestart', this.handleMoveStart.bind(this))
-    map.on('moveend', this.handleMoveEnd.bind(this))
     mapRight.on('click', this.handleClickLeft.bind(this))
     mapRight.on('contextmenu', this.handleClickRight.bind(this))
     mapRight.on('mousedown', this.handleMouseDown.bind(this))
     mapRight.on('mouseup', this.handleMouseUp.bind(this))
-    mapRight.on('zoom', this.handleZoom.bind(this))
-    mapRight.on('movestart', this.handleMoveStart.bind(this))
-    mapRight.on('moveend', this.handleMoveEnd.bind(this))
 
     // Syncing Map
     map.on('move', this.syncMaps.bind(this, map, mapRight, 0))
@@ -139,33 +136,6 @@ class App extends React.Component {
       bearing: map.getBearing(),
       pitch: map.getPitch()
     }
-  }
-
-  handleMoveEnd(e) {
-    let center = this._map.getCenter()
-
-    if (!this.move) {
-      this.setState({
-        move: false,
-        moveRight: false,
-        moveLeft: false,
-        lat: center.lat,
-        lng: center.lng
-      })
-    }
-  }
-
-  handleMoveStart(e) {
-    if (!this.move) {
-      this.setState({
-        move: true,
-        accuracy: 'center'
-      })
-    }
-  }
-
-  handleZoom(e) {
-    this.setState({ zoom: this._map.getZoom()} )
   }
 
   handleMouseUp(e) {
@@ -240,6 +210,7 @@ class App extends React.Component {
   }
 
   render() {
+    console.log(this.windowWidth)
     const style = {
       map: {
         position : 'absolute',
@@ -248,7 +219,7 @@ class App extends React.Component {
         width: '100%',
         overflow: 'hidden',
         zIndex: 0,
-        clip: `rect(0px, ${ window.innerWidth / 2 }px, 999em, 0px)`,
+        clip: `rect(0px, ${ this.windowWidth / 2 }px, 999em, 0px)`,
       },
       mapRight: {
         position : 'absolute',
@@ -256,19 +227,19 @@ class App extends React.Component {
         top: 0,
         zIndex: 1,
         width: '100%',
-        clip: `rect(0px, 999em, ${ window.innerHeight }px, ${ window.innerWidth / 2 }px)`,
+        clip: `rect(0px, 999em, ${ this.windowHeight }px, ${ this.windowWidth / 2 }px)`,
         overflow: 'hidden'
       },
       mapMini: {
         position : 'absolute',
-        bottom: 65,
+        bottom: 55,
         left: 10,
         zIndex: 2,
         overflow: 'hidden',
         boxShadow: '5px 5px 15px rgba(100, 100, 100, 0.7)',
         borderRadius: '50%',
-        width: (window.innerWidth > 768) ? 250: window.innerWidth / 3,
-        height: (window.innerWidth > 768) ? 250: window.innerWidth / 3,
+        width: (this.windowTotal > 1600) ? 200: this.windowTotal / 8,
+        height: (this.windowTotal > 1600) ? 200: this.windowTotal / 8,
       }
     }
 
@@ -280,6 +251,7 @@ class App extends React.Component {
         { this.state.active && <ZoomOut /> }
         { this.state.active && <ZoomIn /> }
         { this.state.active && <Settings /> }
+        { this.state.active && <Attribution /> }
 
         <RightClickOptions
           left={ this.state.mouseHoldX || this.state.clickRightX }
@@ -291,11 +263,6 @@ class App extends React.Component {
           accuracy={ this.state.accuracy }
           />
         <Search />
-        <Attribution
-          lat={ this.state.lat }
-          lng={ this.state.lng }
-          zoom={ this.state.zoom }
-          />
         <Logo />
         <CompareSwiper />
         <Crosshair

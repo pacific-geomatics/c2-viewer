@@ -11,21 +11,43 @@ class Attribution extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {}
+    this.state = { windowWidth: window.innerWidth }
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.handleResize.bind(this))
+  }
+
+  handleResize(e) {
+    this.setState({ windowWidth: window.innerWidth })
+  }
+
+  setPosition() {
+    let center = window._map.getCenter()
+    this.setState({
+      lat: center.lat,
+      lng: center.lng,
+      zoom: window._map.getZoom()
+    })
   }
 
   render() {
     const md = new MobileDetect(window.navigator.userAgent)
-    const style = {
-      position: 'absolute',
-      bottom: this.props.bottom,
-      right: this.props.right,
-      left: this.props.left,
-      top: this.props.top,
-      zIndex: 15
+    const styles = {
+      container: {
+        position: 'absolute',
+        bottom: this.props.bottom,
+        right: this.props.right,
+        left: this.props.left,
+        top: this.props.top,
+        zIndex: 15
+      },
+      improveMap: {
+        display: (this.state.windowWidth > 450) ? '' : 'None'
+      }
     }
     return (
-      <div style={ style }>
+      <div style={ styles.container }>
         <ButtonGroup>
           <Button
             bsSize='small'
@@ -43,16 +65,16 @@ class Attribution extends React.Component {
             >
             © OpenStreetMap
           </Button>
-          { (window.innerWidth > 450) &&
-            <Button
-              bsSize='small'
-              bsStyle='link'
-              href={ `https://www.mapbox.com/map-feedback/#mapbox.streets/${ this.props.lng }/${ this.props.lat }/${ Math.floor(this.props.zoom) }` }
-              target='_blank'
-              >
-              <b>Improve this map</b>
-            </Button>
-          }
+          <Button
+            style={ styles.improveMap }
+            bsSize='small'
+            bsStyle='link'
+            onClick={ this.setPosition.bind(this) }
+            href={ `https://www.mapbox.com/map-feedback/#mapbox.streets/${ this.state.lng }/${ this.state.lat }/${ Math.floor(this.state.zoom) }` }
+            target='_blank'
+            >
+            <b>Improve this map</b>
+          </Button>
         </ButtonGroup>
       </div>
     )
@@ -60,9 +82,6 @@ class Attribution extends React.Component {
 }
 
 Attribution.propTypes = {
-  lat: React.PropTypes.number,
-  lng: React.PropTypes.number,
-  zoom: React.PropTypes.number,
   left: React.PropTypes.number,
   right: React.PropTypes.number,
   bottom: React.PropTypes.number,

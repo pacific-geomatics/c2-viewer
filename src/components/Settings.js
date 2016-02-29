@@ -80,11 +80,11 @@ Settings.propTypes = {
 
 Settings.defaultProps = {
   zIndex: 15,
-  top: 70,
-  left: 16,
-  width: 40,
-  height: 40,
-  fontSize: 25
+  top: 10,
+  left: 10,
+  width: 47,
+  height: 47,
+  fontSize: 30
 }
 
 export default Settings
