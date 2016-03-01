@@ -2,7 +2,7 @@
  * Right Click Options
  */
 import React from 'react'
-import { NavItem, Nav } from 'react-bootstrap'
+import { NavItem, Nav, Modal } from 'react-bootstrap'
 import converter from 'coordinator'
 import copy from 'copy-to-clipboard'
 
@@ -17,10 +17,78 @@ class RightClickOptions extends React.Component {
     this.state = {
       top: props.top,
       left: props.left,
-      show: props.show
+      showModal: false,
+      mapMove: false,
+      mouseDown: false
     }
   }
 
+  componentDidMount() {
+    const mapboxglMaps = [window._map, window._mapRight]
+    mapboxglMaps.map((mapItem) => {
+      mapItem.on('contextmenu', this.handleClickRight.bind(this))
+      mapItem.on('mousedown', this.handleMouseDown.bind(this))
+      mapItem.on('mouseup', this.handleMouseUp.bind(this))
+      mapItem.on('move', this.handleMove.bind(this))
+    })
+    window.addEventListener("touchcancel", this.handleMouseUp.bind(this))
+    window.addEventListener("touchend", this.handleMouseUp.bind(this))
+  }
+
+  handleMove() {
+    this.setState({
+      timestamp: Date.now(),
+      mapMove: true
+    })
+  }
+
+  handleMouseUp() {
+    this.setState({
+      timestamp: Date.now(),
+      mouseDown: false,
+      mapMove: false
+    })
+  }
+
+  handleMouseHold(e) {
+    if (Date.now() - this.state.timestamp > this.props.holdTimeout - 20 && this.state.mouseDown) {
+      this.setState({
+        timestamp: Date.now(),
+        showModal: true,
+        lat: e.lngLat.lat,
+        lng: e.lngLat.lng,
+        x: e.point.x,
+        y: e.point.y,
+        zoom: window._map.getZoom()
+      })
+    }
+  }
+
+  handleMouseDown(e) {
+    setTimeout(() => { this.handleMouseHold(e) }, this.props.holdTimeout)
+    this.setState({
+      timestamp: Date.now(),
+      mouseDown: true
+    })
+  }
+
+  handleClickRight(e) {
+    this.setState({
+      timestamp: Date.now(),
+      showModal: true,
+      lat: e.lngLat.lat,
+      lng: e.lngLat.lng,
+      x: e.point.x,
+      y: e.point.y,
+      zoom: window._map.getZoom()
+    })
+  }
+
+  close() {
+    this.setState({ showModal: false })
+  }
+
+  /*
   componentWillReceiveProps(nextProps) {
     if (nextProps.top && nextProps.left) {
       let offsetTop = window.innerHeight - (nextProps.top + this.RightClickOptions.offsetHeight + this.props.buffer)
@@ -42,6 +110,7 @@ class RightClickOptions extends React.Component {
       })
     }
   }
+  */
 
   getMGRS(nextProps, precision) {
     return toUSNG(nextProps.lat, nextProps.lng, precision)
@@ -86,23 +155,29 @@ class RightClickOptions extends React.Component {
       boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.50)',
       display: (this.state.show) ? '' : 'none'
     }
-
-    return (
-      <div
-        ref={ (ref) => this.RightClickOptions = ref }
-        style={ style }
+    /*
+    <div
+      ref={ (ref) => this.RightClickOptions = ref }
+      style={ style }
+      >
+      <Nav
+        bsStyle="pills"
+        stacked
+        onSelect={ this.handleSelect.bind(this) }
         >
-        <Nav
-          bsStyle="pills"
-          stacked
-          onSelect={ this.handleSelect.bind(this) }
-          >
-          <NavItem eventKey={ 'whatsHere' }>What's here?</NavItem>
-          <NavItem eventKey={ 'searchNearby' }>Search nearby</NavItem>
-          <NavItem eventKey={ 'mgrs' }>{ this.state.mgrs }</NavItem>
-          <NavItem eventKey={ 'latlng' }>{ this.state.latlng }</NavItem>
-        </Nav>
-      </div>
+        <NavItem eventKey={ 'whatsHere' }>What's here?</NavItem>
+        <NavItem eventKey={ 'searchNearby' }>Search nearby</NavItem>
+        <NavItem eventKey={ 'mgrs' }>{ this.state.mgrs }</NavItem>
+        <NavItem eventKey={ 'latlng' }>{ this.state.latlng }</NavItem>
+      </Nav>
+    </div>
+    */
+    return (
+      <Modal show={ this.state.showModal } onHide={ this.close.bind(this) }>
+        <Modal.Body>
+          <h3>{ `${ this.state.lat }, ${ this.state.lng }` }</h3>
+        </Modal.Body>
+      </Modal>
     )
   }
 }
@@ -116,7 +191,8 @@ RightClickOptions.propTypes = {
   top: React.PropTypes.number,
   left: React.PropTypes.number,
   show: React.PropTypes.bool,
-  buffer: React.PropTypes.number
+  buffer: React.PropTypes.number,
+  holdTimeout: React.PropTypes.number
 }
 
 RightClickOptions.defaultProps = {
@@ -126,7 +202,8 @@ RightClickOptions.defaultProps = {
   height: 170,
   width: 170,
   show: false,
-  accuracy: 'center'
+  accuracy: 'center',
+  holdTimeout: 1000
 }
 
 export default RightClickOptions;

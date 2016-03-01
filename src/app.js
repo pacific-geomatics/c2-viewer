@@ -95,18 +95,13 @@ class App extends React.Component {
     this._mapboxgl = mapboxgl
 
     // Disable
-    //map.dragRotate.disable()
-    //map.keyboard.disable()
-
-    // Map Listeners
-    map.on('click', this.handleClickLeft.bind(this))
-    map.on('contextmenu', this.handleClickRight.bind(this))
-    map.on('mousedown', this.handleMouseDown.bind(this))
-    map.on('mouseup', this.handleMouseUp.bind(this))
-    mapRight.on('click', this.handleClickLeft.bind(this))
-    mapRight.on('contextmenu', this.handleClickRight.bind(this))
-    mapRight.on('mousedown', this.handleMouseDown.bind(this))
-    mapRight.on('mouseup', this.handleMouseUp.bind(this))
+    const mapboxglMaps = [map, mapRight]
+    mapboxglMaps.map((mapItem) => {
+      mapItem.dragRotate.disable()
+      mapItem.keyboard.disable()
+      //mapItem.doubleClickZoom.disable()
+      //mapItem.touchZoomRotate.disable()
+    })
 
     // Syncing Map
     map.on('move', this.syncMaps.bind(this, map, mapRight, 0))
@@ -138,79 +133,7 @@ class App extends React.Component {
     }
   }
 
-  handleMouseUp(e) {
-    this.setState({
-      mouseDown: false,
-      mouseUpX: e.point.x,
-      mouseUpY: e.point.y,
-      mouseUpTimeStamp: Date.now()
-    })
-  }
-
-  handleMouseDown(e) {
-    this.setState({
-      rightClick: false,
-      mouseHold: false,
-      mouseDown: true,
-      mouseDownX: e.point.x,
-      mouseDownY: e.point.y,
-      mouseDownTimeStamp: Date.now()
-    })
-    this.moveTimeStamp = Date.now() - 25
-    setTimeout(() => { this.handleMouseHold(e) }, this.props.holdTimeout)
-  }
-
-  handleMouseHold(e) {
-    // Must have a delay of 1s to be considered a Map Hold
-    if (this.state.mouseDown && Date.now() - this.moveTimeStamp > this.props.holdTimeout) {
-
-      this.setState({
-        mouseHold: true,
-        mouseHoldX: e.point.x,
-        mouseHoldY: e.point.y,
-        x: e.point.x,
-        y: e.point.y,
-        clickRightX: null,
-        clickRightY: null
-      })
-    }
-  }
-
-  handleClickRight(e) {
-    console.log('clickRight/app')
-
-    this.setState({
-      clickRight: true,
-      lat: e.lngLat.lat,
-      lng: e.lngLat.lng,
-      x: e.point.x,
-      y: e.point.y,
-      mouseHoldX: null,
-      mouseHoldY: null,
-      clickRightX: e.point.x,
-      clickRightY: e.point.y,
-      accuracy: 'click'
-    })
-  }
-
-  handleClickLeft(e) {
-    console.log('click/app')
-
-    this.setState({
-      clickRight: false,
-      lat: e.lngLat.lat,
-      lng: e.lngLat.lng,
-      x: e.point.x,
-      y: e.point.y,
-      accuracy: 'click'
-    })
-    //this._map.featuresAt(e.point, { radius: 5, includeGeometry: true }, function (err, features) {
-    //  console.log(features);
-    //});
-  }
-
   render() {
-    console.log(this.windowWidth)
     const style = {
       map: {
         position : 'absolute',
@@ -252,16 +175,7 @@ class App extends React.Component {
         { this.state.active && <ZoomIn /> }
         { this.state.active && <Settings /> }
         { this.state.active && <Attribution /> }
-
-        <RightClickOptions
-          left={ this.state.mouseHoldX || this.state.clickRightX }
-          top={ this.state.mouseHoldY || this.state.clickRightY }
-          show={ this.state.mouseHold || this.state.clickRight }
-          lat={ this.state.lat }
-          lng={ this.state.lng }
-          zoom={ this.state.zoom }
-          accuracy={ this.state.accuracy }
-          />
+        { this.state.active && <RightClickOptions /> }
         <Search />
         <Logo />
         <CompareSwiper />
