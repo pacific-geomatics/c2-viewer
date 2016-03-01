@@ -22,10 +22,7 @@
     "react-addons-perf": "^0.14.7",
     "react-bootstrap": "^0.28.3",
     "react-dom": "^0.14.6",
-    "react-router": "^1.0.3",
-    "turf-buffer": "^1.1.0",
-    "turf-extent": "^1.0.4",
-    "turf-point": "^2.0.1"
+    "react-router": "^1.0.3"
   },
   "main": "app.js",
   "repository": {
