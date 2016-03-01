@@ -9,6 +9,7 @@
  */
 import React from 'react'
 import ReactDOM from 'react-dom'
+import mapboxgl from 'mapbox-gl'
 import { accessToken } from './utils/accessToken'
 import { mapStyles } from './utils/mapStyles'
 import classicStyles from './utils/classicStyles'
@@ -57,7 +58,7 @@ class App extends React.Component {
   componentDidMount() {
     mapboxgl.accessToken = accessToken
 
-    var map = new mapboxgl.Map({
+    const map = new mapboxgl.Map({
       container: this.map,
       style: this.state.mapStyle,
       center: [ this.state.lng, this.state.lat ],
@@ -65,7 +66,7 @@ class App extends React.Component {
       attributionControl: false
     })
 
-    var mapRight = new mapboxgl.Map({
+    const mapRight = new mapboxgl.Map({
       container: this.mapRight,
       style: this.state.mapStyleRight,
       center: [ this.state.lng, this.state.lat ],
@@ -73,7 +74,7 @@ class App extends React.Component {
       attributionControl: false
     })
 
-    var mapMini = new mapboxgl.Map({
+    const mapMini = new mapboxgl.Map({
       container: this.mapMini,
       style: this.state.mapStyleMini,
       center: [ this.state.lng, this.state.lat ],
@@ -96,11 +97,12 @@ class App extends React.Component {
 
     // Disable
     const mapboxglMaps = [map, mapRight]
-    mapboxglMaps.map((mapItem) => {
-      mapItem.dragRotate.disable()
-      mapItem.keyboard.disable()
-      //mapItem.doubleClickZoom.disable()
-      //mapItem.touchZoomRotate.disable()
+    mapboxglMaps.map((map) => {
+      map.dragRotate.disable()
+      map.keyboard.disable()
+      map.boxZoom.disable()
+      map.doubleClickZoom.disable()
+      //map.touchZoomRotate.disable()
     })
 
     // Syncing Map
@@ -176,15 +178,10 @@ class App extends React.Component {
         { this.state.active && <Settings /> }
         { this.state.active && <Attribution /> }
         { this.state.active && <RightClickOptions /> }
+        { this.state.active && <Crosshair /> }
         <Search />
         <Logo />
         <CompareSwiper />
-        <Crosshair
-          left={ this.state.x }
-          top={ this.state.y }
-          fontSize={ 15 }
-          accuracy={ this.state.accuracy }
-          />
         <div
           ref={ (ref) => this.mapRight = ref }
           style={ style.mapRight }>

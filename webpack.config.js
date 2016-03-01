@@ -11,19 +11,34 @@ module.exports = {
       filename: 'bundle.js'
   },
   resolve: {
-    modulesDirectories: ['node_modules']
+    extensions: ['', '.js', '.jsx'],
+    alias: {
+      webworkify: 'webworkify-webpack'
+    }
   },
   node: {
+    console: true,
     fs: 'empty'
   },
   module: {
     loaders: [
-      { test: /\.js?$/, loader: 'babel', exclude: /node_modules/,
+      {
+        test: /\.jsx?$/,
+        loader: 'babel',
+        exclude: /node_modules/,
         query: { presets: ['es2015', 'react', 'stage-0'] }
       },
-      { test: /\.css$/, loader: 'style!css' },
-      { test: /\.json$/, loader: 'json' },
-      { test: /\.glsl$/, loader: 'shader' }
+      { test: /\.json$/, loader: 'json-loader' },
+      {
+        test: /\.js$/,
+        include: path.resolve(__dirname, 'node_modules/mapbox-gl/js/render/shaders.js'),
+        loader: 'transform/cacheable?brfs'
+      },
+      {
+        test: /\.js$/,
+        include: path.resolve(__dirname, 'node_modules/webworkify/index.js'),
+        loader: 'worker'
+      }
     ]
   },
   postLoaders: [

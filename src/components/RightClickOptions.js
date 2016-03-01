@@ -15,9 +15,9 @@ class RightClickOptions extends React.Component {
     super(props)
 
     this.state = {
-      top: props.top,
-      left: props.left,
-      showModal: false,
+      top: 0,
+      left: 0,
+      show: false,
       mapMove: false,
       mouseDown: false
     }
@@ -27,6 +27,7 @@ class RightClickOptions extends React.Component {
     const mapboxglMaps = [window._map, window._mapRight]
     mapboxglMaps.map((mapItem) => {
       mapItem.on('contextmenu', this.handleClickRight.bind(this))
+      mapItem.on('dblclick', this.handleClickRight.bind(this))
       mapItem.on('mousedown', this.handleMouseDown.bind(this))
       mapItem.on('mouseup', this.handleMouseUp.bind(this))
       mapItem.on('move', this.handleMove.bind(this))
@@ -35,10 +36,11 @@ class RightClickOptions extends React.Component {
     window.addEventListener("touchend", this.handleMouseUp.bind(this))
   }
 
-  handleMove() {
+  handleMove(e) {
     this.setState({
       timestamp: Date.now(),
-      mapMove: true
+      mapMove: true,
+      show: false
     })
   }
 
@@ -52,15 +54,7 @@ class RightClickOptions extends React.Component {
 
   handleMouseHold(e) {
     if (Date.now() - this.state.timestamp > this.props.holdTimeout - 20 && this.state.mouseDown) {
-      this.setState({
-        timestamp: Date.now(),
-        showModal: true,
-        lat: e.lngLat.lat,
-        lng: e.lngLat.lng,
-        x: e.point.x,
-        y: e.point.y,
-        zoom: window._map.getZoom()
-      })
+      this.handleClickRight(e)
     }
   }
 
@@ -68,67 +62,49 @@ class RightClickOptions extends React.Component {
     setTimeout(() => { this.handleMouseHold(e) }, this.props.holdTimeout)
     this.setState({
       timestamp: Date.now(),
-      mouseDown: true
+      mouseDown: true,
+      show: false
     })
   }
 
   handleClickRight(e) {
+    let zoom = window._map.getZoom()
+    let lat = e.lngLat.lat
+    let lng = e.lngLat.lng
+    let precision = this.getPrecision(zoom)
+    let mgrs = this.getMGRS(lat, lng, precision)
+    let latlng = this.getLatLng(lat, lng, precision)
+
     this.setState({
       timestamp: Date.now(),
-      showModal: true,
-      lat: e.lngLat.lat,
-      lng: e.lngLat.lng,
+      show: true,
+      lat: lat,
+      lng: lng,
       x: e.point.x,
       y: e.point.y,
-      zoom: window._map.getZoom()
+      zoom: zoom,
+      precision: precision,
+      mgrs: mgrs,
+      latlng: latlng
     })
   }
 
-  close() {
-    this.setState({ showModal: false })
+  getMGRS(lat, lng, precision) {
+    return toUSNG(lat, lng, precision)
   }
 
-  /*
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.top && nextProps.left) {
-      let offsetTop = window.innerHeight - (nextProps.top + this.RightClickOptions.offsetHeight + this.props.buffer)
-      let offsetLeft = window.innerWidth - (nextProps.left + this.RightClickOptions.offsetWidth + this.props.buffer)
-
-      if (offsetTop > 0) { offsetTop = 0 }
-      if (offsetLeft > 0) { offsetLeft = 0 }
-
-      let precision = this.getPrecision(nextProps)
-
-      this.setState({
-        show: nextProps.show,
-        offsetTop: offsetTop,
-        offsetLeft: offsetLeft,
-        top: nextProps.top + offsetTop,
-        left: nextProps.left + offsetLeft,
-        mgrs: this.getMGRS(nextProps, precision),
-        latlng: this.getLatLng(nextProps, precision)
-      })
-    }
-  }
-  */
-
-  getMGRS(nextProps, precision) {
-    return toUSNG(nextProps.lat, nextProps.lng, precision)
-  }
-
-  getLatLng(nextProps, precision) {
-    let lat = nextProps.lat.toFixed(precision)
-    let lng = nextProps.lng.toFixed(precision)
+  getLatLng(lat, lng, precision) {
+    lat = lat.toFixed(precision)
+    lng = lng.toFixed(precision)
 
     return `${lat}, ${lng}`
   }
 
-  getPrecision(nextProps) {
+  getPrecision(zoom) {
     let precision = 3
 
-    if ( nextProps.accuracy == 'center' ) { precision = 3 }
-    else if ( nextProps.zoom > 14 ) { precision = 5 }
-    else if ( nextProps.zoom > 10 ) { precision = 4 }
+    if ( zoom > 14 ) { precision = 5 }
+    else if ( zoom > 10 ) { precision = 4 }
 
     return precision
   }
@@ -143,66 +119,61 @@ class RightClickOptions extends React.Component {
   }
 
   render() {
-    const style = {
-      position : 'absolute',
-      top: this.state.top,
-      left: this.state.left,
-      backgroundColor: 'white',
-      zIndex: 15,
-      borderRadius: 5,
-      width: 170,
-      border: '2px solid #1d8893',
-      boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.50)',
-      display: (this.state.show) ? '' : 'none'
+    let offsetX = window.innerWidth - (this.state.x + this.props.width + this.props.buffer)
+    let offsetY = window.innerHeight - (this.state.y + this.props.height + this.props.buffer)
+
+    if (offsetY > 0) { offsetY = 0 }
+    if (offsetX > 0) { offsetX = 0 }
+
+    let x = this.state.x + offsetX
+    let y = this.state.y + offsetY
+
+    const styles = {
+      container: {
+        position : 'absolute',
+        transform: `translate(${ x }px,${ y }px)`,
+        backgroundColor: 'white',
+        zIndex: this.props.zIndex,
+        borderRadius: 5,
+        width: this.props.width,
+        border: '2px solid #1d8893',
+        boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.50)',
+        display: (this.state.show) ? '' : 'none'
+      }
     }
-    /*
-    <div
-      ref={ (ref) => this.RightClickOptions = ref }
-      style={ style }
-      >
-      <Nav
-        bsStyle="pills"
-        stacked
-        onSelect={ this.handleSelect.bind(this) }
-        >
-        <NavItem eventKey={ 'whatsHere' }>What's here?</NavItem>
-        <NavItem eventKey={ 'searchNearby' }>Search nearby</NavItem>
-        <NavItem eventKey={ 'mgrs' }>{ this.state.mgrs }</NavItem>
-        <NavItem eventKey={ 'latlng' }>{ this.state.latlng }</NavItem>
-      </Nav>
-    </div>
-    */
     return (
-      <Modal show={ this.state.showModal } onHide={ this.close.bind(this) }>
-        <Modal.Body>
-          <h3>{ `${ this.state.lat }, ${ this.state.lng }` }</h3>
-        </Modal.Body>
-      </Modal>
+      <div
+        ref={ (ref) => this.RightClickOptions = ref }
+        style={ styles.container }
+        >
+        <Nav
+          bsStyle="pills"
+          stacked
+          onSelect={ this.handleSelect.bind(this) }
+          >
+          <NavItem eventKey={ 'whatsHere' }>What's here?</NavItem>
+          <NavItem eventKey={ 'searchNearby' }>Search nearby</NavItem>
+          <NavItem eventKey={ 'mgrs' }>{ this.state.mgrs }</NavItem>
+          <NavItem eventKey={ 'latlng' }>{ this.state.latlng }</NavItem>
+        </Nav>
+      </div>
     )
   }
 }
 
 RightClickOptions.propTypes = {
-  lat: React.PropTypes.number,
-  lng: React.PropTypes.number,
-  type: React.PropTypes.string,
-  zoom: React.PropTypes.number,
-  accuracy: React.PropTypes.string,
-  top: React.PropTypes.number,
-  left: React.PropTypes.number,
-  show: React.PropTypes.bool,
+  zIndex: React.PropTypes.number,
   buffer: React.PropTypes.number,
+  width: React.PropTypes.number,
+  height: React.PropTypes.number,
   holdTimeout: React.PropTypes.number
 }
 
 RightClickOptions.defaultProps = {
-  top: 0,
-  left: 0,
+  zIndex: 15,
   buffer: 5,
   height: 170,
   width: 170,
-  show: false,
-  accuracy: 'center',
   holdTimeout: 1000
 }
 

@@ -4,6 +4,7 @@
 import React from 'react'
 import { Glyphicon } from 'react-bootstrap'
 
+
 class MyPosition extends React.Component {
   constructor(props) {
     super(props)
