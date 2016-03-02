@@ -10,6 +10,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import mapboxgl from 'mapbox-gl'
+import MobileDetect from 'mobile-detect'
 import { accessToken } from './utils/accessToken'
 import { mapStyles } from './utils/mapStyles'
 import classicStyles from './utils/classicStyles'
@@ -26,7 +27,8 @@ import MyPosition from './components/MyPosition'
 import ZoomOut from './components/ZoomOut'
 import ZoomIn from './components/ZoomIn'
 import Settings from './components/Settings'
-import MobileDetect from 'mobile-detect'
+import MapMini from './components/MapMini'
+
 
 const keycodes = {
   16: 'shift'
@@ -74,25 +76,14 @@ class App extends React.Component {
       attributionControl: false
     })
 
-    const mapMini = new mapboxgl.Map({
-      container: this.mapMini,
-      style: this.state.mapStyleMini,
-      center: [ this.state.lng, this.state.lat ],
-      zoom: this.state.zoom + this.props.mapMiniOffset,
-      attributionControl: false
-    })
-
     // Define Globals
     window._map = map
     window._mapRight = mapRight
-    window._mapMini = mapMini
     window._mapboxgl = mapboxgl
     window.map = this.map
     window.mapRight = this.mapRight
-    window.mapMini = this.mapMini
     this._map = map
     this._mapRight = mapRight
-    this._mapMini = mapMini
     this._mapboxgl = mapboxgl
 
     // Disable
@@ -107,9 +98,7 @@ class App extends React.Component {
 
     // Syncing Map
     map.on('move', this.syncMaps.bind(this, map, mapRight, 0))
-    map.on('move', this.syncMaps.bind(this, map, mapMini, this.props.mapMiniOffset))
     mapRight.on('move', this.syncMaps.bind(this, mapRight, map, 0))
-    mapRight.on('move', this.syncMaps.bind(this, mapRight, mapMini, this.props.mapMiniOffset))
 
     this.setState({ active: true })
     /**
@@ -143,8 +132,7 @@ class App extends React.Component {
         top: 0,
         width: '100%',
         overflow: 'hidden',
-        zIndex: 0,
-        clip: `rect(0px, ${ this.windowWidth / 2 }px, 999em, 0px)`,
+        zIndex: 0
       },
       mapRight: {
         position : 'absolute',
@@ -152,19 +140,7 @@ class App extends React.Component {
         top: 0,
         zIndex: 1,
         width: '100%',
-        clip: `rect(0px, 999em, ${ this.windowHeight }px, ${ this.windowWidth / 2 }px)`,
         overflow: 'hidden'
-      },
-      mapMini: {
-        position : 'absolute',
-        bottom: 55,
-        left: 10,
-        zIndex: 2,
-        overflow: 'hidden',
-        boxShadow: '5px 5px 15px rgba(100, 100, 100, 0.7)',
-        borderRadius: '50%',
-        width: (this.windowTotal > 1600) ? 200: this.windowTotal / 8,
-        height: (this.windowTotal > 1600) ? 200: this.windowTotal / 8,
       }
     }
 
@@ -179,6 +155,7 @@ class App extends React.Component {
         { this.state.active && <Attribution /> }
         { this.state.active && <RightClickOptions /> }
         { this.state.active && <Crosshair /> }
+        { this.state.active && <MapMini lng={ this.props.lng } lat={ this.props.lat } zoom={ this.props.zoom } /> }
         <Search />
         <Logo />
         <CompareSwiper />
@@ -189,10 +166,6 @@ class App extends React.Component {
         <div
           ref={ (ref) => this.map = ref }
           style={ style.map }>
-        </div>
-        <div
-          ref={ (ref) => this.mapMini = ref }
-          style={ style.mapMini }>
         </div>
       </div>
     )
