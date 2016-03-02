@@ -24,6 +24,7 @@ class RightClickOptions extends React.Component {
   }
 
   componentDidMount() {
+    /*
     const mapboxglMaps = [window._map, window._mapRight]
     mapboxglMaps.map((mapItem) => {
       mapItem.on('contextmenu', this.handleClickRight.bind(this))
@@ -34,6 +35,7 @@ class RightClickOptions extends React.Component {
     })
     window.addEventListener("touchcancel", this.handleMouseUp.bind(this))
     window.addEventListener("touchend", this.handleMouseUp.bind(this))
+    */
   }
 
   handleMove(e) {

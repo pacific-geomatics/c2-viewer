@@ -9,141 +9,37 @@
  */
 import React from 'react'
 import ReactDOM from 'react-dom'
-import mapboxgl from 'mapbox-gl'
-import MobileDetect from 'mobile-detect'
-import { accessToken } from './utils/accessToken'
-import { mapStyles } from './utils/mapStyles'
-import classicStyles from './utils/classicStyles'
+import Map from './components/Map'
 import Logo from './components/Logo'
-import Crosshair from './components/Crosshair'
-import Search from './components/Search'
-import NoClickZone from './components/NoClickZone'
-import RightClickOptions from './components/RightClickOptions'
-import NorthArrow from './components/NorthArrow'
-import TiltView from './components/TiltView'
-import CompareSwiper from './components/CompareSwiper'
-import Attribution from './components/Attribution'
-import MyPosition from './components/MyPosition'
-import ZoomOut from './components/ZoomOut'
 import ZoomIn from './components/ZoomIn'
-import Settings from './components/Settings'
+import Search from './components/Search'
 import MapMini from './components/MapMini'
+import ZoomOut from './components/ZoomOut'
+import MapRight from './components/MapRight'
+import TiltView from './components/TiltView'
+import Settings from './components/Settings'
+import Crosshair from './components/Crosshair'
+import NorthArrow from './components/NorthArrow'
+import MyPosition from './components/MyPosition'
+import Attribution from './components/Attribution'
+import NoClickZone from './components/NoClickZone'
+import CompareSwiper from './components/CompareSwiper'
+import RightClickOptions from './components/RightClickOptions'
 
-
-const keycodes = {
-  16: 'shift'
-}
-const md = new MobileDetect(window.navigator.userAgent)
-window.md = md
 
 class App extends React.Component {
 
   constructor(props) {
     super(props)
 
-    this.state = {
-      lat: props.lat,
-      lng: props.lng,
-      mapStyle: props.mapStyle,
-      mapStyleRight: props.mapStyleRight,
-      mapStyleMini: props.mapStyleMini,
-      zoom: props.zoom,
-      left: props.left,
-      active: false
-    }
-    this.windowWidth = window.innerWidth
-    this.windowHeight = window.innerHeight
-    this.windowTotal = window.innerWidth + window.innerHeight
-    this.moveTimeStamp = Date.now()
+    this.state = { active: false }
   }
 
   componentDidMount() {
-    mapboxgl.accessToken = accessToken
-
-    const map = new mapboxgl.Map({
-      container: this.map,
-      style: this.state.mapStyle,
-      center: [ this.state.lng, this.state.lat ],
-      zoom: this.state.zoom,
-      attributionControl: false
-    })
-
-    const mapRight = new mapboxgl.Map({
-      container: this.mapRight,
-      style: this.state.mapStyleRight,
-      center: [ this.state.lng, this.state.lat ],
-      zoom: this.state.zoom,
-      attributionControl: false
-    })
-
-    // Define Globals
-    window._map = map
-    window._mapRight = mapRight
-    window._mapboxgl = mapboxgl
-    window.map = this.map
-    window.mapRight = this.mapRight
-    this._map = map
-    this._mapRight = mapRight
-    this._mapboxgl = mapboxgl
-
-    // Disable
-    const mapboxglMaps = [map, mapRight]
-    mapboxglMaps.map((map) => {
-      map.dragRotate.disable()
-      map.keyboard.disable()
-      map.boxZoom.disable()
-      map.doubleClickZoom.disable()
-      //map.touchZoomRotate.disable()
-    })
-
-    // Syncing Map
-    map.on('move', this.syncMaps.bind(this, map, mapRight, 0))
-    mapRight.on('move', this.syncMaps.bind(this, mapRight, map, 0))
-
     this.setState({ active: true })
-    /**
-     * Add Shift Zoom + Shift Select for box selection.
-     **/
-  }
-
-  syncMaps(source, target, zoomOffset) {
-    if (!this.move) {
-      this.moveTimeStamp = Date.now()
-      this.move = true
-      target.jumpTo(this.getPosition(source, zoomOffset))
-      this.move = false
-    }
-  }
-
-  getPosition(map, zoomOffset) {
-    return {
-      center: map.getCenter(),
-      zoom: map.getZoom() + zoomOffset,
-      bearing: map.getBearing(),
-      pitch: map.getPitch()
-    }
   }
 
   render() {
-    const style = {
-      map: {
-        position : 'absolute',
-        bottom: 0,
-        top: 0,
-        width: '100%',
-        overflow: 'hidden',
-        zIndex: 0
-      },
-      mapRight: {
-        position : 'absolute',
-        bottom: 0,
-        top: 0,
-        zIndex: 1,
-        width: '100%',
-        overflow: 'hidden'
-      }
-    }
-
     return (
       <div>
         { this.state.active && <NorthArrow /> }
@@ -155,18 +51,13 @@ class App extends React.Component {
         { this.state.active && <Attribution /> }
         { this.state.active && <RightClickOptions /> }
         { this.state.active && <Crosshair /> }
-        { this.state.active && <MapMini lng={ this.props.lng } lat={ this.props.lat } zoom={ this.props.zoom } /> }
-        <Search />
-        <Logo />
-        <CompareSwiper />
-        <div
-          ref={ (ref) => this.mapRight = ref }
-          style={ style.mapRight }>
-        </div>
-        <div
-          ref={ (ref) => this.map = ref }
-          style={ style.map }>
-        </div>
+        { this.state.active && <Search /> }
+        { this.state.active && <Logo /> }
+        { this.state.active && <CompareSwiper /> }
+
+        <MapRight lng={ this.props.lng } lat={ this.props.lat } zoom={ this.props.zoom } active={ this.state.active }/>
+        <MapMini lng={ this.props.lng } lat={ this.props.lat } zoom={ this.props.zoom } active={ this.state.active }/>
+        <Map lng={ this.props.lng } lat={ this.props.lat } zoom={ this.props.zoom } active={ this.state.active }/>
       </div>
     )
   }
@@ -175,24 +66,13 @@ class App extends React.Component {
 App.propTypes = {
   lat: React.PropTypes.number,
   lng: React.PropTypes.number,
-  zoom: React.PropTypes.number,
-  holdTimeout: React.PropTypes.number,
-  mapStyle: React.PropTypes.string,
-  mapRightStyle: React.PropTypes.string,
-  accuracy: React.PropTypes.string,
-  mapMiniOffset: React.PropTypes.number
+  zoom: React.PropTypes.number
 }
 
 App.defaultProps = {
   lat: 36.31545,
   lng: 43.14998,
-  zoom: 13,
-  holdTimeout: 1000,
-  mapMiniOffset: -4,
-  mapStyle: mapStyles.hybrid,
-  mapStyleMini: mapStyles.streets,
-  mapStyleRight: classicStyles('mapbox.outdoors'),
-  accuracy: 'center'
+  zoom: 13
 }
 
 ReactDOM.render(

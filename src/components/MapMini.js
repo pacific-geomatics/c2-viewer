@@ -3,17 +3,26 @@
  */
 import React from 'react'
 import mapboxgl from 'mapbox-gl'
+import { accessToken } from '../utils/accessToken'
+import MobileDetect from 'mobile-detect'
+import MapMiniControls from './MapMiniControls'
 
 class MapMini extends React.Component {
 
   constructor(props) {
     super(props)
 
-    this.state = { }
+    this.state = {
+      windowHeight: window.innerHeight,
+      windowWidth: window.innerWidth,
+      active: true
+    }
   }
 
   componentDidMount() {
     // Create MapboxGL Map
+    mapboxgl.accessToken = accessToken
+
     const mapMini = new mapboxgl.Map({
       container: this.mapMini,
       style: this.props.mapStyle,
@@ -23,16 +32,42 @@ class MapMini extends React.Component {
     })
 
     // Disable
-    mapMini.dragRotate.disable()
     mapMini.keyboard.disable()
     mapMini.boxZoom.disable()
+    //mapMini.doubleClickZoom.disable()
+    //mapMini.touchZoomRotate.disable()
 
-    // Sync Map
-    window._map.on('move', this.jumpTo.bind(this, mapMini))
+    // Disable (Mobile)
+    const md = new MobileDetect(window.navigator.userAgent)
+
+    if (md.mobile()) {
+      mapMini.dragRotate.disable()
+    }
+
+    // Define Globals
+    window._mapMini = mapMini
+    this._mapMini = mapMini
+    this.mapMini = this.mapMini
+    window.mapMini = this.mapMini
   }
 
-  jumpTo(mapMini, e) {
-    mapMini.flyTo(this.getPosition(e.target, this.props.zoomOffset))
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.active) {
+      console.log('MapMini Active!')
+      window._map.on('move', this.handleMove.bind(this, window._mapMini))
+      window.addEventListener('resize', this.handleResize.bind(this))
+    }
+  }
+
+  handleResize(e) {
+    this.setState({
+      windowHeight: e.target.innerHeight,
+      windowWidth: e.target.innerWidth
+    })
+  }
+
+  handleMove(target, e) {
+    target.flyTo(this.getPosition(e.target, this.props.zoomOffset))
   }
 
   getPosition(map, zoomOffset) {
@@ -44,14 +79,15 @@ class MapMini extends React.Component {
     }
   }
 
+  handleClick() {
+    this.setState({ active: !this.state.active })
+  }
+
   render() {
-    // Define Window Sizes
-    let windowWidth = window.innerWidth
-    let windowHeight = window.innerHeight
-    let windowTotal = window.innerWidth + window.innerHeight
+    let windowTotal = this.state.windowWidth + this.state.windowHeight
 
     const styles = {
-      map: {
+      mapMini: {
         position : 'absolute',
         top: this.props.top,
         bottom: this.props.bottom,
@@ -61,14 +97,18 @@ class MapMini extends React.Component {
         overflow: 'hidden',
         boxShadow: '5px 5px 15px rgba(100, 100, 100, 0.7)',
         borderRadius: '50%',
-        width: (windowTotal > 1600) ? 200: windowTotal / 8,
-        height: (windowTotal > 1600) ? 200: windowTotal / 8,
+        width: (windowTotal > 1600) ? 200: 125,
+        height: (windowTotal > 1600) ? 200: 125,
+        display: this.state.active ? '' : 'none'
       }
     }
     return (
-      <div
-        ref={ (ref) => this.mapMini = ref }
-        style={ styles.map }>
+      <div>
+        <MapMiniControls windowTotal={ windowTotal } handleClick={ this.handleClick.bind(this) }/>
+        <div
+          ref={ (ref) => this.mapMini = ref }
+          style={ styles.mapMini }>
+        </div>
       </div>
     )
   }
@@ -83,7 +123,7 @@ MapMini.propTypes = {
   lat: React.PropTypes.number,
   lng: React.PropTypes.number,
   zoom: React.PropTypes.number,
-  mapStyle: React.PropTypes.string
+  mapStyle: React.PropTypes.any
 }
 
 MapMini.defaultProps = {

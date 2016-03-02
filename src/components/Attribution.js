@@ -3,7 +3,6 @@
  */
 import React from 'react'
 import { Button, ButtonGroup } from 'react-bootstrap'
-import MobileDetect from 'mobile-detect'
 
 
 class Attribution extends React.Component {
@@ -19,7 +18,8 @@ class Attribution extends React.Component {
   }
 
   handleResize(e) {
-    this.setState({ windowWidth: window.innerWidth })
+    console.log( e.target.innerWidth)
+    this.setState({ windowWidth: e.target.innerWidth })
   }
 
   setPosition() {
@@ -32,7 +32,6 @@ class Attribution extends React.Component {
   }
 
   render() {
-    const md = new MobileDetect(window.navigator.userAgent)
     const styles = {
       container: {
         position: 'absolute',
