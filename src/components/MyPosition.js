@@ -13,6 +13,9 @@ class MyPosition extends React.Component {
       hover: false,
       active: false
     }
+    this.handleClick = this.handleClick.bind(this)
+    this.handleMouseEnter = this.handleMouseEnter.bind(this)
+    this.handleMouseLeave = this.handleMouseLeave.bind(this)
   }
 
   componentDidMount() {
@@ -79,11 +82,11 @@ class MyPosition extends React.Component {
 
   }
 
-  handleMouseOver() {
+  handleMouseEnter() {
     this.setState({ hover: true })
   }
 
-  handleMouseOut() {
+  handleMouseLeave() {
     this.setState({ hover: false })
   }
 
@@ -116,13 +119,9 @@ class MyPosition extends React.Component {
     return (
       <div
         style={ styles.container }
-        onClick={ this.handleClick.bind(this) }
-        onMouseOver={ this.handleMouseOver.bind(this) }
-        onMouseOut={ this.handleMouseOut.bind(this) }
-
-        onTouchStart={ this.handleMouseOver.bind(this) }
-        onTouchCancel={ this.handleMouseOut.bind(this) }
-        onTouchEnd={ this.handleMouseOut.bind(this) }
+        onClick={ this.handleClick }
+        onMouseEnter={ this.handleMouseEnter }
+        onMouseLeave={ this.handleMouseLeave }
         >
         <Glyphicon style={ styles.glyph } glyph='map-marker' />
       </div>

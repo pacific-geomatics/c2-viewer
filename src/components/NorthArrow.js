@@ -13,6 +13,9 @@ class NorthArrow extends React.Component {
       hover: false,
       active: false
     }
+    this.handleClick = this.handleClick.bind(this)
+    this.handleMouseEnter = this.handleMouseEnter.bind(this)
+    this.handleMouseLeave = this.handleMouseLeave.bind(this)
   }
 
   componentDidMount() {
@@ -34,11 +37,11 @@ class NorthArrow extends React.Component {
     window._map.flyTo({ bearing: bearingSwitch[this.state.bearing] || 0 })
   }
 
-  handleMouseOver() {
+  handleMouseEnter() {
     this.setState({ hover: true })
   }
 
-  handleMouseOut() {
+  handleMouseLeave() {
     this.setState({ hover: false })
   }
 
@@ -75,13 +78,9 @@ class NorthArrow extends React.Component {
     return (
       <div
         style={ styles.container }
-        onClick={ this.handleClick.bind(this) }
-        onMouseOver={ this.handleMouseOver.bind(this) }
-        onMouseOut={ this.handleMouseOut.bind(this) }
-
-        onTouchStart={ this.handleMouseOver.bind(this) }
-        onTouchCancel={ this.handleMouseOut.bind(this) }
-        onTouchEnd={ this.handleMouseOut.bind(this) }
+        onClick={ this.handleClick }
+        onMouseEnter={ this.handleMouseEnter }
+        onMouseLeave={ this.handleMouseLeave }
         >
         <div style={ styles.background }></div>
         <div style={ styles.northArrow }></div>
