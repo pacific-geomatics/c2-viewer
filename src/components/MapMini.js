@@ -7,6 +7,8 @@ import { accessToken } from '../utils/accessToken'
 import MobileDetect from 'mobile-detect'
 import MapMiniControls from './MapMiniControls'
 
+const md = new MobileDetect(window.navigator.userAgent)
+
 class MapMini extends React.Component {
 
   constructor(props) {
@@ -38,8 +40,6 @@ class MapMini extends React.Component {
     //mapMini.touchZoomRotate.disable()
 
     // Disable (Mobile)
-    const md = new MobileDetect(window.navigator.userAgent)
-
     if (md.mobile()) {
       mapMini.dragRotate.disable()
     }

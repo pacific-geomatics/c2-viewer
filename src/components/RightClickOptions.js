@@ -2,12 +2,12 @@
  * Right Click Options
  */
 import React from 'react'
-import { NavItem, Nav, Modal } from 'react-bootstrap'
-import converter from 'coordinator'
+import { NavItem, Nav } from 'react-bootstrap'
 import copy from 'copy-to-clipboard'
+import MobileDetect from 'mobile-detect'
+import { getPrecision, getMGRS, getLatLng, getPrettyLatLng } from '../utils/mapHandlers'
 
-const toUSNG = converter('latlong', 'usng')
-const toLatLng = converter('usng', 'latlong')
+const md = new MobileDetect(window.navigator.userAgent)
 
 class RightClickOptions extends React.Component {
 
@@ -21,94 +21,52 @@ class RightClickOptions extends React.Component {
       mapMove: false,
       mouseDown: false
     }
+    this.handleDoubleClick = this.handleDoubleClick.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   componentDidMount() {
-    /*
     const mapboxglMaps = [window._map, window._mapRight]
-    mapboxglMaps.map((mapItem) => {
-      mapItem.on('contextmenu', this.handleClickRight.bind(this))
-      mapItem.on('dblclick', this.handleClickRight.bind(this))
-      mapItem.on('mousedown', this.handleMouseDown.bind(this))
-      mapItem.on('mouseup', this.handleMouseUp.bind(this))
-      mapItem.on('move', this.handleMove.bind(this))
-    })
-    window.addEventListener("touchcancel", this.handleMouseUp.bind(this))
-    window.addEventListener("touchend", this.handleMouseUp.bind(this))
-    */
-  }
 
-  handleMove(e) {
-    this.setState({
-      timestamp: Date.now(),
-      mapMove: true,
-      show: false
-    })
-  }
-
-  handleMouseUp() {
-    this.setState({
-      timestamp: Date.now(),
-      mouseDown: false,
-      mapMove: false
-    })
-  }
-
-  handleMouseHold(e) {
-    if (Date.now() - this.state.timestamp > this.props.holdTimeout - 20 && this.state.mouseDown) {
-      this.handleClickRight(e)
+    if (md.mobile()) {
+      mapboxglMaps.map((mapItem) => {
+        mapItem.on('dblclick', this.handleDoubleClick)
+      })
+    } else {
+      mapboxglMaps.map((mapItem) => {
+        mapItem.on('contextmenu', this.handleDoubleClick)
+      })
     }
   }
 
-  handleMouseDown(e) {
-    setTimeout(() => { this.handleMouseHold(e) }, this.props.holdTimeout)
-    this.setState({
-      timestamp: Date.now(),
-      mouseDown: true,
-      show: false
-    })
+  handleDoubleClick(e) {
+    setTimeout(() => {
+      window.addEventListener("click", this.handleClick)
+      let zoom = window._map.getZoom()
+      let lat = e.lngLat.lat
+      let lng = e.lngLat.lng
+      let precision = getPrecision(zoom)
+      let mgrs = getMGRS(lat, lng, precision)
+      let latlng = getPrettyLatLng(lat, lng, precision)
+
+      this.setState({
+        timestamp: Date.now(),
+        show: true,
+        lat: lat,
+        lng: lng,
+        x: e.point.x,
+        y: e.point.y,
+        zoom: zoom,
+        precision: precision,
+        mgrs: mgrs,
+        latlng: latlng
+      })
+    }, 50)
   }
 
-  handleClickRight(e) {
-    let zoom = window._map.getZoom()
-    let lat = e.lngLat.lat
-    let lng = e.lngLat.lng
-    let precision = this.getPrecision(zoom)
-    let mgrs = this.getMGRS(lat, lng, precision)
-    let latlng = this.getLatLng(lat, lng, precision)
-
-    this.setState({
-      timestamp: Date.now(),
-      show: true,
-      lat: lat,
-      lng: lng,
-      x: e.point.x,
-      y: e.point.y,
-      zoom: zoom,
-      precision: precision,
-      mgrs: mgrs,
-      latlng: latlng
-    })
-  }
-
-  getMGRS(lat, lng, precision) {
-    return toUSNG(lat, lng, precision)
-  }
-
-  getLatLng(lat, lng, precision) {
-    lat = lat.toFixed(precision)
-    lng = lng.toFixed(precision)
-
-    return `${lat}, ${lng}`
-  }
-
-  getPrecision(zoom) {
-    let precision = 3
-
-    if ( zoom > 14 ) { precision = 5 }
-    else if ( zoom > 10 ) { precision = 4 }
-
-    return precision
+  handleClick(e) {
+    window.removeEventListener('click', this.handleClick)
+    this.setState({ show: false })
   }
 
   handleSelect(selectedKey) {
@@ -153,7 +111,7 @@ class RightClickOptions extends React.Component {
           stacked
           onSelect={ this.handleSelect.bind(this) }
           >
-          <NavItem eventKey={ 'whatsHere' }>What's here?</NavItem>
+          <NavItem active={ false } eventKey={ 'whatsHere' }>What's here?</NavItem>
           <NavItem eventKey={ 'searchNearby' }>Search nearby</NavItem>
           <NavItem eventKey={ 'mgrs' }>{ this.state.mgrs }</NavItem>
           <NavItem eventKey={ 'latlng' }>{ this.state.latlng }</NavItem>
@@ -172,7 +130,7 @@ RightClickOptions.propTypes = {
 }
 
 RightClickOptions.defaultProps = {
-  zIndex: 15,
+  zIndex: 50,
   buffer: 5,
   height: 170,
   width: 170,

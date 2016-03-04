@@ -8,6 +8,8 @@ import { accessToken } from '../utils/accessToken'
 import { getPosition } from '../utils/mapHandlers'
 import MobileDetect from 'mobile-detect'
 
+const md = new MobileDetect(window.navigator.userAgent)
+
 class Map extends React.Component {
 
   constructor(props) {
@@ -39,6 +41,7 @@ class Map extends React.Component {
 
     if (md.mobile()) {
       map.dragRotate.disable()
+      map.doubleClickZoom.disable()
     }
 
     // Define Globals
