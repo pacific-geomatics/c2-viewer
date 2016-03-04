@@ -85,6 +85,7 @@ class Settings extends React.Component {
                 <option value="streets">Streets</option>
                 <option value="dark">Dark</option>
                 <option value="ski">Swiss Ski</option>
+                <option value="emerald">Emerald</option>
                 <option value="hybrid">Hybrid Satellite</option>
               </Input>
             </form>

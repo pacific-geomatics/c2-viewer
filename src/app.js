@@ -91,7 +91,7 @@ App.defaultProps = {
   lng: 121.520166,
   zoom: 13,
   map: 'pacgeo',
-  mapRight: 'hybrid',
+  mapRight: 'streets',
   mapMini: 'streets',
   leftCompareSwiper: window.innerWidth / 2
 }
