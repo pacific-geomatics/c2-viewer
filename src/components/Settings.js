@@ -2,65 +2,98 @@
  * Settings
  */
 import React from 'react'
-import { Glyphicon } from 'react-bootstrap'
+import { Modal, Button, Input, Jumbotron, ButtonInput } from 'react-bootstrap'
+import SettingsControl from './SettingsControl'
+import { mapStyles } from '../utils/mapStyles'
 
 class Settings extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      hover: false
+      show: false,
+      showCompareSwiper: this.props.showCompareSwiper,
+      imagery: this.props.imagery,
+      vector: this.props.vector
     }
-    this.handleClick = this.handleClick.bind(this)
-    this.handleMouseEnter = this.handleMouseEnter.bind(this)
-    this.handleMouseLeave = this.handleMouseLeave.bind(this)
+    this.showModal = this.showModal.bind(this)
+    this.hideModal = this.hideModal.bind(this)
+    this.handleVector = this.handleVector.bind(this)
+    this.handleImagery = this.handleImagery.bind(this)
+    this.handleShowCompareSwiper = this.handleShowCompareSwiper.bind(this)
   }
 
-  handleClick() {
-    console.log('settings')
+  showModal() {
+    this.setState({ show: true })
   }
 
-  handleMouseEnter() {
-    this.setState({ hover: true })
+  hideModal() {
+    this.setState({ show: false })
   }
 
-  handleMouseLeave() {
-    this.setState({ hover: false })
+  handleShowCompareSwiper(e) {
+    this.setState({ showCompareSwiper: !this.state.showCompareSwiper })
+    this.props.handleShowCompareSwiper()
+  }
+
+  handleImagery(e) {
+    let value = e.target.value
+    window._map.setStyle(mapStyles[value])
+    this.setState({ imagery: value })
+  }
+
+  handleVector(e) {
+    let value = e.target.value
+    window._mapRight.setStyle(mapStyles[value])
+    this.setState({ vector: value })
   }
 
   render() {
     const styles = {
-      container: {
+      settings: {
         position: 'absolute',
+        backgroundColor: `rgb(25, 25, 25)`,
         top: this.props.top,
         bottom: this.props.bottom,
         right: this.props.right,
         left: this.props.left,
         zIndex: this.props.zIndex,
-        backgroundColor: `rgb(25, 25, 25)`,
-        cursor: `pointer`,
-        borderRadius: '4px',
         width: this.props.width,
-        height: this.props.height,
-        textAlign: 'center',
-        perspective: '50px'
-      },
-      glyph: {
-        position: 'relative',
-        top: this.props.height / 2 - (this.props.fontSize / 2),
-        fontSize: this.props.fontSize,
-        textShadow: (this.state.hover) ? `0 0 7px white` : ``,
-        color: (this.state.hover) ? `rgb(255, 255, 255)` : `rgb(190, 190, 190)`
+        height: this.props.height
       }
     }
     return (
-      <div
-        style={ styles.container }
-        onClick={ this.handleClick }
-        onMouseEnter={ this.handleMouseEnter }
-        onMouseLeave={ this.handleMouseLeave }
-        >
-        <Glyphicon style={ styles.glyph } glyph='cog' />
+      <div>
+        <SettingsControl onClick={ this.showModal } />
+        <Modal
+          show={ this.state.show }
+          onHide={ this.hideModal }
+          >
+          <Modal.Header>
+            <h1>Basemaps</h1>
+          </Modal.Header>
+
+          <Modal.Body>
+            <form>
+              <Input type="checkbox" label="Compare Slider" checked={ this.props.showCompareSwiper } onChange={ this.handleShowCompareSwiper } />
+              <Input type="select" label="Imagery" value={ this.state.imagery } onChange={ this.handleImagery }>
+                <option value="pacgeo">Pacgeo</option>
+                <option value="satellite">Mapbox</option>
+              </Input>
+              <Input type="select" label="Vector" value={ this.state.vector } onChange={ this.handleVector }>
+                <option value="outdoors">Outdoors</option>
+                <option value="streets">Streets</option>
+                <option value="dark">Dark</option>
+                <option value="ski">Swiss Ski</option>
+                <option value="hybrid">Hybrid Satellite</option>
+              </Input>
+            </form>
+          </Modal.Body>
+
+          <Modal.Footer>
+            <Button onClick={ this.hideModal }>Close</Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     )
   }
@@ -73,17 +106,19 @@ Settings.propTypes = {
   top: React.PropTypes.number,
   zIndex: React.PropTypes.number,
   width: React.PropTypes.number,
-  height: React.PropTypes.number,
-  fontSize: React.PropTypes.number
+  showCompareSwiper: React.PropTypes.bool,
+  imagery: React.PropTypes.string,
+  vector: React.PropTypes.string
 }
 
 Settings.defaultProps = {
-  zIndex: 15,
-  top: 10,
-  left: 10,
-  width: 47,
-  height: 47,
-  fontSize: 30
+  zIndex: 100,
+  top: 0,
+  bottom: 0,
+  left: -400,
+  width: 400,
+  imagery: 'pacgeo',
+  vector: 'outdoor'
 }
 
 export default Settings

@@ -17,16 +17,27 @@ class CompareSwiper extends React.Component {
       left: this.props.left,
       windowWidth: window.innerWidth
     }
+     this.handleResize = this.handleResize.bind(this)
+     this.handleMouseMove = this.handleMouseMove.bind(this)
+     this.handleMouseUp = this.handleMouseUp.bind(this)
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.handleResize.bind(this))
-    window.addEventListener('mousemove', this.handleMouseMove.bind(this), false)
-    window.addEventListener('mouseup', () => this.setState({ dragging: false }), false)
+    window.addEventListener('resize', this.handleResize)
+    window.addEventListener('mousemove', this.handleMouseMove)
+    window.addEventListener('mouseup', this.handleMouseUp)
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize.bind(this))
+    window.removeEventListener('resize', this.handleResize)
+    window.removeEventListener('mousemove', this.handleMouseMove)
+    window.removeEventListener('mouseup', this.handleMouseUp)
+    this.props.handleLeftCompareSwiper(this.state.left)
+    window.map.style['clip'] = ''
+  }
+
+  handleMouseUp() {
+    this.setState({ dragging: false })
   }
 
   handleResize(e) {
@@ -38,14 +49,18 @@ class CompareSwiper extends React.Component {
 
   handleMouseMove(e) {
     if (this.state.dragging) {
-      this.setState({ left: this.getX(e) })
+      this.setLeft(this.getX(e))
     }
   }
 
   handleTouchMove(e) {
     if (this.state.dragging) {
-      this.setState({ left: this.getX(e.touches[0]) })
+      this.setLeft(this.getX(e.touches[0]))
     }
+  }
+
+  setLeft(left) {
+    this.setState({ left: left })
   }
 
   getX(e) {
@@ -94,7 +109,7 @@ class CompareSwiper extends React.Component {
       <div style={ styles.mapboxglCompare }>
         <div
           style={ styles.compareSwiper }
-          onTouchMove={ this.handleTouchMove.bind(this) }
+          onTouchMove={ this.handleTouchMove }
           onTouchEnd={ () => this.setState({ dragging: false }) }
           onMouseDown={ () => this.setState({ dragging: true }) }
           onTouchStart={ () => this.setState({ dragging: true }) }

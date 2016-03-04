@@ -32,11 +32,25 @@ class App extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = { active: false }
+    this.state = {
+      active: false,
+      showCompareSwiper: true,
+      leftCompareSwiper: this.props.leftCompareSwiper
+    }
+    this.handleShowCompareSwiper = this.handleShowCompareSwiper.bind(this)
+    this.handleLeftCompareSwiper = this.handleLeftCompareSwiper.bind(this)
   }
 
   componentDidMount() {
     this.setState({ active: true })
+  }
+
+  handleShowCompareSwiper() {
+    this.setState({ showCompareSwiper: !this.state.showCompareSwiper })
+  }
+
+  handleLeftCompareSwiper(left) {
+    this.setState({ leftCompareSwiper: left })
   }
 
   render() {
@@ -47,17 +61,17 @@ class App extends React.Component {
         { this.state.active && <MyPosition /> }
         { this.state.active && <ZoomOut /> }
         { this.state.active && <ZoomIn /> }
-        { this.state.active && <Settings /> }
+        { this.state.active && <Settings imagery={ this.props.map } vector={ this.props.mapRight } handleShowCompareSwiper={ this.handleShowCompareSwiper } showCompareSwiper={ this.state.showCompareSwiper }/> }
         { this.state.active && <Attribution /> }
         { this.state.active && <RightClickOptions /> }
         { this.state.active && <Crosshair /> }
         { this.state.active && <Search /> }
         { this.state.active && <Logo /> }
-        { this.state.active && <CompareSwiper /> }
+        { (this.state.active && this.state.showCompareSwiper) && <CompareSwiper handleLeftCompareSwiper={ this.handleLeftCompareSwiper } left={ this.state.leftCompareSwiper }/> }
 
-        <MapRight lng={ this.props.lng } lat={ this.props.lat } zoom={ this.props.zoom } active={ this.state.active }/>
-        <MapMini lng={ this.props.lng } lat={ this.props.lat } zoom={ this.props.zoom } active={ this.state.active }/>
-        <Map lng={ this.props.lng } lat={ this.props.lat } zoom={ this.props.zoom } active={ this.state.active }/>
+        <Map basemap={ this.props.map } lng={ this.props.lng } lat={ this.props.lat } zoom={ this.props.zoom } active={ this.state.active }/>
+        <MapRight basemap={ this.props.mapRight } lng={ this.props.lng } lat={ this.props.lat } zoom={ this.props.zoom } active={ this.state.active } show={ this.state.showCompareSwiper }/>
+        <MapMini basemap={ this.props.mapMini } lng={ this.props.lng } lat={ this.props.lat } zoom={ this.props.zoom } active={ this.state.active }/>
       </div>
     )
   }
@@ -66,13 +80,20 @@ class App extends React.Component {
 App.propTypes = {
   lat: React.PropTypes.number,
   lng: React.PropTypes.number,
-  zoom: React.PropTypes.number
+  zoom: React.PropTypes.number,
+  leftCompareSwiper: React.PropTypes.number,
+  imagery: React.PropTypes.string,
+  vector: React.PropTypes.string
 }
 
 App.defaultProps = {
-  lat: 36.31545,
-  lng: 43.14998,
-  zoom: 13
+  lat: -30.789567,
+  lng: 121.520166,
+  zoom: 13,
+  map: 'pacgeo',
+  mapRight: 'hybrid',
+  mapMini: 'streets',
+  leftCompareSwiper: window.innerWidth / 2
 }
 
 ReactDOM.render(

@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import mapboxgl from 'mapbox-gl'
-import classicStyles from '../utils/classicStyles'
+import { mapStyles } from '../utils/mapStyles'
 import { accessToken } from '../utils/accessToken'
 import { getPosition } from '../utils/mapHandlers'
 import MobileDetect from 'mobile-detect'
@@ -24,7 +24,7 @@ class MapRight extends React.Component {
 
     const mapRight = new mapboxgl.Map({
       container: this.mapRight,
-      style: this.props.mapStyle,
+      style: mapStyles[this.props.basemap],
       center: [ this.props.lng, this.props.lat ],
       zoom: this.props.zoom + this.props.zoomOffset,
       attributionControl: false
@@ -74,7 +74,8 @@ class MapRight extends React.Component {
         right: this.props.right,
         zIndex: this.props.zIndex,
         width: '100%',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        display: this.props.show ? '' : 'none'
       }
     }
     return (
@@ -95,7 +96,7 @@ MapRight.propTypes = {
   lat: React.PropTypes.number,
   lng: React.PropTypes.number,
   zoom: React.PropTypes.number,
-  mapStyle: React.PropTypes.any
+  basemap: React.PropTypes.string
 }
 
 MapRight.defaultProps = {
@@ -106,7 +107,7 @@ MapRight.defaultProps = {
   lat: 0.0,
   lng: 0.0,
   zoom: 13,
-  mapStyle: classicStyles('mapbox.outdoors'),
+  basemap: 'outdoors',
 }
 
 export default MapRight;

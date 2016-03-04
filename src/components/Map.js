@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import mapboxgl from 'mapbox-gl'
-import classicStyles from '../utils/classicStyles'
+import { mapStyles } from '../utils/mapStyles'
 import { accessToken } from '../utils/accessToken'
 import { getPosition } from '../utils/mapHandlers'
 import MobileDetect from 'mobile-detect'
@@ -24,7 +24,7 @@ class Map extends React.Component {
 
     const map = new mapboxgl.Map({
       container: this.map,
-      style: this.props.mapStyle,
+      style: mapStyles[this.props.basemap],
       center: [ this.props.lng, this.props.lat ],
       zoom: this.props.zoom + this.props.zoomOffset,
       attributionControl: false
@@ -101,7 +101,7 @@ Map.propTypes = {
   lat: React.PropTypes.number,
   lng: React.PropTypes.number,
   zoom: React.PropTypes.number,
-  mapStyle: React.PropTypes.any,
+  basemap: React.PropTypes.string,
   active: React.PropTypes.bool
 }
 
@@ -113,7 +113,7 @@ Map.defaultProps = {
   lat: 0.0,
   lng: 0.0,
   zoom: 13,
-  mapStyle: 'mapbox://styles/mapbox/satellite-hybrid-v8',
+  basemap: 'pacgeo',
   active: false
 }
 

@@ -6,6 +6,7 @@ import mapboxgl from 'mapbox-gl'
 import { accessToken } from '../utils/accessToken'
 import MobileDetect from 'mobile-detect'
 import MapMiniControls from './MapMiniControls'
+import { mapStyles } from '../utils/mapStyles'
 
 const md = new MobileDetect(window.navigator.userAgent)
 
@@ -19,6 +20,7 @@ class MapMini extends React.Component {
       windowWidth: window.innerWidth,
       active: true
     }
+    this.handleClick = this.handleClick.bind(this)
   }
 
   componentDidMount() {
@@ -27,7 +29,7 @@ class MapMini extends React.Component {
 
     const mapMini = new mapboxgl.Map({
       container: this.mapMini,
-      style: this.props.mapStyle,
+      style: mapStyles[this.props.basemap],
       center: [ this.props.lng, this.props.lat ],
       zoom: this.props.zoom + this.props.zoomOffset,
       attributionControl: false
@@ -104,7 +106,7 @@ class MapMini extends React.Component {
     }
     return (
       <div>
-        <MapMiniControls windowTotal={ windowTotal } handleClick={ this.handleClick.bind(this) }/>
+        <MapMiniControls windowTotal={ windowTotal } handleClick={ this.handleClick }/>
         <div
           ref={ (ref) => this.mapMini = ref }
           style={ styles.mapMini }>
@@ -123,7 +125,7 @@ MapMini.propTypes = {
   lat: React.PropTypes.number,
   lng: React.PropTypes.number,
   zoom: React.PropTypes.number,
-  mapStyle: React.PropTypes.any
+  basemap: React.PropTypes.string
 }
 
 MapMini.defaultProps = {
@@ -134,7 +136,7 @@ MapMini.defaultProps = {
   lat: 0.0,
   lng: 0.0,
   zoom: 13,
-  mapStyle: 'mapbox://styles/mapbox/streets-v8'
+  basemap: 'streets'
 }
 
 export default MapMini;
