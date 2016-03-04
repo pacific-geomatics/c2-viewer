@@ -8,7 +8,8 @@
   },
   "private": true,
   "scripts": {
-    "start": "gulp start",
+    "prestart": "webpack",
+    "start": "babel-node ./src/server.js",
     "browserify": "gulp browserify",
     "lint": "gulp lint",
     "watch": "gulp watch"

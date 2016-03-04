@@ -10,7 +10,7 @@ RUN mkdir -p /src
 WORKDIR /src
 
 # Install Node dependencies
-RUN npm install gulp babel-cli -g
+RUN npm install babel-cli webpack -g
 RUN npm install
 
 # Bundle app source
