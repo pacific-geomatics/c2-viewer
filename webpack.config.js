@@ -1,13 +1,17 @@
 var path = require('path')
 var webpack = require('webpack')
 
+// Webpack Guides
+// http://survivejs.com/webpack/loading-css/
+
 module.exports = {
   target: 'web',
   debug: true,
   devtool: 'source-map',
   entry: './src/app.js',
   output: {
-      path: path.join(__dirname, 'dist', 'javascript'),
+      path: __dirname,
+      publicPath: '/js/',
       filename: 'bundle.js'
   },
   resolve: {
@@ -27,18 +31,21 @@ module.exports = {
         loader: 'babel',
         exclude: /node_modules/,
         query: { presets: ['es2015', 'react', 'stage-0'] }
-      },
-      { test: /\.json$/, loader: 'json-loader' },
-      {
+      }, {
+        test: /\.json$/,
+        loader: 'json-loader'
+      }, {
         test: /\.js$/,
         include: path.resolve(__dirname, 'node_modules/mapbox-gl/js/render/shaders.js'),
         loader: 'transform/cacheable?brfs'
-      },
-      {
+      }, {
         test: /\.js$/,
         include: path.resolve(__dirname, 'node_modules/webworkify/index.js'),
         loader: 'worker'
-      }
+      }, {
+      test: /\.css$/,
+      loader: 'style!css'
+    }
     ]
   },
   postLoaders: [

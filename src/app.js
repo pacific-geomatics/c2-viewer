@@ -8,7 +8,7 @@
  * http://www.w3schools.com/cssref/css3_pr_perspective.asp
  */
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { render } from 'react-dom'
 import Map from './components/Map'
 import Logo from './components/Logo'
 import ZoomIn from './components/ZoomIn'
@@ -34,7 +34,7 @@ class App extends React.Component {
 
     this.state = {
       active: false,
-      showCompareSwiper: true,
+      showCompareSwiper: this.props.showCompareSwiper,
       leftCompareSwiper: this.props.leftCompareSwiper
     }
     this.handleShowCompareSwiper = this.handleShowCompareSwiper.bind(this)
@@ -61,7 +61,7 @@ class App extends React.Component {
         { this.state.active && <MyPosition /> }
         { this.state.active && <ZoomOut /> }
         { this.state.active && <ZoomIn /> }
-        { this.state.active && <Settings imagery={ this.props.map } vector={ this.props.mapRight } handleShowCompareSwiper={ this.handleShowCompareSwiper } showCompareSwiper={ this.state.showCompareSwiper }/> }
+        { this.state.active && <Settings mapLeftStyle={ this.props.map } mapRightStyle={ this.props.mapRight } handleShowCompareSwiper={ this.handleShowCompareSwiper } showCompareSwiper={ this.state.showCompareSwiper }/> }
         { this.state.active && <Attribution /> }
         { this.state.active && <RightClickOptions /> }
         { this.state.active && <Crosshair /> }
@@ -83,7 +83,8 @@ App.propTypes = {
   zoom: React.PropTypes.number,
   leftCompareSwiper: React.PropTypes.number,
   imagery: React.PropTypes.string,
-  vector: React.PropTypes.string
+  vector: React.PropTypes.string,
+  showCompareSwiper: React.PropTypes.bool
 }
 
 App.defaultProps = {
@@ -91,12 +92,13 @@ App.defaultProps = {
   lng: 121.520166,
   zoom: 13,
   map: 'pacgeo',
-  mapRight: 'streets',
+  mapRight: 'hybrid',
   mapMini: 'streets',
-  leftCompareSwiper: window.innerWidth / 2
+  leftCompareSwiper: window.innerWidth / 2,
+  showCompareSwiper: true
 }
 
-ReactDOM.render(
+render(
   <App />,
   document.getElementById('app')
 )

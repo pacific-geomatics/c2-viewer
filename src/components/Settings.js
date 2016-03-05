@@ -13,13 +13,13 @@ class Settings extends React.Component {
     this.state = {
       show: false,
       showCompareSwiper: this.props.showCompareSwiper,
-      imagery: this.props.imagery,
-      vector: this.props.vector
+      mapLeftStyle: this.props.mapLeftStyle,
+      mapRightStyle: this.props.mapRightStyle
     }
     this.showModal = this.showModal.bind(this)
     this.hideModal = this.hideModal.bind(this)
-    this.handleVector = this.handleVector.bind(this)
-    this.handleImagery = this.handleImagery.bind(this)
+    this.handleMapLeftStyle = this.handleMapLeftStyle.bind(this)
+    this.handleMapRightStyle = this.handleMapRightStyle.bind(this)
     this.handleShowCompareSwiper = this.handleShowCompareSwiper.bind(this)
   }
 
@@ -36,16 +36,16 @@ class Settings extends React.Component {
     this.props.handleShowCompareSwiper()
   }
 
-  handleImagery(e) {
+  handleMapLeftStyle(e) {
     let value = e.target.value
     window._map.setStyle(mapStyles[value])
-    this.setState({ imagery: value })
+    this.setState({ mapLeftStyle: value })
   }
 
-  handleVector(e) {
+  handleMapRightStyle(e) {
     let value = e.target.value
     window._mapRight.setStyle(mapStyles[value])
-    this.setState({ vector: value })
+    this.setState({ mapRightStyle: value })
   }
 
   render() {
@@ -76,17 +76,21 @@ class Settings extends React.Component {
           <Modal.Body>
             <form>
               <Input type="checkbox" label="Compare Slider" checked={ this.props.showCompareSwiper } onChange={ this.handleShowCompareSwiper } />
-              <Input type="select" label="Imagery" value={ this.state.imagery } onChange={ this.handleImagery }>
-                <option value="pacgeo">Pacgeo</option>
-                <option value="satellite">Mapbox</option>
+              <Input type="select" label="Map Left" value={ this.state.mapLeftStyle } onChange={ this.handleMapLeftStyle }>
+                <option value="pacgeo">Imagery - World View 3</option>
+                <option value="hybrid">Imagery - Mapbox Basemap</option>
+                <option value="streets">Vector - Streets</option>
+                <option value="dark">Vector - Dark</option>
+                <option value="ski">Vector - Swiss Ski</option>
+                <option value="emerald">Vector - Emerald</option>
               </Input>
-              <Input type="select" label="Vector" value={ this.state.vector } onChange={ this.handleVector }>
-                <option value="outdoors">Outdoors</option>
-                <option value="streets">Streets</option>
-                <option value="dark">Dark</option>
-                <option value="ski">Swiss Ski</option>
-                <option value="emerald">Emerald</option>
-                <option value="hybrid">Hybrid Satellite</option>
+              <Input type="select" label="Map Right" value={ this.state.mapRightStyle } onChange={ this.handleMapRightStyle }>
+                <option value="pacgeo">Imagery - World View 3</option>
+                <option value="hybrid">Imagery - Mapbox Basemap</option>
+                <option value="streets">Vector - Streets</option>
+                <option value="dark">Vector - Dark</option>
+                <option value="ski">Vector - Swiss Ski</option>
+                <option value="emerald">Vector - Emerald</option>
               </Input>
             </form>
           </Modal.Body>

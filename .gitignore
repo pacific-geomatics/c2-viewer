@@ -6,9 +6,6 @@ env
 # Logs
 logs
 *.log
-c2viewer.log.*
-
-dist
 
 # Runtime data
 pids
