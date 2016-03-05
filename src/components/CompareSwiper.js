@@ -20,6 +20,7 @@ class CompareSwiper extends React.Component {
      this.handleResize = this.handleResize.bind(this)
      this.handleMouseMove = this.handleMouseMove.bind(this)
      this.handleMouseUp = this.handleMouseUp.bind(this)
+     this.handleTouchMove = this.handleTouchMove.bind(this)
   }
 
   componentDidMount() {
