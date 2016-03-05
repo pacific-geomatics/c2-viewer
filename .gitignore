@@ -3,6 +3,8 @@ env
 # vim swp files
 *.swp
 
+dist
+
 # Logs
 logs
 *.log

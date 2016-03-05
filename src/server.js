@@ -9,7 +9,7 @@ import config  from '../webpack.config'
 import { port } from './config'
 
 // Configure
-const compiler = webpack(config)
+//const compiler = webpack(config)
 const app = global.app = express()
 
 // Enable Stormpath
@@ -18,27 +18,21 @@ app.use(stormpath.init(app, {
 }));
 
 // Static files
+app.use(express.static('./dist'))
+app.use(express.static('./src/public'))
 app.use(favicon(path.resolve(__dirname, 'public', 'favicon.ico')))
 app.use(robots(path.resolve(__dirname, 'public', 'robots.txt')))
+
+/*
 app.use(require('webpack-dev-middleware')(compiler, {
   noInfo: true,
   publicPath: config.output.publicPath
 }));
+*/
 
 /**
  * Routing
  */
-
-/*
-app.get('/', stormpath.loginRequired, function (req, res) {
-  res.redirect('/login')
-});
-
-app.get('/pdac', stormpath.groupsRequired(['pacgeo', 'pdac']), function (req, res) {
-  res.render('index')
-});
-*/
-
 app.get('/', stormpath.loginRequired, function (req, res) {
   res.sendFile(path.resolve(__dirname, 'public', 'index.html'))
 })
