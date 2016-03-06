@@ -32,46 +32,44 @@ class RightClickOptions extends React.Component {
     if (md.mobile()) {
       mapboxglMaps.map((mapItem) => {
         mapItem.on('dblclick', this.handleDoubleClick)
+        mapItem.on('click', this.handleClick)
       })
     } else {
       mapboxglMaps.map((mapItem) => {
         mapItem.on('contextmenu', this.handleDoubleClick)
+        mapItem.on('click', this.handleClick)
       })
     }
   }
 
   handleDoubleClick(e) {
-    setTimeout(() => {
-      window.addEventListener("click", this.handleClick)
-      let zoom = window._map.getZoom()
-      let lat = e.lngLat.lat
-      let lng = e.lngLat.lng
+    let zoom = window._map.getZoom()
+    let lat = e.lngLat.lat
+    let lng = e.lngLat.lng
 
-      // Mapbox Issue with map.fitBounds()
-      if (lng > 180) { lng = lng - 180 }
-      else if (lng < -180) { lng = lng + 180 }
+    // Mapbox Issue with map.fitBounds()
+    if (lng > 180) { lng = lng - 180 }
+    else if (lng < -180) { lng = lng + 180 }
 
-      let precision = getPrecision(zoom)
-      let mgrs = getMGRS(lat, lng, precision)
-      let latlng = getPrettyLatLng(lat, lng, precision)
+    let precision = getPrecision(zoom)
+    let mgrs = getMGRS(lat, lng, precision)
+    let latlng = getPrettyLatLng(lat, lng, precision)
 
-      this.setState({
-        timestamp: Date.now(),
-        show: true,
-        lat: lat,
-        lng: lng,
-        x: e.point.x,
-        y: e.point.y,
-        zoom: zoom,
-        precision: precision,
-        mgrs: mgrs,
-        latlng: latlng
-      })
-    }, 50)
+    this.setState({
+      timestamp: Date.now(),
+      show: true,
+      lat: lat,
+      lng: lng,
+      x: e.point.x,
+      y: e.point.y,
+      zoom: zoom,
+      precision: precision,
+      mgrs: mgrs,
+      latlng: latlng
+    })
   }
 
   handleClick(e) {
-    window.removeEventListener('click', this.handleClick)
     this.setState({ show: false })
   }
 

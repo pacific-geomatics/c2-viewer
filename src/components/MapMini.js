@@ -21,6 +21,7 @@ class MapMini extends React.Component {
       active: true
     }
     this.handleClick = this.handleClick.bind(this)
+    this.handleResize = this.handleResize.bind(this)
   }
 
   componentDidMount() {
@@ -57,7 +58,7 @@ class MapMini extends React.Component {
     if (nextProps.active) {
       console.log('MapMini Active!')
       window._map.on('move', this.handleMove.bind(this, window._mapMini))
-      window.addEventListener('resize', this.handleResize.bind(this))
+      window.addEventListener('resize', this.handleResize)
     }
   }
 
@@ -132,7 +133,7 @@ MapMini.defaultProps = {
   zIndex: 15,
   bottom: 55,
   left: 10,
-  zoomOffset: -4,
+  zoomOffset: -18,
   lat: 0.0,
   lng: 0.0,
   zoom: 13,
