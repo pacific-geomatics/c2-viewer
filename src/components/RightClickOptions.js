@@ -5,6 +5,7 @@ import React from 'react'
 import { NavItem, Nav } from 'react-bootstrap'
 import copy from 'copy-to-clipboard'
 import MobileDetect from 'mobile-detect'
+import { locations } from '../utils/locations'
 import { getPrecision, getMGRS, getLatLng, getPrettyLatLng } from '../utils/mapHandlers'
 
 const md = new MobileDetect(window.navigator.userAgent)
@@ -73,8 +74,11 @@ class RightClickOptions extends React.Component {
     this.setState({ show: false })
 
     if (selectedKey.match('mgrs|latlng')) {
-      console.log(`Copied to Clipboard! ${ this.state[selectedKey]}`)
+      console.log(`Copied to Clipboard! ${ this.state[selectedKey] }`)
       copy(this.state[selectedKey])
+    } else {
+      console.log(locations[selectedKey])
+      window._map.fitBounds(locations[selectedKey])
     }
   }
 
@@ -111,6 +115,9 @@ class RightClickOptions extends React.Component {
           stacked
           onSelect={ this.handleSelect.bind(this) }
           >
+          <NavItem eventKey={ 'kalgoorlie' }>Go to Kalgoorlie</NavItem>
+          <NavItem eventKey={ 'panama' }>Go to Panama</NavItem>
+          <NavItem eventKey={ 'mosul' }>Go to Mosul</NavItem>
           <NavItem eventKey={ 'mgrs' }>{ this.state.mgrs }</NavItem>
           <NavItem eventKey={ 'latlng' }>{ this.state.latlng }</NavItem>
         </Nav>
@@ -130,7 +137,7 @@ RightClickOptions.propTypes = {
 RightClickOptions.defaultProps = {
   zIndex: 50,
   buffer: 5,
-  height: 85,
+  height: 210,
   width: 170,
   holdTimeout: 1000
 }
