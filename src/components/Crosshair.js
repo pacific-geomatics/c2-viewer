@@ -24,8 +24,8 @@ class Crosshair extends React.Component {
     mapboxglMaps.map((mapItem) => {
       mapItem.on('click', this.handleClick)
       mapItem.on('contextmenu', this.handleClick)
-      mapItem.on('movestart', this.handleMoveStart)
-      mapItem.on('moveend', this.handleMoveEnd)
+      //mapItem.on('movestart', this.handleMoveStart)
+      //mapItem.on('moveend', this.handleMoveEnd)
     })
   }
 
