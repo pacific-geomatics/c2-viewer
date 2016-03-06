@@ -15,8 +15,8 @@ class Crosshair extends React.Component {
       accuracy: this.props.accuracy
     }
     this.handleClick = this.handleClick.bind(this)
-    this.handleMoveStart = this.handleMoveStart.bind(this)
-    this.handleMoveEnd = this.handleMoveEnd.bind(this)
+    //this.handleMoveStart = this.handleMoveStart.bind(this)
+    //this.handleMoveEnd = this.handleMoveEnd.bind(this)
   }
 
   componentDidMount() {
