@@ -111,8 +111,6 @@ class RightClickOptions extends React.Component {
           stacked
           onSelect={ this.handleSelect.bind(this) }
           >
-          <NavItem active={ false } eventKey={ 'whatsHere' }>What's here?</NavItem>
-          <NavItem eventKey={ 'searchNearby' }>Search nearby</NavItem>
           <NavItem eventKey={ 'mgrs' }>{ this.state.mgrs }</NavItem>
           <NavItem eventKey={ 'latlng' }>{ this.state.latlng }</NavItem>
         </Nav>
@@ -132,7 +130,7 @@ RightClickOptions.propTypes = {
 RightClickOptions.defaultProps = {
   zIndex: 50,
   buffer: 5,
-  height: 170,
+  height: 85,
   width: 170,
   holdTimeout: 1000
 }

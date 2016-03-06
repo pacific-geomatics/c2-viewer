@@ -65,7 +65,6 @@ class App extends React.Component {
         { this.state.active && <Attribution /> }
         { this.state.active && <RightClickOptions /> }
         { this.state.active && <Crosshair /> }
-        { this.state.active && <Search /> }
         { this.state.active && <Logo /> }
         { (this.state.active && this.state.showCompareSwiper) && <CompareSwiper handleLeftCompareSwiper={ this.handleLeftCompareSwiper } left={ this.state.leftCompareSwiper }/> }
 
