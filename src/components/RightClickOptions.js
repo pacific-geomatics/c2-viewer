@@ -95,7 +95,7 @@ class RightClickOptions extends React.Component {
         backgroundColor: 'white',
         zIndex: this.props.zIndex,
         borderRadius: 5,
-        width: this.props.width,
+        minWidth: this.props.width,
         border: '2px solid #1d8893',
         boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.50)',
         display: (this.state.show) ? '' : 'none'

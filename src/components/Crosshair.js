@@ -11,19 +11,33 @@ class Crosshair extends React.Component {
 
     this.state = {
       x: window.innerWidth / 2,
-      y: window.innerHeight / 2
+      y: window.innerHeight / 2,
+      accuracy: this.props.accuracy
     }
+    this.handleClick = this.handleClick.bind(this)
+    this.handleMoveStart = this.handleMoveStart.bind(this)
+    this.handleMoveEnd = this.handleMoveEnd.bind(this)
   }
 
   componentDidMount() {
     const mapboxglMaps = [window._map, window._mapRight]
     mapboxglMaps.map((mapItem) => {
-      mapItem.on('click', this.handleClick.bind(this))
-      mapItem.on('contextmenu', this.handleClick.bind(this))
+      mapItem.on('click', this.handleClick)
+      mapItem.on('contextmenu', this.handleClick)
+      mapItem.on('movestart', this.handleMoveStart)
+      mapItem.on('moveend', this.handleMoveEnd)
+    })
+  }
+
+  handleMoveStart(e) {
+    console.log('movestart')
+    this.setState({
+      accuracy: 'center'
     })
   }
 
   handleClick(e) {
+    console.log('click')
     this.setState({
       x: e.point.x,
       y: e.point.y,
@@ -61,7 +75,8 @@ Crosshair.propTypes = {
 
 Crosshair.defaultProps = {
   fontSize: 20,
-  holdTimeout: 1000
+  holdTimeout: 1000,
+  accuracy: 'center'
 }
 
 export default Crosshair

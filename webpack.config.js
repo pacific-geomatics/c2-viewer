@@ -43,9 +43,12 @@ module.exports = {
         include: path.resolve(__dirname, 'node_modules/webworkify/index.js'),
         loader: 'worker'
       }, {
-      test: /\.css$/,
-      loader: 'style!css'
-    }
+        test: /\.css$/,
+        loader: 'style!css'
+      }, {
+        test: /\.(png|jpg|jpeg|gif|woff)$/,
+        loader: 'url-loader?limit=8192'
+      }
     ]
   },
   postLoaders: [

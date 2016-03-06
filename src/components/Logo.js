@@ -8,7 +8,7 @@ class Logo extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {}
+    this.state = { }
   }
 
   render() {
@@ -25,7 +25,7 @@ class Logo extends React.Component {
     return (
       <img
         style={ style }
-        src={ this.props.src }
+        src={ require("../public/images/pacgeo_logo_white_360px.png") }
         width={ this.props.width }
       />
     )
@@ -42,7 +42,7 @@ Logo.propTypes = {
 }
 
 Logo.defaultProps = {
-  src: "images/pacgeo_logo_white_360px.png",
+  src: "../public/images/pacgeo_logo_white_360px.png",
   width: 150,
   left: 13,
   bottom: 5
