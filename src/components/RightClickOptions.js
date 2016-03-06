@@ -46,6 +46,11 @@ class RightClickOptions extends React.Component {
       let zoom = window._map.getZoom()
       let lat = e.lngLat.lat
       let lng = e.lngLat.lng
+
+      // Mapbox Issue with map.fitBounds()
+      if (lng > 180) { lng = lng - 180 }
+      else if (lng < -180) { lng = lng + 180 }
+
       let precision = getPrecision(zoom)
       let mgrs = getMGRS(lat, lng, precision)
       let latlng = getPrettyLatLng(lat, lng, precision)
