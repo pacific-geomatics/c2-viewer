@@ -58,7 +58,7 @@ class MapMini extends React.Component {
     if (nextProps.active) {
       console.log('MapMini Active!')
       window._map.on('move', this.handleMove.bind(this, window._mapMini))
-      window.addEventListener('resize', this.handleResize)
+      window.addEventListener('resize', this.handleResize.bind(this))
     }
   }
 
