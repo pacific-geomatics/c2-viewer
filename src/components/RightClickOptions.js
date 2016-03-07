@@ -81,7 +81,10 @@ class RightClickOptions extends React.Component {
       copy(this.state[selectedKey])
     } else {
       console.log(locations[selectedKey])
-      window._map.fitBounds(locations[selectedKey])
+      let options = { linear: false }
+      window._map.flyTo(locations[selectedKey], options)
+      window._mapMini.flyTo(locations[selectedKey], options)
+      window._mapRight.flyTo(locations[selectedKey], options)
     }
   }
 
@@ -119,7 +122,7 @@ class RightClickOptions extends React.Component {
           onSelect={ this.handleSelect.bind(this) }
           >
           <NavItem eventKey={ 'kalgoorlie' }>Go to Kalgoorlie</NavItem>
-          <NavItem eventKey={ 'panama' }>Go to Panama</NavItem>
+          <NavItem eventKey={ 'panama-yaviza' }>Go to Panama</NavItem>
           <NavItem eventKey={ 'mosul' }>Go to Mosul</NavItem>
           <NavItem eventKey={ 'mgrs' }>{ this.state.mgrs }</NavItem>
           <NavItem eventKey={ 'latlng' }>{ this.state.latlng }</NavItem>

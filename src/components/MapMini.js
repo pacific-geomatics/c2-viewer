@@ -32,7 +32,7 @@ class MapMini extends React.Component {
       container: this.mapMini,
       style: mapStyles[this.props.basemap],
       center: [ this.props.lng, this.props.lat ],
-      zoom: this.props.zoom + this.props.zoomOffset,
+      zoom: this.props.zoom,
       attributionControl: false
     })
 
@@ -70,7 +70,9 @@ class MapMini extends React.Component {
   }
 
   handleMove(target, e) {
-    target.flyTo(this.getPosition(e.target, this.props.zoomOffset))
+    let position = this.getPosition(e.target)
+    position.zoom = 1
+    target.flyTo(position)
   }
 
   getPosition(map, zoomOffset) {
@@ -133,10 +135,10 @@ MapMini.defaultProps = {
   zIndex: 15,
   bottom: 55,
   left: 10,
-  zoomOffset: -18,
+  zoomOffset: -6,
   lat: 0.0,
   lng: 0.0,
-  zoom: 13,
+  zoom: 0,
   basemap: 'streets'
 }
 

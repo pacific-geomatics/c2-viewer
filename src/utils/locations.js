@@ -5,7 +5,7 @@ export const locations = {
     'mapid': 'pacgeo.neiemcnb'
   },
   'panama-yaviza': {
-    'center': [8.1564, -77.6917],
+    'center': [-77.6917, 8.1564],
     'zoom': 16,
     'mapid': 'pacgeo.o79jddlo'
   },
@@ -14,7 +14,12 @@ export const locations = {
     'zoom': 15,
     'mapid': 'pacgeo.onak54hl'
   },
-  'kalgoorlie': [[121.473, -30.810], [121.553, -30.744]],
-  'mosul': [[43.128, 36.306], [43.164, 36.319]],
-  'panama': [[-77.698, 8.153], [-77.683, 8.160]]
+  'kalgoorlie': {
+    'center': [121.5144, -30.7833],
+    'zoom': 13
+  },
+  'mosul': {
+    'center': [43.13922, 36.31266],
+    'zoom': 15
+  }
 }

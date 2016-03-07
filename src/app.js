@@ -70,7 +70,7 @@ class App extends React.Component {
 
         <Map basemap={ this.props.map } lng={ this.props.lng } lat={ this.props.lat } zoom={ this.props.zoom } active={ this.state.active }/>
         <MapRight basemap={ this.props.mapRight } lng={ this.props.lng } lat={ this.props.lat } zoom={ this.props.zoom } active={ this.state.active } show={ this.state.showCompareSwiper }/>
-        <MapMini basemap={ this.props.mapMini } lng={ this.props.lng } lat={ this.props.lat } zoom={ this.props.zoom } active={ this.state.active }/>
+        <MapMini basemap={ this.props.mapMini } lng={ this.props.lng } lat={ this.props.lat } active={ this.state.active }/>
       </div>
     )
   }
@@ -89,7 +89,7 @@ App.propTypes = {
 App.defaultProps = {
   lat: -30.789567,
   lng: 121.520166,
-  zoom: 13,
+  zoom: 12,
   map: 'pacgeo',
   mapRight: 'hybrid',
   mapMini: 'streets',
