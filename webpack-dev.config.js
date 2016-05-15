@@ -3,13 +3,11 @@ var webpack = require('webpack')
 
 module.exports = {
   context: path.join(__dirname, './app'),
+  debug: true,
+  devtool: 'source-map',
   entry: {
     jsx: './index.js',
     html: './index.html'
-  },
-  output: {
-      path: path.join(__dirname, './dist'),
-      filename: 'bundle.js'
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
@@ -51,13 +49,11 @@ module.exports = {
     }
   ],
   plugins: [
-    new webpack.optimize.UglifyJsPlugin({compress: { warnings: false }, comments: false}),
-    new webpack.optimize.DedupePlugin(),
     new webpack.DefinePlugin({
-      'process.env': { NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'production') }
+      'process.env': { NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development') }
     }),
     new webpack.DefinePlugin({
-      __DEV__: false
+      __DEV__: true
     })
   ]
 }
