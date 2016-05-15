@@ -12,13 +12,6 @@ export const store = new class Store {
   @observable results = []
   @observable selection = 0
 
-  // App Options
-  @observable orientation = 1
-  @observable material = 2
-  @observable size = 2
-  @observable email = ''
-  @observable basePrice = 280
-
   // Map
   @observable zoom = 12
   @observable lat = 43.650128
@@ -27,37 +20,13 @@ export const store = new class Store {
   @observable pitch = 0.0
   @observable style = 1
   @observable mapId = 'map'
-  @observable token = 'pk.eyJ1IjoiYWRkeHkiLCJhIjoiY2lsdmt5NjZwMDFsdXZka3NzaGVrZDZtdCJ9.ZUE-LebQgHaBduVwL68IoQ'
+  @observable token = 'pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ'
 
   styleTable = {
     1: 'mapbox://styles/addxy/cin9l0b8d0023b4noejyuc2r7',
     2: 'mapbox://styles/mapbox/outdoors-v9',
     3: 'mapbox://styles/mapbox/satellite-streets-v9'
   }
-
-  sizeTable = {
-    1: {1: '24" x 18"', 2: '18" x 24"'},
-    2: {1: '36" x 24"', 2: '24" x 36"'},
-    3: {1: '42" x 36"', 2: '36" x 42"'}
-  }
-
-  materialTable = {
-    1: 'Paper',
-    2: 'Acrylic',
-    3: 'Mirrored'
-  }
-
-  orientationTable = {
-    1: 'Landscape',
-    2: 'Portrait'
-  }
-
-  tiel = '#4AC7B0'
-  grey = '#494141'
-  salmon = '#FB7461'
-  lightGrey = '#E6E6DD'
-  mediumGrey = '#B9BDB1'
-  lightBlue = '#ACC6CB'
 
   constructor() {
     window.addEventListener('resize', this.listenerResize.bind(this))
@@ -97,20 +66,6 @@ export const store = new class Store {
 
   @computed get emailValid() {
     return validator.isEmail(this.email)
-  }
-
-  @computed get price() {
-    const materialFactor = {
-      1: 0.5,
-      2: 1,
-      3: 2
-    }
-    const sizeFactor = {
-      1: 0.5,
-      2: 1,
-      3: 1.5
-    }
-    return this.basePrice * materialFactor[this.material] * sizeFactor[this.size]
   }
 
   listenerResize(e) {
