@@ -29,10 +29,10 @@ module.exports = {
       { test: /\.jsx?$/, loader: 'babel-loader', exclude: /node_modules/ },
       { test: /\.json$/, loader: 'json' },
       { test: /\.css$/, loader: 'style-loader!css-loader' },
-      { test: /\.(woff|woff2)$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
-      { test: /\.(ttf|eot|svg|)$/, loader: 'file-loader' },
+      { test: /\.(woff|woff2)$/, loader: 'url-loader' },
+      { test: /\.(ttf|eot|svg|)$/, loader: 'url-loader' },
       { test: /\.html$/, loader: 'file?name=[name].[ext]' },
-      { test: /\.(png|jpg|jpeg|gif)$/, loader: 'url-loader?limit=8192' }
+      { test: /\.(png|jpg|jpeg|gif)$/, loader: 'url-loader' }
     ]
   },
   externals: {

@@ -1,35 +1,30 @@
-/**
- * Zoom Out
- */
 import React from 'react'
 import { Glyphicon } from 'react-bootstrap'
 
-class ZoomOut extends React.Component {
+export default class ZoomOut extends React.Component {
+  static defaultProps = {
+    zIndex: 15,
+    bottom: 55,
+    right: 22,
+    width: 35,
+    height: 35,
+    fontSize: 18
+  }
+
   constructor(props) {
     super(props)
-
+    this.handleClick = this.handleClick.bind(this)
     this.state = {
       hover: false
     }
-    this.handleClick = this.handleClick.bind(this)
-    this.handleMouseEnter = this.handleMouseEnter.bind(this)
-    this.handleMouseLeave = this.handleMouseLeave.bind(this)
   }
 
   handleClick() {
-    let zoom = window._map.getZoom()
+    let zoom = map.getZoom()
 
-    window._map.flyTo({
+    map.flyTo({
       zoom: Math.floor(zoom) - 1
     })
-  }
-
-  handleMouseEnter() {
-    this.setState({ hover: true })
-  }
-
-  handleMouseLeave() {
-    this.setState({ hover: false })
   }
 
   render() {
@@ -61,33 +56,11 @@ class ZoomOut extends React.Component {
       <div
         style={ styles.container }
         onClick={ this.handleClick }
-        onMouseEnter={ this.handleMouseEnter }
-        onMouseLeave={ this.handleMouseLeave }
+        onMouseEnter={ () => this.setState({ hover: true }) }
+        onMouseLeave={ () => this.setState({ hover: false }) }
         >
         <Glyphicon style={ styles.glyph } glyph='minus' />
       </div>
     )
   }
 }
-
-ZoomOut.propTypes = {
-  right: React.PropTypes.number,
-  bottom: React.PropTypes.number,
-  left: React.PropTypes.number,
-  top: React.PropTypes.number,
-  zIndex: React.PropTypes.number,
-  width: React.PropTypes.number,
-  height: React.PropTypes.number,
-  fontSize: React.PropTypes.number
-}
-
-ZoomOut.defaultProps = {
-  zIndex: 15,
-  bottom: 30,
-  right: 22,
-  width: 35,
-  height: 35,
-  fontSize: 18
-}
-
-export default ZoomOut
