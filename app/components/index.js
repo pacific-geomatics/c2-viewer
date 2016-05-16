@@ -1,22 +1,27 @@
 export App from './App'
-export Map from './Map'
 export Logo from './Logo'
-export ZoomIn from './ZoomIn'
-export MapMini from './MapMini'
-export ZoomOut from './ZoomOut'
-export Basemap from './Basemap'
-export MapRight from './MapRight'
-export TiltView from './TiltView'
 export Settings from './Settings'
 export Crosshair from './Crosshair'
-export NorthArrow from './NorthArrow'
 export URLHandler from './URLHandler'
-export MyPosition from './MyPosition'
 export Attribution from './Attribution'
 export NoClickZone from './NoClickZone'
 export CompareSwiper from './CompareSwiper'
-export MapMiniControls from './MapMiniControls'
 export RightClickOptions from './RightClickOptions'
+
+// Maps
+export Map from './Map'
+export MapMini from './MapMini'
+export MapRight from './MapRight'
+export MapMiniControls from './MapMiniControls'
+
+
+// Map Handlers
+export ZoomIn from './ZoomIn'
+export ZoomOut from './ZoomOut'
+export Basemap from './Basemap'
+export TiltView from './TiltView'
+export NorthArrow from './NorthArrow'
+export MyPosition from './MyPosition'
 
 // Search
 export Search from './Search'

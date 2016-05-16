@@ -9,6 +9,7 @@ import {
   MapRight,
   MapMiniControls,
   Logo,
+  Basemap,
   ZoomIn,
   Search,
   ZoomOut,
@@ -36,7 +37,6 @@ export default class App extends Component {
     Object.keys(props.params).map((key) => {
       store[key] = props.params[key]
     })
-    console.log(store.zoom)
   }
 
   render() {
@@ -51,29 +51,30 @@ export default class App extends Component {
     }
     return (
       <div style={ styles.container }>
+        { /* Utils */ }
         <URLHandler />
+
+        { /* Map Handlers */ }
         <Search />
         <NorthArrow />
         <TiltView />
         <ZoomOut />
         <ZoomIn />
         <Logo />
-        <Map>
-          { /*
-          <MyPosition />
-          <Settings />
-          <Attribution />
-          <RightClickOptions />
-          <Crosshair />
-          */ }
-        </Map>
-        <MapMini />
-        <MapRight>
+        <Basemap />
 
-        </MapRight>
+        { /* Maps */ }
+        <Map />
+        <MapMini />
+        <MapRight />
         { /*
-          <CompareSwiper />
-          */ }
+        <MyPosition />
+        <Settings />
+        <Attribution />
+        <RightClickOptions />
+        <Crosshair />
+        <CompareSwiper />
+        */ }
       </div>
     )
   }
