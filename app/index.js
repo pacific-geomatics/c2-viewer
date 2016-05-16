@@ -4,12 +4,10 @@ import { createHashHistory } from 'history'
 import { Router, Route, hashHistory, browserHistory, useRouterHistory } from 'react-router'
 import { App } from './components'
 import './assets/bootstrap-sass-3.3.6/stylesheets/_bootstrap.scss'
-import 'robots.txt'
-import 'favicon.ico'
 
 var routes = (
   <Route>
-    <Route name='map view' path="/:zoom/:lat/:lng/:bearing/:pitch/app" view='map' component={ App } />
+    <Route name='map view' path="/" view='map' component={ App } />
     <Route name='fallback view' path="*" view='fallback' component={ App } />
   </Route>
 )

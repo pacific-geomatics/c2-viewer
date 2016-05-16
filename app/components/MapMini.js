@@ -3,7 +3,6 @@
  */
 import React from 'react'
 import mapboxgl from 'mapbox-gl'
-import { accessToken } from '../utils/accessToken'
 import MobileDetect from 'mobile-detect'
 import MapMiniControls from './MapMiniControls'
 import { mapStyles } from '../utils/mapStyles'

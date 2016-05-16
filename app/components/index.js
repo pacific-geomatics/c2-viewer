@@ -1,3 +1,4 @@
+export App from './App'
 export Map from './Map'
 export Logo from './Logo'
 export ZoomIn from './ZoomIn'

@@ -1,7 +1,7 @@
 import 'isomorphic-fetch'
 import { Promise } from 'es6-promise'
 import React, { Component } from 'react'
-import React from 'react'
+import { Grid, Row, Col } from 'react-bootstrap'
 import { observer } from 'mobx-react'
 import { store } from '../store'
 import {
@@ -9,9 +9,7 @@ import {
   Logo,
   ZoomIn,
   Search,
-  MapMini,
   ZoomOut,
-  MapRight,
   TiltView,
   Settings,
   Crosshair,
@@ -19,7 +17,6 @@ import {
   MyPosition,
   Attribution,
   NoClickZone,
-  CompareSwiper,
   RightClickOptions } from '../components'
 
 @observer
@@ -39,24 +36,44 @@ export default class App extends Component {
   }
 
   render() {
+    console.log(store.height)
+    const styles = {
+      'container': {
+        backgroundColor: store.grey
+      },
+      'main': {
+        height: store.height,
+        padding: 0,
+        margin: 0,
+        overflow: 'hidden'
+      }
+    }
     return (
-      <div>
-        <Map>
-          <NorthArrow />
-          <TiltView />
-          <MyPosition />
-          <ZoomOut />
-          <ZoomIn />
-          <Settings />
-          <Attribution />
-          <RightClickOptions />
-          <Crosshair />
-          <Logo />
-          <CompareSwiper />
-        </Map>
-        <MapRight />
-        <MapMini />
-      </div>
+      <Grid fluid={ true } style={ styles.container }>
+        <Row>
+          <Col xs={12} style={ styles.main }>
+            <Map>
+              { /*
+              <NorthArrow />
+              <TiltView />
+              <MyPosition />
+              <ZoomOut />
+              <ZoomIn />
+              <Settings />
+              <Attribution />
+              <RightClickOptions />
+              <Crosshair />
+              <Logo />
+              */ }
+            </Map>
+            { /*
+              <CompareSwiper />
+              <MapRight />
+              <MapMini />
+              */ }
+          </Col>
+        </Row>
+      </Grid>
     )
   }
 }
