@@ -46,6 +46,13 @@ export const store = new class Store {
     2: 'mapbox://styles/mapbox/outdoors-v9'
   }
 
+  tiel = '#4AC7B0'
+  grey = '#494141'
+  salmon = '#FB7461'
+  lightGrey = '#E6E6DD'
+  mediumGrey = '#B9BDB1'
+  lightBlue = '#ACC6CB'
+
   constructor() {
     window.addEventListener('resize', this.listenerResize.bind(this))
   }

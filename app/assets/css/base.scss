@@ -1,0 +1,31 @@
+$tiel: #4AC7B0;
+$grey: #494141;
+$salmon: #FB7461;
+$light-grey: #E6E6DD;
+$medium-grey: #B9BDB1;
+$light-blue: #ACC6CB;
+
+@font-face {
+  font-family: fledgling;
+  src: url(./fonts/fledgling-sb.ttf);
+}
+
+@font-face {
+  font-family: AlteHaasGrotesk;
+  src: url(./fonts/AlteHaasGroteskRegular.ttf);
+}
+
+body {
+  font: 100% AlteHaasGrotesk;
+  color: $light-grey;
+}
+
+:focus {
+  outline: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}

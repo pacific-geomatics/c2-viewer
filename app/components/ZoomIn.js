@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Glyphicon } from 'react-bootstrap'
 
-export default class ZoomIn extends React.Component {
+export default class ZoomIn extends Component {
   static defaultProps = {
     zIndex: 15,
     bottom: 95,

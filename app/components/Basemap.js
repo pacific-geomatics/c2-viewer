@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Glyphicon } from 'react-bootstrap'
 import { observer } from 'mobx-react'
 import { store } from '../store'
 
-export default class Basemap extends React.Component {
+export default class Basemap extends Component {
   static defaultProps = {
     zIndex: 15,
     bottom: 15,

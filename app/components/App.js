@@ -1,7 +1,6 @@
 import 'isomorphic-fetch'
 import { Promise } from 'es6-promise'
 import React, { Component } from 'react'
-import { Grid, Row, Col } from 'react-bootstrap'
 import { observer } from 'mobx-react'
 import { store } from '../store'
 import {
@@ -43,44 +42,36 @@ export default class App extends Component {
   render() {
     const styles = {
       'container': {
+
+        overflow: 'hidden',
         backgroundColor: store.grey
-      },
-      'main': {
-        height: store.height,
-        padding: 0,
-        margin: 0,
-        overflow: 'hidden'
       }
     }
     return (
-      <Grid fluid={ true } style={ styles.container }>
-        <Row>
-          <Col style={ styles.main }>
-            <URLHandler />
-            <Map>
-              { /*
-              <NorthArrow />
-              <TiltView />
-              <MyPosition />
-              <ZoomOut />
-              <ZoomIn />
-              <Settings />
-              <Attribution />
-              <RightClickOptions />
-              <Crosshair />
-              <Logo />
-              */ }
-            </Map>
-            <MapMini />
-            <MapRight>
+      <div style={ styles.container }>
+        <URLHandler />
+        <Map>
+          <NorthArrow />
+          <TiltView />
+          <ZoomOut />
+          <ZoomIn />
+          <Logo />
+          { /*
+          <MyPosition />
+          <Settings />
+          <Attribution />
+          <RightClickOptions />
+          <Crosshair />
+          */ }
+        </Map>
+        <MapMini />
+        <MapRight>
 
-            </MapRight>
-            { /*
-              <CompareSwiper />
-              */ }
-          </Col>
-        </Row>
-      </Grid>
+        </MapRight>
+        { /*
+          <CompareSwiper />
+          */ }
+      </div>
     )
   }
 }

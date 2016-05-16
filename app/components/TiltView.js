@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Glyphicon } from 'react-bootstrap'
 import { observer } from 'mobx-react'
 import { store } from '../store'
 
 @observer
-export default class TiltView extends React.Component {
+export default class TiltView extends Component {
   static defaultProps = {
     zIndex: 15,
     bottom: 135,
