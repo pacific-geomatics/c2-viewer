@@ -42,7 +42,9 @@ export default class App extends Component {
   render() {
     const styles = {
       'container': {
-
+        padding: 0,
+        margin: 0,
+        height: store.height,
         overflow: 'hidden',
         backgroundColor: store.grey
       }
@@ -50,12 +52,13 @@ export default class App extends Component {
     return (
       <div style={ styles.container }>
         <URLHandler />
+        <Search />
+        <NorthArrow />
+        <TiltView />
+        <ZoomOut />
+        <ZoomIn />
+        <Logo />
         <Map>
-          <NorthArrow />
-          <TiltView />
-          <ZoomOut />
-          <ZoomIn />
-          <Logo />
           { /*
           <MyPosition />
           <Settings />

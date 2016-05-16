@@ -67,6 +67,7 @@ export default class MapRight extends React.Component {
     store.lat
     store.bearing
     store.pitch
+    store.zoom
 
     const style = {
       width: '100%',

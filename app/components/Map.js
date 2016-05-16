@@ -62,6 +62,13 @@ export default class Map extends React.Component {
   }
 
   render() {
+    // MobX Observables
+    store.lng
+    store.lat
+    store.pitch
+    store.bearing
+    store.zoom
+
     const style = {
       width: '100%',
       bottom: '0px',
@@ -70,10 +77,6 @@ export default class Map extends React.Component {
       margin: 0,
       clip: `rect(0px, ${ store.left }px, 999em, 0px)`
     }
-    store.lng
-    store.lat
-    store.pitch
-    store.bearing
     return (
       <div
         id={ store.mapId }

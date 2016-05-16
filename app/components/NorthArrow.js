@@ -16,18 +16,7 @@ export default class NorthArrow extends Component {
   constructor(props) {
     super(props)
     this.handleClick = this.handleClick.bind(this)
-    this.state = {
-      hover: false
-    }
-  }
-
-  componentDidMount() {
-    map.on('rotate', this.getBearing.bind(this))
-    this.setState({ active: true })
-  }
-
-  getBearing(e) {
-    this.setState({ bearing: map.getBearing() })
+    this.state = { hover: false }
   }
 
   handleClick() {
@@ -41,6 +30,9 @@ export default class NorthArrow extends Component {
   }
 
   render() {
+    // MobX Observables
+    store.bearing
+
     const styles = {
       container : {
         position : 'absolute',
@@ -59,7 +51,7 @@ export default class NorthArrow extends Component {
         width: this.props.width,
         height: this.props.height,
         transform: `rotate(${ store.bearing }deg)`,
-        WebkitFilter: (!store.bearing) ? `grayscale(1)` : ``,
+        WebkitFilter: (!parseFloat(store.bearing)) ? `grayscale(1)` : ``,
         backgroundImage: 'url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJ5ZXMiPz4KCjxzdmcgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwLjAgMC4wIDUzMy4zMzMzMzMzMzMzMzM0IDUzMy4zMzMzMzMzMzMzMzM0IiBmaWxsPSJub25lIiBzdHJva2U9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGNsaXBQYXRoIGlkPSJwLjAiPjxwYXRoIGQ9Im0wIDBsNTMzLjMzMzMgMGwwIDUzMy4zMzMzbC01MzMuMzMzMyAwbDAgLTUzMy4zMzMzeiIgY2xpcC1ydWxlPSJub256ZXJvIj48L3BhdGg+PC9jbGlwUGF0aD48ZyBjbGlwLXBhdGg9InVybCgjcC4wKSI+PHBhdGggZmlsbD0iIzAwMDAwMCIgZmlsbC1vcGFjaXR5PSIwLjAiIGQ9Im0wIDBsNTMzLjMzMzMgMGwwIDUzMy4zMzMzbC01MzMuMzMzMyAweiIgZmlsbC1ydWxlPSJub256ZXJvIj48L3BhdGg+PHBhdGggZmlsbD0iI2ZmMDAwMCIgZD0ibTIwNy40OTQ0NiAyNzUuMzYzOGw1My4xODExMDcgLTE2NS41NDMzbDUzLjE4MTA5IDE2NS41NDMzeiIgZmlsbC1ydWxlPSJub256ZXJvIj48L3BhdGg+PHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0ibTIwNy40OTQ0NiAyNzUuMzY0NDRsNTMuMTgxMTA3IDE2NS41NDMzM2w1My4xODEwOSAtMTY1LjU0MzMzeiIgZmlsbC1ydWxlPSJub256ZXJvIj48L3BhdGg+PC9nPjwvc3ZnPgoK)'
       },
       background : {

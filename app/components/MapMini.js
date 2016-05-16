@@ -45,6 +45,7 @@ export default class MapMini extends React.Component {
     store.lat
     store.bearing
     store.pitch
+    store.zoom
 
     const style = {
       bottom: 55,
