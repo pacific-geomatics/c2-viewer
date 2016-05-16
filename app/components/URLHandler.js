@@ -12,9 +12,6 @@ export default class URLHandler extends React.Component {
       pathname: `/${ store.zoom }/${ store.lat }/${ store.lng }/${ store.bearing }/${ store.pitch }/app`,
       query: {
         search: store.search,
-        orientation: store.orientation,
-        size: store.size,
-        material: store.material,
         style: store.style
       }
     })
@@ -26,9 +23,6 @@ export default class URLHandler extends React.Component {
     store.zoom
     store.bearing
     store.pitch
-    store.orientation
-    store.size
-    store.material
     store.style
     store.search
     return <div></div>

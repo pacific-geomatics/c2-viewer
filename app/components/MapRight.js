@@ -1,112 +1,87 @@
-/**
- * Right Click Options
- */
-import React from 'react'
 import mapboxgl from 'mapbox-gl'
-import { mapStyles } from '../utils/mapStyles'
-import { getPosition } from '../utils/mapHandlers'
-import MobileDetect from 'mobile-detect'
+import React from 'react'
+import { observer } from 'mobx-react'
+import { store } from '../store'
 
-const md = new MobileDetect(window.navigator.userAgent)
-
-class MapRight extends React.Component {
+@observer
+export default class MapRight extends React.Component {
 
   constructor(props) {
     super(props)
-
-    this.state = { }
+    this.state = { active: false }
+    this.handleMove = this.handleMove.bind(this)
+    this.handleMoveStart = this.handleMoveStart.bind(this)
+    this.handleMoveEnd = this.handleMoveEnd.bind(this)
   }
 
   componentDidMount() {
-    // Create MapboxGL Map
-    mapboxgl.accessToken = accessToken
+    mapboxgl.accessToken = store.token
 
     const mapRight = new mapboxgl.Map({
-      container: this.mapRight,
-      style: mapStyles[this.props.basemap],
-      center: [ this.props.lng, this.props.lat ],
-      zoom: this.props.zoom + this.props.zoomOffset,
+      container: store.mapRightId,
+      style: store.styleTable[store.mapRightStyle],
+      center: [store.lng, store.lat],
+      bearing: store.bearing,
+      pitch: store.pitch,
+      zoom: store.zoom,
       attributionControl: false
     })
-
-    // Disable
-    mapRight.keyboard.disable()
-    mapRight.boxZoom.disable()
-    //mapRight.doubleClickZoom.disable()
-    //mapRight.touchZoomRotate.disable()
-
-    // Disable (Mobile)
-    if (md.mobile()) {
-      mapRight.dragRotate.disable()
-      mapRight.doubleClickZoom.disable()
-    }
-
-    // Define Globals
-    window._mapRight = mapRight
-    this._mapRight = mapRight
-    this.mapRight = this.mapRight
-    window.mapRight = this.mapRight
+    window.mapRight = mapRight
+    this.setState({ active: true })
+    mapRight.on('movestart', this.handleMoveStart)
+    mapRight.on('moveend', this.handleMoveEnd)
+    mapRight.on('move', this.handleMove)
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.active) {
-      window._map.on('move', this.handleMove.bind(this, window._mapRight))
-      window._mapRight.on('move', this.handleMove.bind(this, window._map))
+  componentWillReact() {
+    if (store.mapMove) {
+      mapRight.jumpTo({
+        center: store.center,
+        zoom: store.zoom,
+        bearing: store.bearing,
+        pitch: store.pitch
+      })
     }
   }
 
-  handleMove(target, e) {
-    if (!this.move) {
-      this.move = true
-      target.jumpTo(getPosition(e.target))
-      this.move = false
-    }
+  handleMoveStart(e) {
+    store.mapRightMove = true
+  }
+
+  handleMoveEnd(e) {
+    store.mapRightMove = false
+  }
+
+  handleMove(e) {
+    store.zoom = mapRight.getZoom().toPrecision(3)
+    store.center = mapRight.getCenter()
+    store.lat = store.center.lat.toPrecision(7)
+    store.lng = store.center.lng.toPrecision(7)
+    store.pitch = Math.floor(mapRight.getPitch())
+    store.bearing = Math.floor(mapRight.getBearing())
   }
 
   render() {
-    const styles = {
-      mapRight: {
-        position : 'absolute',
-        top: this.props.top,
-        bottom: this.props.bottom,
-        left: this.props.left,
-        right: this.props.right,
-        zIndex: this.props.zIndex,
-        width: '100%',
-        overflow: 'hidden',
-        display: this.props.show ? '' : 'none'
-      }
+    // MobX Observables
+    store.lng
+    store.lat
+    store.bearing
+    store.pitch
+
+    const style = {
+      width: '100%',
+      bottom: '0px',
+      top: '0px',
+      position: 'absolute',
+      margin: 0,
+      clip: `rect(0px, 999em, ${ store.height }px, ${ store.left }px)`
     }
     return (
       <div
-        ref={ (ref) => this.mapRight = ref }
-        style={ styles.mapRight }>
+        id={ store.mapRightId }
+        style={ style }>
+        { this.state.active && this.props.children }
       </div>
     )
   }
 }
-
-MapRight.propTypes = {
-  zIndex: React.PropTypes.number,
-  top: React.PropTypes.number,
-  bottom: React.PropTypes.number,
-  left: React.PropTypes.number,
-  right: React.PropTypes.number,
-  lat: React.PropTypes.number,
-  lng: React.PropTypes.number,
-  zoom: React.PropTypes.number,
-  basemap: React.PropTypes.string
-}
-
-MapRight.defaultProps = {
-  zIndex: 2,
-  bottom: 0,
-  top: 0,
-  zoomOffset: 0,
-  lat: 0.0,
-  lng: 0.0,
-  zoom: 13,
-  basemap: 'outdoors',
-}
-
-export default MapRight;

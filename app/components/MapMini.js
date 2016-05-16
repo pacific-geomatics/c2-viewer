@@ -1,144 +1,71 @@
-/**
- * Right Click Options
- */
-import React from 'react'
 import mapboxgl from 'mapbox-gl'
-import MobileDetect from 'mobile-detect'
-import MapMiniControls from './MapMiniControls'
-import { mapStyles } from '../utils/mapStyles'
+import React from 'react'
+import { observer } from 'mobx-react'
+import { store } from '../store'
+import { MapMiniControls } from '../components'
 
-const md = new MobileDetect(window.navigator.userAgent)
-
-class MapMini extends React.Component {
+@observer
+export default class MapMini extends React.Component {
 
   constructor(props) {
     super(props)
-
-    this.state = {
-      windowHeight: window.innerHeight,
-      windowWidth: window.innerWidth,
-      active: true
-    }
-    this.handleClick = this.handleClick.bind(this)
-    this.handleResize = this.handleResize.bind(this)
+    this.state = { active: false }
   }
 
   componentDidMount() {
-    // Create MapboxGL Map
-    mapboxgl.accessToken = accessToken
+    mapboxgl.accessToken = store.token
 
-    const mapMini = new mapboxgl.Map({
-      container: this.mapMini,
-      style: mapStyles[this.props.basemap],
-      center: [ this.props.lng, this.props.lat ],
-      zoom: this.props.zoom,
+    const map = new mapboxgl.Map({
+      container: store.mapMiniId,
+      style: store.styleTable[store.mapMiniStyle],
+      center: [store.lng, store.lat],
+      bearing: store.bearing,
+      pitch: store.pitch,
+      zoom: parseFloat(store.zoom) + store.mapMiniZoomOffset,
       attributionControl: false
     })
+    window.mapMini = map
+    this.setState({ active: true })
+  }
 
-    // Disable
-    mapMini.keyboard.disable()
-    mapMini.boxZoom.disable()
-    //mapMini.doubleClickZoom.disable()
-    //mapMini.touchZoomRotate.disable()
-
-    // Disable (Mobile)
-    if (md.mobile()) {
-      mapMini.dragRotate.disable()
+  componentWillReact() {
+    if (store.mapRightMove || store.mapMove) {
+      mapMini.flyTo({
+        center: store.center,
+        zoom: parseFloat(store.zoom) + store.mapMiniZoomOffset,
+        bearing: store.bearing,
+        pitch: store.pitch
+      })
     }
-
-    // Define Globals
-    window._mapMini = mapMini
-    this._mapMini = mapMini
-    this.mapMini = this.mapMini
-    window.mapMini = this.mapMini
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.active) {
-      console.log('MapMini Active!')
-      window._map.on('move', this.handleMove.bind(this, window._mapMini))
-      window.addEventListener('resize', this.handleResize.bind(this))
-    }
-  }
-
-  handleResize(e) {
-    this.setState({
-      windowHeight: e.target.innerHeight,
-      windowWidth: e.target.innerWidth
-    })
-  }
-
-  handleMove(target, e) {
-    let position = this.getPosition(e.target)
-    position.zoom = 1
-    target.flyTo(position)
-  }
-
-  getPosition(map, zoomOffset) {
-    return {
-      center: map.getCenter(),
-      zoom: map.getZoom() + zoomOffset,
-      bearing: map.getBearing(),
-      pitch: map.getPitch()
-    }
-  }
-
-  handleClick() {
-    this.setState({ active: !this.state.active })
   }
 
   render() {
-    let windowTotal = this.state.windowWidth + this.state.windowHeight
+    // MobX Observables
+    store.lng
+    store.lat
+    store.bearing
+    store.pitch
 
-    const styles = {
-      mapMini: {
-        position : 'absolute',
-        top: this.props.top,
-        bottom: this.props.bottom,
-        left: this.props.left,
-        right: this.props.right,
-        zIndex: this.props.zIndex,
-        overflow: 'hidden',
-        boxShadow: '5px 5px 15px rgba(100, 100, 100, 0.7)',
-        borderRadius: '50%',
-        width: (windowTotal > 1600) ? 200: 125,
-        height: (windowTotal > 1600) ? 200: 125,
-        display: this.state.active ? '' : 'none'
-      }
+    const style = {
+      bottom: 55,
+      left: 10,
+      position: 'absolute',
+      overflow: 'hidden',
+      boxShadow: '5px 5px 15px rgba(100, 100, 100, 0.7)',
+      borderRadius: '50%',
+      width: store.isXs ? 125: 200,
+      height: store.isXs ? 125: 200,
+      display: store.mapMiniActive ? '' : 'none',
+      zIndex: 15
     }
     return (
       <div>
-        <MapMiniControls windowTotal={ windowTotal } handleClick={ this.handleClick }/>
+        <MapMiniControls />
         <div
-          ref={ (ref) => this.mapMini = ref }
-          style={ styles.mapMini }>
+          id={ store.mapMiniId }
+          style={ style }>
         </div>
       </div>
     )
   }
 }
-
-MapMini.propTypes = {
-  zIndex: React.PropTypes.number,
-  top: React.PropTypes.number,
-  bottom: React.PropTypes.number,
-  left: React.PropTypes.number,
-  right: React.PropTypes.number,
-  lat: React.PropTypes.number,
-  lng: React.PropTypes.number,
-  zoom: React.PropTypes.number,
-  basemap: React.PropTypes.string
-}
-
-MapMini.defaultProps = {
-  zIndex: 15,
-  bottom: 55,
-  left: 10,
-  zoomOffset: -6,
-  lat: 0.0,
-  lng: 0.0,
-  zoom: 0,
-  basemap: 'streets'
-}
-
-export default MapMini;

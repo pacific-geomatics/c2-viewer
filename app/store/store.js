@@ -12,15 +12,34 @@ export const store = new class Store {
   @observable results = []
   @observable selection = 0
 
+  // MapboxGL Token
+  @observable token = 'pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ'
+
   // Map
+  @observable mapId = 'map'
+  @observable mapMove = false
   @observable zoom = 12
   @observable lat = 43.650128
   @observable lng = -79.382185
   @observable bearing = 0.0
   @observable pitch = 0.0
-  @observable style = 1
-  @observable mapId = 'map'
-  @observable token = 'pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ'
+  @observable mapStyle = 1
+
+  // MapMini
+  @observable mapMiniId = 'mapMiniId'
+  @observable mapMiniMove = false
+  @observable mapMiniActive = true
+  @observable mapMiniZoomOffset = -5
+  @observable mapMiniStyle = 2
+
+  // MapRight
+  @observable mapRightId = 'mapRightId'
+  @observable mapRightMove = false
+  @observable mapRightActive = true
+  @observable mapRightStyle = 2
+
+  // Compare Swiper
+  @observable left = window.innerWidth / 2
 
   styleTable = {
     1: 'mapbox://styles/mapbox/satellite-streets-v9',

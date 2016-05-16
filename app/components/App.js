@@ -6,6 +6,9 @@ import { observer } from 'mobx-react'
 import { store } from '../store'
 import {
   Map,
+  MapMini,
+  MapRight,
+  MapMiniControls,
   Logo,
   ZoomIn,
   Search,
@@ -17,6 +20,7 @@ import {
   MyPosition,
   Attribution,
   NoClickZone,
+  URLHandler,
   RightClickOptions } from '../components'
 
 @observer
@@ -33,10 +37,10 @@ export default class App extends Component {
     Object.keys(props.params).map((key) => {
       store[key] = props.params[key]
     })
+    console.log(store.zoom)
   }
 
   render() {
-    console.log(store.height)
     const styles = {
       'container': {
         backgroundColor: store.grey
@@ -51,7 +55,8 @@ export default class App extends Component {
     return (
       <Grid fluid={ true } style={ styles.container }>
         <Row>
-          <Col xs={12} style={ styles.main }>
+          <Col style={ styles.main }>
+            <URLHandler />
             <Map>
               { /*
               <NorthArrow />
@@ -66,10 +71,12 @@ export default class App extends Component {
               <Logo />
               */ }
             </Map>
+            <MapMini />
+            <MapRight>
+
+            </MapRight>
             { /*
               <CompareSwiper />
-              <MapRight />
-              <MapMini />
               */ }
           </Col>
         </Row>

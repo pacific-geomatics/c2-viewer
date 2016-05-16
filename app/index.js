@@ -7,7 +7,7 @@ import './assets/bootstrap-sass-3.3.6/stylesheets/_bootstrap.scss'
 
 var routes = (
   <Route>
-    <Route name='map view' path="/" view='map' component={ App } />
+    <Route name='map view' path="/:zoom/:lat/:lng/:bearing/:pitch/app" view='map' component={ App } />
     <Route name='fallback view' path="*" view='fallback' component={ App } />
   </Route>
 )
