@@ -15,11 +15,11 @@
  * - satellite
  */
 
-module.exports = function(mapID) {
+export function classicStyle(url, mapID) {
   var sources = {}
   sources[mapID] = {
     'type': 'raster',
-    'url': 'mapbox://' + mapID,
+    'tiles': [url],
     'tileSize': 256
   }
   return {

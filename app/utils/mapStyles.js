@@ -1,4 +1,4 @@
-import classicStyles from './classicStyles'
+import { classicStyle } from '../utils'
 
 export const mapStyles = {
   pacgeo: 'mapbox://styles/pacgeo/cildaq2mm00889nkishraw6wh',
@@ -11,5 +11,5 @@ export const mapStyles = {
   dark: 'mapbox://styles/mapbox/dark-v8',
   satellite: 'mapbox://styles/mapbox/satellite-v8',
   emerald: 'mapbox://styles/mapbox/emerald-v8',
-  outdoors: classicStyles('mapbox.outdoors')
+  outdoors: classicStyle('mapbox://mapbox.outdoors', 'mapbox.outdoors')
 }

@@ -1,6 +1,6 @@
 import { observable, computed } from 'mobx'
 import validator from 'validator'
-
+import { classicStyle } from '../utils'
 
 export const store = new class Store {
   // HTML
@@ -47,9 +47,8 @@ export const store = new class Store {
 
   styleTable = {
     1: 'mapbox://styles/mapbox/satellite-streets-v9',
-    2: 'mapbox://styles/mapbox/outdoors-v9',
-    3: 'mapbox://styles/mapbox/dark-v9',
-    4: 'mapbox://styles/mapbox/light-v9'
+    2: 'mapbox://styles/mapbox/streets-v9',
+    3: classicStyle(`https://api.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}@2x.png?access_token=${ this.token }`, 'outdoors'),
   }
 
   tiel = '#4AC7B0'
