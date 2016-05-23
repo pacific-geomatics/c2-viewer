@@ -17,7 +17,7 @@ export default class MapMini extends React.Component {
 
     const map = new mapboxgl.Map({
       container: store.mapMiniId,
-      style: store.styleTable[store.mapMiniStyle],
+      style: store.styleTable[store.mapMiniStyle].style,
       center: [store.lng, store.lat],
       bearing: store.bearing,
       pitch: store.pitch,

@@ -27,29 +27,29 @@ export const store = new class Store {
   @observable lng = -79.382185
   @observable bearing = 0.0
   @observable pitch = 0.0
-  @observable mapStyle = 1
+  @observable mapStyle = 0
 
   // MapMini
   @observable mapMiniId = 'mapMiniId'
   @observable mapMiniMove = false
   @observable mapMiniActive = true
   @observable mapMiniZoomOffset = -5
-  @observable mapMiniStyle = 2
+  @observable mapMiniStyle = 1
 
   // MapRight
   @observable mapRightId = 'mapRightId'
   @observable mapRightMove = false
   @observable mapRightActive = true
-  @observable mapRightStyle = 2
+  @observable mapRightStyle = 1
 
   // Compare Swiper
   @observable left = window.innerWidth / 2
 
-  styleTable = {
-    1: 'mapbox://styles/mapbox/satellite-streets-v9',
-    2: 'mapbox://styles/mapbox/outdoors-v9',
-    3: classicStyle(`https://api.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}@2x.png?access_token=${ this.token }`, 'outdoors'),
-  }
+  styleTable = [
+    {name: 'Mapbox Satellite', style: 'mapbox://styles/mapbox/satellite-streets-v9'},
+    {name: 'Mapbox Outdoor (Vector)', style: 'mapbox://styles/mapbox/outdoors-v9'},
+    {name: 'Mapbox Outdoor (Classic)', style: classicStyle(`https://api.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}@2x.png?access_token=${ this.token }`, 'outdoors')},
+  ]
 
   tiel = '#4AC7B0'
   grey = '#494141'
@@ -63,7 +63,7 @@ export const store = new class Store {
   }
 
   @computed get styleMax() {
-    return Object.keys(this.styleTable).length
+    return Object.keys(this.styleTable).length - 1
   }
 
   @computed get isXs() {

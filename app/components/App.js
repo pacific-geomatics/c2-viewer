@@ -3,26 +3,10 @@ import { Promise } from 'es6-promise'
 import React, { Component } from 'react'
 import { observer } from 'mobx-react'
 import { store } from '../store'
-import {
-  Map,
-  MapMini,
-  MapRight,
-  MapMiniControls,
-  Logo,
-  MGRS,
-  Basemap,
-  ZoomIn,
-  Search,
-  ZoomOut,
-  TiltView,
-  Settings,
-  Crosshair,
-  NorthArrow,
-  MyPosition,
-  Attribution,
-  NoClickZone,
-  URLHandler,
-  RightClickOptions } from '../components'
+import { Map, MapMini, MapRight, MapMiniControls, Logo, MGRS, Basemap, ZoomIn,
+  Search, ZoomOut, TiltView, Settings, Crosshair, NorthArrow, Activate,
+  MyPosition, Attribution, NoClickZone, URLHandler, RightClickOptions
+} from '../components'
 
 @observer
 export default class App extends Component {
@@ -67,6 +51,7 @@ export default class App extends Component {
         <Attribution />
         <Logo />
         <MGRS />
+        <Settings />
 
         { /* Maps */ }
         <Map>
@@ -74,10 +59,9 @@ export default class App extends Component {
         </Map>
         <MapMini />
         { /*
+        <RightClickOptions />
         <MapRight />
         <MyPosition />
-        <Settings />
-        <RightClickOptions />
         <CompareSwiper />
         */ }
       </div>

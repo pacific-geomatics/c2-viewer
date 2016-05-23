@@ -22,9 +22,10 @@ export default class Basemap extends Component {
   }
 
   handleClick() {
+    console.log(store.mapStyle, store.styleMax)
     if (store.mapStyle < store.styleMax) store.mapStyle ++
-    else store.mapStyle = 1
-    map.setStyle(store.styleTable[store.mapStyle])
+    else store.mapStyle = 0
+    map.setStyle(store.styleTable[store.mapStyle].style)
   }
 
   render() {

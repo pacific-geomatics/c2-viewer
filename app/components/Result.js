@@ -1,11 +1,10 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { observer } from 'mobx-react'
 import { store } from '../store'
 import { getBounds, getCenter } from '../utils/mapHandlers'
 
-
 @observer
-export default class Result extends React.Component {
+export default class Result extends Component {
   constructor(props) {
     super(props)
     this.handleMouseEnter = this.handleMouseEnter.bind(this)

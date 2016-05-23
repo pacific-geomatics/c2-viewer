@@ -17,11 +17,16 @@ $light-blue: #ACC6CB;
 
 body {
   font: 100% AlteHaasGrotesk;
-  color: $light-grey;
 }
 
 :focus {
   outline: 0;
+}
+
+.basemap canvas {
+  overflow: hidden;
+  border-radius: 30%;
+  box-shadow: 5px 5px 15px rgba(100, 100, 100, 0.7);
 }
 
 body {
