@@ -7,7 +7,7 @@ import { store } from '../store'
 export default class NorthArrow extends Component {
   static defaultProps = {
     zIndex: 15,
-    bottom: 175,
+    bottom: 185,
     right: 10,
     width: 60,
     height: 60

@@ -9,6 +9,7 @@ import {
   MapRight,
   MapMiniControls,
   Logo,
+  MGRS,
   Basemap,
   ZoomIn,
   Search,
@@ -41,7 +42,7 @@ export default class App extends Component {
 
   render() {
     const styles = {
-      'container': {
+      container: {
         padding: 0,
         margin: 0,
         height: store.height,
@@ -55,24 +56,28 @@ export default class App extends Component {
         <URLHandler />
 
         { /* Map Handlers */ }
-        <Search />
         <NorthArrow />
         <TiltView />
         <ZoomOut />
         <ZoomIn />
-        <Logo />
         <Basemap />
 
+        { /* Extras */ }
+        <Search />
+        <Attribution />
+        <Logo />
+        <MGRS />
+
         { /* Maps */ }
-        <Map />
+        <Map>
+          <Crosshair />
+        </Map>
         <MapMini />
-        <MapRight />
         { /*
+        <MapRight />
         <MyPosition />
         <Settings />
-        <Attribution />
         <RightClickOptions />
-        <Crosshair />
         <CompareSwiper />
         */ }
       </div>

@@ -15,6 +15,10 @@ export const store = new class Store {
   // MapboxGL Token
   @observable token = 'pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ'
 
+  // Position (Click)
+  @observable positionLat = 0
+  @observable positionLng = 0
+
   // Map
   @observable mapId = 'map'
   @observable mapMove = false
@@ -43,7 +47,9 @@ export const store = new class Store {
 
   styleTable = {
     1: 'mapbox://styles/mapbox/satellite-streets-v9',
-    2: 'mapbox://styles/mapbox/outdoors-v9'
+    2: 'mapbox://styles/mapbox/outdoors-v9',
+    4: 'mapbox://styles/mapbox/dark-v9',
+    5: 'mapbox://styles/mapbox/light-v9'
   }
 
   tiel = '#4AC7B0'

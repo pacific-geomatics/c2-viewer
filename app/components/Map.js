@@ -31,6 +31,10 @@ export default class Map extends React.Component {
     map.on('movestart', this.handleMoveStart)
     map.on('moveend', this.handleMoveEnd)
     map.on('move', this.handleMove)
+
+    // Position (Click)
+    store.positionLat = store.lat
+    store.positionLng = store.lng
   }
 
   componentWillReact() {
@@ -74,14 +78,15 @@ export default class Map extends React.Component {
       bottom: '0px',
       top: '0px',
       position: 'absolute',
-      margin: 0,
-      clip: `rect(0px, ${ store.left }px, 999em, 0px)`
+      margin: 0
     }
     return (
-      <div
-        id={ store.mapId }
-        style={ style }>
-        { this.state.active && this.props.children }
+      <div>
+      { this.state.active && this.props.children }
+        <div
+          id={ store.mapId }
+          style={ style }>
+        </div>
       </div>
     )
   }

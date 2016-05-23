@@ -1,15 +1,6 @@
 import converter from 'coordinator'
 import mapboxgl from 'mapbox-gl'
 
-export default function getPosition(map, zoomOffset=0) {
-  return {
-    center: map.getCenter(),
-    zoom: map.getZoom() + zoomOffset,
-    bearing: map.getBearing(),
-    pitch: map.getPitch()
-  }
-}
-
 export function getBounds(geometry) {
   if (geometry.bounds) {
     let northeast = geometry.bounds.northeast
@@ -36,13 +27,13 @@ export function getPrecision(zoom) {
   return precision
 }
 
-export function getMGRS(lat, lng, precision) {
-  const toUSNG = converter('latlong', 'usng')
-  return toUSNG(lat, lng, precision)
+export function getMGRS(lat, lng, zoom) {
+  let toUSNG = converter('latlong', 'usng')
+  return toUSNG(lat, lng, getPrecision(zoom))
 }
 
 export function getLatLng(mgrs) {
-  const toLatLng = converter('usng', 'latlong')
+  let toLatLng = converter('usng', 'latlong')
   return toLatLng(mgrs)
 }
 

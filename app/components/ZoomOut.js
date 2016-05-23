@@ -4,7 +4,7 @@ import { Glyphicon } from 'react-bootstrap'
 export default class ZoomOut extends Component {
   static defaultProps = {
     zIndex: 15,
-    bottom: 55,
+    bottom: 65,
     right: 22,
     width: 35,
     height: 35,

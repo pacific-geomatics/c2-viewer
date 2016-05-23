@@ -7,13 +7,13 @@ export Attribution from './Attribution'
 export NoClickZone from './NoClickZone'
 export CompareSwiper from './CompareSwiper'
 export RightClickOptions from './RightClickOptions'
+export MGRS from './MGRS'
 
 // Maps
 export Map from './Map'
 export MapMini from './MapMini'
 export MapRight from './MapRight'
 export MapMiniControls from './MapMiniControls'
-
 
 // Map Handlers
 export ZoomIn from './ZoomIn'

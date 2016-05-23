@@ -1,0 +1,1 @@
+export { getMGRS } from './mapHandlers'

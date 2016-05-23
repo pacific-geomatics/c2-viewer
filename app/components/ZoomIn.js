@@ -4,7 +4,7 @@ import { Glyphicon } from 'react-bootstrap'
 export default class ZoomIn extends Component {
   static defaultProps = {
     zIndex: 15,
-    bottom: 95,
+    bottom: 105,
     right: 22,
     width: 35,
     height: 35,

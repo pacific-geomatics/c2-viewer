@@ -6,7 +6,7 @@ import { store } from '../store'
 export default class Basemap extends Component {
   static defaultProps = {
     zIndex: 15,
-    bottom: 15,
+    bottom: 25,
     right: 22,
     width: 35,
     height: 35,
@@ -22,9 +22,9 @@ export default class Basemap extends Component {
   }
 
   handleClick() {
-    if (store.style < store.styleMax) store.style ++
-    else store.style = 1
-    map.setStyle(store.styleTable[store.style])
+    if (store.mapStyle < store.styleMax) store.mapStyle ++
+    else store.mapStyle = 1
+    map.setStyle(store.styleTable[store.mapStyle])
   }
 
   render() {

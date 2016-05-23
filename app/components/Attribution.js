@@ -1,48 +1,21 @@
-/**
- * Logo
- */
-import React from 'react'
+import React, { Component } from 'react'
 import { Button, ButtonGroup } from 'react-bootstrap'
+import { observer } from 'mobx-react'
+import { store } from '../store'
 
-
-class Attribution extends React.Component {
-
+@observer
+export default class Attribution extends Component {
   constructor(props) {
     super(props)
-
-    this.state = { windowWidth: window.innerWidth }
-  }
-
-  componentDidMount() {
-    window.addEventListener('resize', this.handleResize.bind(this))
-  }
-
-  handleResize(e) {
-    console.log( e.target.innerWidth)
-    this.setState({ windowWidth: e.target.innerWidth })
-  }
-
-  setPosition() {
-    let center = window._map.getCenter()
-    this.setState({
-      lat: center.lat,
-      lng: center.lng,
-      zoom: window._map.getZoom()
-    })
   }
 
   render() {
     const styles = {
       container: {
         position: 'absolute',
-        bottom: this.props.bottom,
-        right: this.props.right,
-        left: this.props.left,
-        top: this.props.top,
+        bottom: 0,
+        right: 3,
         zIndex: 15
-      },
-      improveMap: {
-        display: (this.state.windowWidth > 450) ? '' : 'None'
       }
     }
     return (
@@ -65,11 +38,9 @@ class Attribution extends React.Component {
             © OpenStreetMap
           </Button>
           <Button
-            style={ styles.improveMap }
             bsSize='small'
             bsStyle='link'
-            onClick={ this.setPosition.bind(this) }
-            href={ `https://www.mapbox.com/map-feedback/#mapbox.streets/${ this.state.lng }/${ this.state.lat }/${ Math.floor(this.state.zoom) }` }
+            href={ `https://www.mapbox.com/map-feedback/#mapbox.streets/${ store.lng }/${ store.lat }/${ Math.floor(store.zoom) }` }
             target='_blank'
             >
             <b>Improve this map</b>
@@ -79,17 +50,3 @@ class Attribution extends React.Component {
     )
   }
 }
-
-Attribution.propTypes = {
-  left: React.PropTypes.number,
-  right: React.PropTypes.number,
-  bottom: React.PropTypes.number,
-  top: React.PropTypes.number
-}
-
-Attribution.defaultProps = {
-  bottom: 0,
-  right: 3
-}
-
-export default Attribution

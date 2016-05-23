@@ -7,7 +7,7 @@ import { store } from '../store'
 export default class TiltView extends Component {
   static defaultProps = {
     zIndex: 15,
-    bottom: 135,
+    bottom: 145,
     right: 22,
     width: 35,
     height: 35,
