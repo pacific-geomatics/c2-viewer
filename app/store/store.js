@@ -46,9 +46,9 @@ export const store = new class Store {
   @observable left = window.innerWidth / 2
 
   styleTable = [
-    {name: 'Mapbox Satellite', style: 'mapbox://styles/mapbox/satellite-streets-v9'},
-    {name: 'Mapbox Outdoor (Vector)', style: 'mapbox://styles/mapbox/outdoors-v9'},
-    {name: 'Mapbox Outdoor (Classic)', style: classicStyle(`https://api.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}@2x.png?access_token=${ this.token }`, 'outdoors')},
+    {id: 0, name: 'Mapbox Satellite', style: 'mapbox://styles/mapbox/satellite-streets-v9'},
+    {id: 1, name: 'Mapbox Outdoor (Vector)', style: 'mapbox://styles/mapbox/outdoors-v9'},
+    {id: 2, name: 'Mapbox Outdoor (Classic)', style: classicStyle(`https://api.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}@2x.png?access_token=${ this.token }`, 'outdoors')},
   ]
 
   tiel = '#4AC7B0'

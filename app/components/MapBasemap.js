@@ -8,6 +8,12 @@ import { store } from '../store'
 export default class MapBasemap extends Component {
   constructor(props) {
     super(props)
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+  handleClick() {
+    map.setStyle(this.props.style)
+    store.mapStyle = this.props.id
   }
 
   componentDidMount() {
@@ -19,7 +25,7 @@ export default class MapBasemap extends Component {
       center: [store.lng, store.lat],
       bearing: store.bearing,
       pitch: store.pitch,
-      zoom: parseFloat(store.zoom),
+      zoom: parseFloat(store.zoom) + store.mapMiniZoomOffset,
       attributionControl: false
     })
   }
@@ -45,8 +51,14 @@ export default class MapBasemap extends Component {
         <div
           style={ styles.map }
           className={ 'basemap' }
-          ref={ (id) => this.id = id }></div>
-        <Button bsSize={ 'large' } style={ styles.button }>{ this.props.name }</Button>
+          ref={ (id) => this.id = id }>
+        </div>
+        <Button
+          onClick={ this.handleClick }
+          bsSize={ 'large' }
+          style={ styles.button }>
+          { this.props.name }
+        </Button>
       </div>
     )
   }
