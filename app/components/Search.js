@@ -33,6 +33,7 @@ export default class Search extends React.Component {
       if (bounds) map.fitBounds(bounds)
       else if (center) map.flyTo({center: center, zoom: 13})
       store.results = []
+      store.search = result.formatted_address
     }
   }
 

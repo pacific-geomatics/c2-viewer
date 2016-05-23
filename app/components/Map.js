@@ -40,7 +40,7 @@ export default class Map extends React.Component {
   componentWillReact() {
     if (store.mapRightMove) {
       map.jumpTo({
-        center: store.center,
+        center: [store.lng, store.lat],
         zoom: store.zoom,
         bearing: store.bearing,
         pitch: store.pitch

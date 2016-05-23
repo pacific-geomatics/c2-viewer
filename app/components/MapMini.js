@@ -31,7 +31,7 @@ export default class MapMini extends React.Component {
   componentWillReact() {
     if (store.mapRightMove || store.mapMove) {
       mapMini.flyTo({
-        center: store.center,
+        center: [store.lng, store.lat],
         zoom: parseFloat(store.zoom) + store.mapMiniZoomOffset,
         bearing: store.bearing,
         pitch: store.pitch
