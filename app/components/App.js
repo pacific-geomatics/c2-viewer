@@ -3,7 +3,7 @@ import { Promise } from 'es6-promise'
 import React, { Component } from 'react'
 import { observer } from 'mobx-react'
 import { store } from '../store'
-import jwt from 'jsonwebtoken'
+import jwtDecode from 'jwt-decode'
 import { Map, MapMini, MapRight, MapMiniControls, Logo, MGRS, Basemap, ZoomIn,
   Search, ZoomOut, TiltView, Settings, Crosshair, NorthArrow, Activate,
   MyPosition, Attribution, NoClickZone, URLHandler, RightClickOptions
@@ -24,10 +24,12 @@ export default class App extends Component {
       store[key] = props.params[key]
     })
 
-    // Store encoded JWT
-    jwt.verify(store.access_token, 'pacgeo', (err, decoded) => {
+    // Store decoded JWT into Styles
+    if (store.access_token) {
+      let decoded = jwtDecode(store.access_token)
+      console.log(decoded)
       if (decoded) store.styleTable.push(decoded)
-    })
+    }
   }
 
   render() {

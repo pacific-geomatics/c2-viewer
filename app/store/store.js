@@ -1,7 +1,6 @@
 import { observable, computed } from 'mobx'
 import validator from 'validator'
 import { classicStyle } from '../utils'
-import jwt from 'jsonwebtoken'
 
 export const store = new class Store {
   // HTML

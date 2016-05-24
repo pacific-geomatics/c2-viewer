@@ -2,7 +2,7 @@ import mapboxgl from 'mapbox-gl'
 import React from 'react'
 import { observer } from 'mobx-react'
 import { store } from '../store'
-import jwt from 'jsonwebtoken'
+import jwtDecode from 'jwt-decode'
 
 @observer
 export default class Map extends React.Component {
@@ -16,20 +16,18 @@ export default class Map extends React.Component {
   }
 
   getStyle() {
-    return new Promise((resolve, reject) => {
-      jwt.verify(store.access_token, 'pacgeo', (err, decoded) => {
-        if (decoded) resolve(decoded.style)
-        resolve(store.styleTable[store.mapStyle].style)
-      })
-    })
+    if (store.access_token) {
+      let decoded = jwtDecode(store.access_token)
+      if (decoded) return decoded
+    }
+    return store.styleTable[store.mapStyle].style
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     mapboxgl.accessToken = store.token
 
     // Retrieve access_token for Styled Map
-    let style = await this.getStyle()
-
+    let style = this.getStyle()
     const map = new mapboxgl.Map({
       container: store.mapId,
       style: style,
