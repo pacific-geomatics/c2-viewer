@@ -43,7 +43,7 @@ export default class App extends Component {
         {name: 'Mapbox Outdoor (Vector)', style: 'mapbox://styles/mapbox/outdoors-v9'},
         {name: 'Mapbox Outdoor (Classic)', style: classicStyle(`https://api.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}@2x.png?access_token=${ this.token }`, 'outdoors')},
       ]
-      store.mapboxGeocoder = 'https://mapbox.com/geocoding/v5/mapbox.places/'
+      store.mapboxGeocoder = 'https://api.mapbox.com/geocoding/v5/mapbox.places/'
     }
 
     // Store decoded JWT into Styles
