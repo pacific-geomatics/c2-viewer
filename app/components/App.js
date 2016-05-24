@@ -3,6 +3,7 @@ import { Promise } from 'es6-promise'
 import React, { Component } from 'react'
 import { observer } from 'mobx-react'
 import { store } from '../store'
+import jwt from 'jsonwebtoken'
 import { Map, MapMini, MapRight, MapMiniControls, Logo, MGRS, Basemap, ZoomIn,
   Search, ZoomOut, TiltView, Settings, Crosshair, NorthArrow, Activate,
   MyPosition, Attribution, NoClickZone, URLHandler, RightClickOptions
@@ -21,6 +22,11 @@ export default class App extends Component {
     // Store all URL Params into MobX Store
     Object.keys(props.params).map((key) => {
       store[key] = props.params[key]
+    })
+
+    // Store encoded JWT
+    jwt.verify(store.access_token, 'pacgeo', (err, decoded) => {
+      if (decoded) store.styleTable.push(decoded)
     })
   }
 

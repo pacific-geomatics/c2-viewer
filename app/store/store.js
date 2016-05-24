@@ -1,6 +1,7 @@
 import { observable, computed } from 'mobx'
 import validator from 'validator'
 import { classicStyle } from '../utils'
+import jwt from 'jsonwebtoken'
 
 export const store = new class Store {
   // HTML
@@ -13,6 +14,7 @@ export const store = new class Store {
   @observable selection = 0
 
   // MapboxGL Token
+  @observable access_token = ''
   @observable token = 'pk.eyJ1IjoicGFjZ2VvIiwiYSI6ImE2ZmE3YTQyNmRjNTVmYTAxMWE2YWZlNGFjZjMzZWVhIn0.wRU0txw3VIEOVtyc8PCYdQ'
 
   // Position (Click)
@@ -46,9 +48,9 @@ export const store = new class Store {
   @observable left = window.innerWidth / 2
 
   styleTable = [
-    {id: 0, name: 'Mapbox Satellite', style: 'mapbox://styles/mapbox/satellite-streets-v9'},
-    {id: 1, name: 'Mapbox Outdoor (Vector)', style: 'mapbox://styles/mapbox/outdoors-v9'},
-    {id: 2, name: 'Mapbox Outdoor (Classic)', style: classicStyle(`https://api.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}@2x.png?access_token=${ this.token }`, 'outdoors')},
+    {name: 'Mapbox Satellite', style: 'mapbox://styles/mapbox/satellite-streets-v9'},
+    {name: 'Mapbox Outdoor (Vector)', style: 'mapbox://styles/mapbox/outdoors-v9'},
+    {name: 'Mapbox Outdoor (Classic)', style: classicStyle(`https://api.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}@2x.png?access_token=${ this.token }`, 'outdoors')},
   ]
 
   tiel = '#4AC7B0'

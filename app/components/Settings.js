@@ -32,7 +32,7 @@ export default class Settings extends Component {
 
           <Modal.Body>
             { Object.keys(store.styleTable).map((key, index) =>
-              <MapBasemap key={ key } { ...store.styleTable[key] } />
+              <MapBasemap key={ key } id={ key } { ...store.styleTable[key] } />
             )}
           </Modal.Body>
 

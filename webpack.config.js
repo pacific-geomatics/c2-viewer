@@ -19,7 +19,10 @@ module.exports = {
   },
   node: {
     console: true,
-    fs: 'empty'
+    fs: 'empty',
+    net: 'empty',
+    dns: 'empty',
+    tls: 'empty'
   },
   resolveLoader: {
     root: path.join(__dirname, 'node_modules')
