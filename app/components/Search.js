@@ -16,9 +16,13 @@ export default class Search extends React.Component {
   }
 
   getLocation(location) {
-    let bounds = map.getBounds()
-    let url = `${ store.mapboxGeocoder }${ location }.json?access_token=${ store.token }`
-    fetch(url).then(response => response.json())
+    var request = new Request(`${ store.mapboxGeocoder }${ location }.json?access_token=${ store.token }`, {
+    	method: 'GET',
+    	headers: new Headers({
+        'Access-Control-Allow-Origin': '*'
+    	})
+    })
+    fetch(request).then(response => response.json())
       .then(data => {
         if (location == store.search) store.results = data.features.slice(0, 3)
       })
