@@ -1,2 +1,2 @@
-export { getMGRS } from './mapHandlers'
+export { getMGRS, getBounds } from './mapHandlers'
 export { classicStyle } from './classicStyle'

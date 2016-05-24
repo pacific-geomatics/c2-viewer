@@ -1,20 +1,12 @@
 import converter from 'coordinator'
 import mapboxgl from 'mapbox-gl'
 
-export function getBounds(geometry) {
-  if (geometry.bounds) {
-    let northeast = geometry.bounds.northeast
-    let southwest = geometry.bounds.southwest
-    let ne = new mapboxgl.LngLat(northeast.lng, northeast.lat)
-    let sw = new mapboxgl.LngLat(southwest.lng, southwest.lat)
-
+export function getBounds(bbox) {
+  if (bbox) {
+    console.log(bbox)
+    let ne = new mapboxgl.LngLat(bbox[0], bbox[1])
+    let sw = new mapboxgl.LngLat(bbox[2], bbox[3])
     return new mapboxgl.LngLatBounds(sw, ne)
-  }
-}
-
-export function getCenter(geometry) {
-  if (geometry.location) {
-    return [geometry.location.lng, geometry.location.lat]
   }
 }
 

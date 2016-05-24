@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { observer } from 'mobx-react'
 import { store } from '../store'
-import { getBounds, getCenter } from '../utils/mapHandlers'
+import { getBounds } from '../utils'
 
 @observer
 export default class Result extends Component {
@@ -21,11 +21,12 @@ export default class Result extends Component {
   }
 
   handleClick(e) {
-    let bounds = getBounds(this.props.json.geometry)
-    let center = getCenter(this.props.json.geometry)
+    let bounds = getBounds(this.props.bbox)
+    let center = this.props.geometry.coordinates
     if (bounds) map.fitBounds(bounds)
     else if (center) map.flyTo({center: center, zoom: 13})
     store.results = []
+    store.search = this.props.place_name
   }
 
   handleMouseEnter() {
@@ -38,6 +39,9 @@ export default class Result extends Component {
   }
 
   render() {
+    // Mobx Observables
+    store.selection
+
     const styles = {
       result: {
         fontFamily: 'fledgling',
@@ -54,7 +58,6 @@ export default class Result extends Component {
         textShadow: '-1px 0 black, 0 1px black, 1px 0 black, 0 -1px black'
       }
     }
-    store.selection
     return (
       <div
         style={ styles.result}
@@ -63,7 +66,7 @@ export default class Result extends Component {
         onMouseLeave={ this.handleMouseLeave }
         onKeyDown={ this.handleKeyDown }
         block>
-        { this.props.json.formatted_address }
+        { this.props.place_name }
       </div>
     )
   }

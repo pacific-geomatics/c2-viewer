@@ -46,11 +46,21 @@ export const store = new class Store {
   // Compare Swiper
   @observable left = window.innerWidth / 2
 
+  /* Atlas Config
+  styleTable = [
+    {name: 'Mapbox Satellite', style: classicStyle(`http://localhost:2999/v4/mapbox.satellite-afternoon/{z}/{x}/{y}@2x.png`, 'satellite')},
+    {name: 'Mapbox Outdoor', style: classicStyle(`http://localhost:2999/v4/mapbox.mapbox-outdoors/{z}/{x}/{y}@2x.png`, 'outdoors')},
+  ]
+  mapboxGeocoder = 'http://localhost:2999/v4/geocode/mapbox.places/'
+  */
+
+  /* Online Config */
   styleTable = [
     {name: 'Mapbox Satellite', style: 'mapbox://styles/mapbox/satellite-streets-v9'},
     {name: 'Mapbox Outdoor (Vector)', style: 'mapbox://styles/mapbox/outdoors-v9'},
     {name: 'Mapbox Outdoor (Classic)', style: classicStyle(`https://api.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}@2x.png?access_token=${ this.token }`, 'outdoors')},
   ]
+  mapboxGeocoder = 'https://mapbox.com/geocoding/v5/mapbox.places/'
 
   tiel = '#4AC7B0'
   grey = '#494141'

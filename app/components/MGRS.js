@@ -14,7 +14,7 @@ export default class MGRS extends Component {
     const styles = {
       container: {
         position: 'absolute',
-        top: 10,
+        top: 5,
         width: '100%',
         zIndex: 15,
         textAlign: 'center',
@@ -24,8 +24,8 @@ export default class MGRS extends Component {
         pointerEvents: 'auto',
         fontFamily: 'fledgling',
         border: 'none',
-        color: 'white',
-        fontSize: '5em',
+        color: 'rgb(221, 221, 221)',
+        fontSize: '4em',
         fontWeight: 'bold',
         textShadow: '-1px 0 black, 0 1px black, 1px 0 black, 0 -1px black'
       }

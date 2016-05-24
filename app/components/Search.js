@@ -17,10 +17,10 @@ export default class Search extends React.Component {
 
   getLocation(location) {
     let bounds = map.getBounds()
-    let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${ location }&bounds=${ bounds._ne.lat },${ bounds._ne.lng }|${ bounds._sw.lat },${ bounds._sw.lng }`
+    let url = `http://localhost:2999/v4/geocode/mapbox.places/${ location }.json`
     fetch(url).then(response => response.json())
       .then(data => {
-        if (location == store.search) store.results = data.results.slice(0, 3)
+        if (location == store.search) store.results = data.features.slice(0, 3)
       })
       .catch(error => console.log("Error found"))
   }
@@ -28,12 +28,12 @@ export default class Search extends React.Component {
   handleKeyEnter(e) {
     let result = store.results[store.selection]
     if (result) {
-      let bounds = getBounds(result.geometry)
-      let center = getCenter(result.geometry)
+      let bounds = getBounds(result.bbox)
+      let center = result.geometry.coordinates
       if (bounds) map.fitBounds(bounds)
       else if (center) map.flyTo({center: center, zoom: 13})
       store.results = []
-      store.search = result.formatted_address
+      store.search = result.place_name
     }
   }
 
@@ -105,7 +105,7 @@ export default class Search extends React.Component {
           block
         />
         { store.results.map((result, index) =>
-          <Result key={ result.place_id } index={ index } json={ result } />
+          <Result key={ result.id } index={ index } { ...result } />
         )}
       </div>
     )
