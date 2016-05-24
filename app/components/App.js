@@ -8,6 +8,8 @@ import { Map, MapMini, MapRight, MapMiniControls, Logo, MGRS, Basemap, ZoomIn,
   Search, ZoomOut, TiltView, Settings, Crosshair, NorthArrow, Activate,
   MyPosition, Attribution, NoClickZone, URLHandler, RightClickOptions
 } from '../components'
+import { classicStyle } from '../utils'
+
 
 @observer
 export default class App extends Component {
@@ -23,6 +25,26 @@ export default class App extends Component {
     Object.keys(props.params).map((key) => {
       store[key] = props.params[key]
     })
+
+    // Load Basemaps
+    if (store.server) {
+      // Mapbox Atlas Server config
+      store.styleTable = [
+        {name: 'Mapbox Satellite', style: classicStyle(`${ store.server }/v4/mapbox.satellite-afternoon/{z}/{x}/{y}@2x.png`, 'satellite')},
+        {name: 'Mapbox Outdoor', style: classicStyle(`${ store.server }/v4/mapbox.mapbox-outdoors/{z}/{x}/{y}@2x.png`, 'outdoors')},
+        {name: 'Mapbox Light', style: classicStyle(`${ store.server }/v4/mapbox.light/{z}/{x}/{y}@2x.png`, 'light')},
+        {name: 'Mapbox OSM Bright', style: classicStyle(`${ store.server }/v4/mapbox.osm-bright/{z}/{x}/{y}@2x.png`, 'osm-bright')},
+      ]
+      store.mapboxGeocoder = `${ store.server }/v4/geocode/mapbox.places/`
+    } else {
+      // Mapbox Online config
+      store.styleTable = [
+        {name: 'Mapbox Satellite', style: 'mapbox://styles/mapbox/satellite-streets-v9'},
+        {name: 'Mapbox Outdoor (Vector)', style: 'mapbox://styles/mapbox/outdoors-v9'},
+        {name: 'Mapbox Outdoor (Classic)', style: classicStyle(`https://api.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}@2x.png?access_token=${ this.token }`, 'outdoors')},
+      ]
+      store.mapboxGeocoder = 'https://mapbox.com/geocoding/v5/mapbox.places/'
+    }
 
     // Store decoded JWT into Styles
     if (store.access_token) {

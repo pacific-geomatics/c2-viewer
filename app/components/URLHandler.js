@@ -8,13 +8,15 @@ import { store } from '../store'
 export default class URLHandler extends React.Component {
 
   componentWillReact() {
+    let query = {}
+    if (store.access_token) { query['access_token'] = store.access_token }
+    if (store.server) { query['server'] = store.server }
+    if (store.search) { query['search'] = store.search }
+    if (store.mapStyle) { query['mapStyle'] = store.mapStyle }
+
     hashHistory.push({
       pathname: `/${ store.zoom }/${ store.lat }/${ store.lng }/${ store.bearing }/${ store.pitch }/app`,
-      query: {
-        search: store.search,
-        mapStyle: store.mapStyle,
-        access_token: store.access_token
-      }
+      query: query
     })
   }
 
