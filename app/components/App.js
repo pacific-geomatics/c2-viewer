@@ -41,7 +41,7 @@ export default class App extends Component {
       store.styleTable = [
         {name: 'Mapbox Satellite', style: 'mapbox://styles/mapbox/satellite-streets-v9'},
         {name: 'Mapbox Outdoor (Vector)', style: 'mapbox://styles/mapbox/outdoors-v9'},
-        {name: 'Mapbox Outdoor (Classic)', style: classicStyle(`https://api.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}@2x.png?access_token=${ this.token }`, 'outdoors')},
+        {name: 'Mapbox Outdoor (Classic)', style: classicStyle(`https://api.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}@2x.png?access_token=${ store.token }`, 'outdoors')},
       ]
       store.mapboxGeocoder = 'https://api.mapbox.com/geocoding/v5/mapbox.places/'
     }

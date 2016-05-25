@@ -6,6 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --progress --colors --inline --config webpack-dev.config.js",
     "build": "webpack --progress",
+    "publish": "aws s3 cp ./dist/ s3://pacgeo.com/ --recursive --acl public-read-write",
     "test": "ava tests"
   },
   "repository": {
