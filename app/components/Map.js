@@ -16,18 +16,21 @@ export default class Map extends React.Component {
   }
 
   getStyle() {
-    if (store.access_token) {
-      let decoded = jwtDecode(store.access_token)
-      if (decoded) return decoded
-    }
-    return store.styleTable[store.mapStyle].style
+    return new Promise((resolve, reject) => {
+      if (store.access_token) {
+        let decoded = jwtDecode(store.access_token)
+        if (decoded) resolve(decoded.style)
+      }
+      resolve(store.styleTable[store.mapStyle].style)
+    })
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     mapboxgl.accessToken = store.token
 
     // Retrieve access_token for Styled Map
-    let style = this.getStyle()
+    let style = await this.getStyle()
+    console.log(style)
     const map = new mapboxgl.Map({
       container: store.mapId,
       style: style,

@@ -7,7 +7,6 @@ import './assets/bootstrap-sass-3.3.6/stylesheets/_bootstrap.scss'
 import './assets/css/base.scss'
 import './favicon.ico'
 import './robots.txt'
-import './index.appcache'
 
 var routes = (
   <Route>

@@ -49,7 +49,6 @@ export default class App extends Component {
     // Store decoded JWT into Styles
     if (store.access_token) {
       let decoded = jwtDecode(store.access_token)
-      console.log(decoded)
       if (decoded) store.styleTable.push(decoded)
     }
   }
