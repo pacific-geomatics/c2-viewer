@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/pacific-geomatics/c2-viewer#readme",
   "devDependencies": {
+    "aws-sdk": "^2.3.16",
+    "babel-cli": "^6.9.0",
     "babel-core": "^6.7.4",
     "babel-loader": "^6.2.4",
     "babel-plugin-espower": "^2.1.2",
@@ -34,6 +36,7 @@
     "express": "^4.13.4",
     "file-loader": "^0.8.5",
     "json-loader": "^0.5.4",
+    "mapbox": "^1.0.0-beta",
     "node-sass": "^3.6.0",
     "robots.txt": "^1.1.0",
     "sass-loader": "^3.2.0",
