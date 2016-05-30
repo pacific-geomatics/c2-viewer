@@ -3,7 +3,6 @@ import mapboxgl from 'mapbox-gl'
 
 export function getBounds(bbox) {
   if (bbox) {
-    console.log(bbox)
     let ne = new mapboxgl.LngLat(bbox[0], bbox[1])
     let sw = new mapboxgl.LngLat(bbox[2], bbox[3])
     return new mapboxgl.LngLatBounds(sw, ne)

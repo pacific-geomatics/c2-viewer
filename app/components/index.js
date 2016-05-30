@@ -30,4 +30,4 @@ export MyPosition from './MyPosition'
 // Search
 export Search from './Search'
 export SearchRemove from './SearchRemove'
-export Result from './Result'
+export SearchResult from './SearchResult'

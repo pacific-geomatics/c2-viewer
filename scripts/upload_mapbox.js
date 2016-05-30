@@ -9,8 +9,8 @@ function getCredentials(access_token) {
   return new Promise((resolve, reject) => {
     let url = `https://api.mapbox.com/uploads/v1/addxy/credentials?access_token=${ access_token }`
     fetch(url)
-    .then(response => response.json())
-    .then(data => resolve(data))
+      .then(response => response.json())
+      .then(data => resolve(data))
   })
 }
 

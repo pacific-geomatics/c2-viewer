@@ -1,12 +1,12 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Glyphicon, Input } from 'react-bootstrap'
 import { observer } from 'mobx-react'
 import { store } from '../store'
-import { Result, SearchRemove, Remove } from '../components'
-import { getBounds, getCenter } from '../utils/mapHandlers'
+import { SearchResult, SearchRemove, Remove } from '../components'
+import { getBounds, google } from '../utils'
 
 @observer
-export default class Search extends React.Component {
+export default class Search extends Component {
   constructor(props) {
     super(props)
     this.getLocation = this.getLocation.bind(this)
@@ -16,28 +16,25 @@ export default class Search extends React.Component {
   }
 
   getLocation(location) {
-    var request = new Request(`${ store.mapboxGeocoder }${ location }.json?access_token=${ store.token }`, {
-    	method: 'GET',
-    	headers: new Headers({
-        'Access-Control-Allow-Origin': '*'
-    	})
-    })
-    fetch(request).then(response => response.json())
-      .then(data => {
-        if (location == store.search) store.results = data.features.slice(0, 3)
-      })
-      .catch(error => console.log("Error found"))
+    //let url = `${ store.mapboxGeocoder }${ location }.json?access_token=${ store.token }`
+    google(location)
+      .then(data => { if (location == store.search) return data })
+      .then(data => data.results.slice(0, 3))
+      .then(data => store.results = data)
   }
 
   handleKeyEnter(e) {
     let result = store.results[store.selection]
     if (result) {
-      let bounds = getBounds(result.bbox)
-      let center = result.geometry.coordinates
+      let geometry = result.geometry
+      let bounds = getBounds(geometry.bounds)
+      let center = [geometry.location.lng, geometry.location.lat]
       if (bounds) map.fitBounds(bounds)
       else if (center) map.flyTo({center: center, zoom: 13})
       store.results = []
-      store.search = result.place_name
+      store.search = result.formatted_address
+      store.positionLat = geometry.location.lat
+      store.positionLng = geometry.location.lng
     }
   }
 
@@ -109,7 +106,7 @@ export default class Search extends React.Component {
           block
         />
         { store.results.map((result, index) =>
-          <Result key={ result.id } index={ index } { ...result } />
+          <SearchResult key={ result.place_id } index={ index } { ...result } />
         )}
       </div>
     )

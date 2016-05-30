@@ -11,26 +11,22 @@ export default class Map extends React.Component {
     super(props)
     this.state = { active: false }
     this.handleMove = this.handleMove.bind(this)
-    this.handleMoveStart = this.handleMoveStart.bind(this)
-    this.handleMoveEnd = this.handleMoveEnd.bind(this)
   }
 
   getStyle() {
-    return new Promise((resolve, reject) => {
-      if (store.access_token) {
-        let decoded = jwtDecode(store.access_token)
-        if (decoded) resolve(decoded.style)
-      }
-      resolve(store.styleTable[store.mapStyle].style)
-    })
+    if (store.access_token) {
+      store.access_token.split(',').map((style) => {
+        return `mapbox://styles/pacgeo/${ store.access_token }`
+      })
+    }
+    return store.styleTable[store.mapStyle].style
   }
 
   async componentDidMount() {
     mapboxgl.accessToken = store.token
 
     // Retrieve access_token for Styled Map
-    let style = await this.getStyle()
-    console.log(style)
+    let style = this.getStyle()
     const map = new mapboxgl.Map({
       container: store.mapId,
       style: style,
@@ -42,8 +38,8 @@ export default class Map extends React.Component {
     })
     window.map = map
     this.setState({ active: true })
-    map.on('movestart', this.handleMoveStart)
-    map.on('moveend', this.handleMoveEnd)
+    map.on('movestart', () => store.mapMove = true)
+    map.on('moveend', () => store.mapMove = false)
     map.on('move', this.handleMove)
 
     // Position (Click)
@@ -60,14 +56,6 @@ export default class Map extends React.Component {
         pitch: store.pitch
       })
     }
-  }
-
-  handleMoveStart(e) {
-    store.mapMove = true
-  }
-
-  handleMoveEnd(e) {
-    store.mapMove = false
   }
 
   handleMove(e) {

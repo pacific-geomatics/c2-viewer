@@ -4,7 +4,7 @@ import { store } from '../store'
 import { getBounds } from '../utils'
 
 @observer
-export default class Result extends Component {
+export default class SearchResult extends Component {
   constructor(props) {
     super(props)
     this.handleMouseEnter = this.handleMouseEnter.bind(this)
@@ -21,12 +21,15 @@ export default class Result extends Component {
   }
 
   handleClick(e) {
-    let bounds = getBounds(this.props.bbox)
-    let center = this.props.geometry.coordinates
+    let geometry = this.props.geometry
+    let bounds = getBounds(geometry.bounds)
+    let center = [geometry.location.lng, geometry.location.lat]
     if (bounds) map.fitBounds(bounds)
     else if (center) map.flyTo({center: center, zoom: 13})
     store.results = []
-    store.search = this.props.place_name
+    store.search = this.props.formatted_address
+    store.positionLat = geometry.location.lat
+    store.positionLng = geometry.location.lng
   }
 
   handleMouseEnter() {
@@ -66,7 +69,7 @@ export default class Result extends Component {
         onMouseLeave={ this.handleMouseLeave }
         onKeyDown={ this.handleKeyDown }
         block>
-        { this.props.place_name }
+        { this.props.formatted_address }
       </div>
     )
   }

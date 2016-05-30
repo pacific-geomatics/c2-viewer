@@ -48,8 +48,9 @@ export default class App extends Component {
 
     // Store decoded JWT into Styles
     if (store.access_token) {
-      let decoded = jwtDecode(store.access_token)
-      if (decoded) store.styleTable.push(decoded)
+      store.access_token.split(',').map((style) => {
+        store.styleTable.push({style: `mapbox://styles/pacgeo/${ style }`})
+      })
     }
   }
 

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --progress --colors --inline --config webpack-dev.config.js",
     "build": "webpack --progress",
-    "publish": "aws s3 cp ./dist/ s3://pacgeo.com/ --recursive --acl public-read-write",
+    "publish": "aws s3 cp ./dist/ s3://c2viewer.pacgeo.com/ --recursive --acl public-read-write",
     "test": "ava tests"
   },
   "repository": {
@@ -51,6 +51,7 @@
     "webworkify-webpack": "^1.0.6"
   },
   "dependencies": {
+    "base-64": "^0.1.0",
     "coordinator": "^0.5.0",
     "es6-promise": "^3.1.2",
     "geocoder": "^0.2.2",
@@ -63,6 +64,7 @@
     "react-bootstrap": "^0.28.5",
     "react-dom": "^0.14.8",
     "react-router": "^2.0.1",
-    "react-stormpath": "^1.2.1"
+    "react-stormpath": "^1.2.1",
+    "utf8": "^2.1.1"
   }
 }
