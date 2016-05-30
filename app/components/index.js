@@ -10,6 +10,7 @@ export CompareSwiper from './CompareSwiper'
 export RightClickOptions from './RightClickOptions'
 export MGRS from './MGRS'
 export Activate from './Activate'
+export RegistrationPage from './RegistrationPage'
 
 // Maps
 export Map from './Map'
